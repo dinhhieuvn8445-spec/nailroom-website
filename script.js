@@ -289,6 +289,43 @@ $(document).ready(function() {
         });
     });
 
+    // Gallery Filter
+    $('.filter-btn').click(function() {
+        var filterValue = $(this).data('filter');
+        
+        // Update active button
+        $('.filter-btn').removeClass('active');
+        $(this).addClass('active');
+        
+        // Filter gallery items
+        if (filterValue === 'all') {
+            $('.gallery-item').removeClass('hide');
+        } else {
+            $('.gallery-item').addClass('hide');
+            $('.gallery-item.' + filterValue).removeClass('hide');
+        }
+    });
+
+    // Load More Gallery Items
+    $('.load-more-btn').click(function() {
+        // Simulate loading more items
+        $(this).text('Đang tải...').prop('disabled', true);
+        
+        setTimeout(function() {
+            $('.load-more-btn').text('Xem thêm').prop('disabled', false);
+            // Here you would typically load more gallery items via AJAX
+        }, 1000);
+    });
+
+    // Lightbox configuration
+    if (typeof lightbox !== 'undefined') {
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'albumLabel': 'Hình %1 / %2'
+        });
+    }
+
     // Trigger scroll event on page load
     $(window).trigger('scroll');
 });

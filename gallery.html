@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Gallery - Nailroom</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,600i,700,700i|Pacifico|Dancing+Script:400,700&display=swap&subset=vietnamese" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/823a00108b.js" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Lightbox CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <ul class="topbar-left-info">
+                        <li><i class="fab fa-apple"></i> <a href="#" target='_blank'>Apple Store</a></li>
+                        <li><i class="fab fa-google-play"></i> <a href="#" target='_blank'>CH Play</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> <a href="#">Nailroom Stores</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <div class="topbar-right-info">
+                        <div class="language-switcher">
+                            <a href="#" class="language-toggle">Tiếng Việt</a>
+                            <ul class="language-menu">
+                                <li><a href="#">English</a></li>
+                            </ul>
+                        </div>
+                        <ul class="topbar-social">
+                            <li><a href="#" target='_blank'><i class="fab fa-facebook-square"></i></a></li>
+                            <li><a href="#" target='_blank'><i class="fab fa-instagram"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="site-navigation">
+        <div class="container">
+            <div class="row">
+                <div class="site-navigation-inner col-sm-12">
+                    <div class="navbar navbar-expand-lg">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <a class="navbar-brand" href="index.html" title="Nailroom" rel="home">
+                                <img src="https://nailroom.vn/wp-content/uploads/2023/11/Mit_s-House-Logo-52.png" alt="Nailroom Logo">
+                            </a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="index.html">Trang chủ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="gioi-thieu.html">Giới thiệu</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="dich-vu.html">Dịch vụ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="blog.html">Blog</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="gallery.html">Gallery</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="hoc-vien.html">Học viện</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="hop-tac.html">Hợp tác</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="franchise.html">Franchise</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="lien-he.html">Liên hệ</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <div class="page-header-content center" data-aos="fade-up">
+                    <h1 class="page-title">Gallery</h1>
+                    <div class="section-subtitle2">"Khám phá những tác phẩm nail art tuyệt đẹp"</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Filter -->
+        <section id="gallery-filter">
+            <div class="container">
+                <div class="filter-tabs center" data-aos="fade-up">
+                    <button class="filter-btn active" data-filter="all">Tất cả</button>
+                    <button class="filter-btn" data-filter="nail-art">Nail Art</button>
+                    <button class="filter-btn" data-filter="gel-polish">Gel Polish</button>
+                    <button class="filter-btn" data-filter="extension">Nối móng</button>
+                    <button class="filter-btn" data-filter="spa">Spa</button>
+                    <button class="filter-btn" data-filter="interior">Không gian</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Grid -->
+        <section id="gallery-main">
+            <div class="container">
+                <div class="gallery-grid">
+                    
+                    <!-- Nail Art Items -->
+                    <div class="gallery-item nail-art" data-aos="fade-up">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/nail-art-1.jpg" data-lightbox="gallery" data-title="Nail Art Design 1">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/nail-art-1.jpg" alt="Nail Art 1">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Nail Art Design</h4>
+                                <p>Thiết kế nghệ thuật độc đáo</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item gel-polish" data-aos="fade-up" data-aos-delay="100">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/gel-polish-1.jpg" data-lightbox="gallery" data-title="Gel Polish Collection">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/gel-polish-1.jpg" alt="Gel Polish 1">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Gel Polish</h4>
+                                <p>Màu sắc rực rỡ bền đẹp</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item extension" data-aos="fade-up" data-aos-delay="200">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/extension-1.jpg" data-lightbox="gallery" data-title="Nail Extension">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/extension-1.jpg" alt="Extension 1">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Nối móng</h4>
+                                <p>Móng dài tự nhiên đẹp</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item nail-art" data-aos="fade-up" data-aos-delay="300">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/nail-art-2.jpg" data-lightbox="gallery" data-title="French Manicure">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/nail-art-2.jpg" alt="Nail Art 2">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>French Manicure</h4>
+                                <p>Phong cách cổ điển thanh lịch</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item spa" data-aos="fade-up" data-aos-delay="400">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/spa-1.jpg" data-lightbox="gallery" data-title="Hand Spa Treatment">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/spa-1.jpg" alt="Spa 1">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Hand Spa</h4>
+                                <p>Chăm sóc tay chuyên nghiệp</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item interior" data-aos="fade-up" data-aos-delay="500">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/interior-1.jpg" data-lightbox="gallery" data-title="Nailroom Interior">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/interior-1.jpg" alt="Interior 1">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Không gian Nailroom</h4>
+                                <p>Thiết kế sang trọng hiện đại</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item nail-art" data-aos="fade-up">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/nail-art-3.jpg" data-lightbox="gallery" data-title="Gradient Nails">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/nail-art-3.jpg" alt="Nail Art 3">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Gradient Nails</h4>
+                                <p>Hiệu ứng chuyển màu mềm mại</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item gel-polish" data-aos="fade-up" data-aos-delay="100">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/gel-polish-2.jpg" data-lightbox="gallery" data-title="Pastel Colors">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/gel-polish-2.jpg" alt="Gel Polish 2">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Pastel Colors</h4>
+                                <p>Màu sắc nhẹ nhàng dịu dàng</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item extension" data-aos="fade-up" data-aos-delay="200">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/extension-2.jpg" data-lightbox="gallery" data-title="Stiletto Nails">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/extension-2.jpg" alt="Extension 2">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Stiletto Nails</h4>
+                                <p>Dáng móng nhọn cá tính</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item spa" data-aos="fade-up" data-aos-delay="300">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/spa-2.jpg" data-lightbox="gallery" data-title="Foot Spa">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/spa-2.jpg" alt="Spa 2">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Foot Spa</h4>
+                                <p>Thư giãn chăm sóc chân</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item interior" data-aos="fade-up" data-aos-delay="400">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/interior-2.jpg" data-lightbox="gallery" data-title="VIP Room">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/interior-2.jpg" alt="Interior 2">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Phòng VIP</h4>
+                                <p>Không gian riêng tư cao cấp</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item nail-art" data-aos="fade-up" data-aos-delay="500">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/nail-art-4.jpg" data-lightbox="gallery" data-title="3D Nail Art">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/nail-art-4.jpg" alt="Nail Art 4">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>3D Nail Art</h4>
+                                <p>Nghệ thuật 3D sống động</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item gel-polish" data-aos="fade-up">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/gel-polish-3.jpg" data-lightbox="gallery" data-title="Metallic Finish">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/gel-polish-3.jpg" alt="Gel Polish 3">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Metallic Finish</h4>
+                                <p>Hiệu ứng kim loại sang trọng</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item extension" data-aos="fade-up" data-aos-delay="100">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/extension-3.jpg" data-lightbox="gallery" data-title="Coffin Shape">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/extension-3.jpg" alt="Extension 3">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Coffin Shape</h4>
+                                <p>Dáng móng coffin thời trang</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item spa" data-aos="fade-up" data-aos-delay="200">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/spa-3.jpg" data-lightbox="gallery" data-title="Massage Treatment">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/spa-3.jpg" alt="Spa 3">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Massage Treatment</h4>
+                                <p>Liệu pháp massage thư giãn</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="gallery-item interior" data-aos="fade-up" data-aos-delay="300">
+                        <a href="https://nailroom.vn/wp-content/uploads/2023/12/interior-3.jpg" data-lightbox="gallery" data-title="Reception Area">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/12/interior-3.jpg" alt="Interior 3">
+                            <div class="gallery-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <h4>Khu vực tiếp đón</h4>
+                                <p>Không gian chào đón ấm cúng</p>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Load More Button -->
+                <div class="load-more-section center" data-aos="fade-up">
+                    <button class="load-more-btn">Xem thêm <i class="fas fa-chevron-down"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instagram Section -->
+        <section id="instagram-gallery">
+            <div class="container">
+                <h2 class="section-title center" data-aos="fade-up">Theo dõi chúng tôi trên <span>Instagram</span></h2>
+                <p class="section-subtitle center" data-aos="fade-up">@nailroom_official</p>
+                
+                <div class="instagram-grid" data-aos="fade-up">
+                    <div class="instagram-item">
+                        <img src="https://nailroom.vn/wp-content/uploads/2023/12/insta-1.jpg" alt="Instagram 1">
+                        <div class="instagram-overlay">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                    </div>
+                    <div class="instagram-item">
+                        <img src="https://nailroom.vn/wp-content/uploads/2023/12/insta-2.jpg" alt="Instagram 2">
+                        <div class="instagram-overlay">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                    </div>
+                    <div class="instagram-item">
+                        <img src="https://nailroom.vn/wp-content/uploads/2023/12/insta-3.jpg" alt="Instagram 3">
+                        <div class="instagram-overlay">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                    </div>
+                    <div class="instagram-item">
+                        <img src="https://nailroom.vn/wp-content/uploads/2023/12/insta-4.jpg" alt="Instagram 4">
+                        <div class="instagram-overlay">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                    </div>
+                    <div class="instagram-item">
+                        <img src="https://nailroom.vn/wp-content/uploads/2023/12/insta-5.jpg" alt="Instagram 5">
+                        <div class="instagram-overlay">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                    </div>
+                    <div class="instagram-item">
+                        <img src="https://nailroom.vn/wp-content/uploads/2023/12/insta-6.jpg" alt="Instagram 6">
+                        <div class="instagram-overlay">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Fixed Booking Button -->
+    <a href="#" class="fixed-booking-btn" title="Đặt lịch ngay">
+        <i class="fas fa-calendar-alt booking-icon"></i>
+        <span class="booking-text">Đặt Lịch</span>
+    </a>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Nailroom. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
