@@ -2366,6 +2366,177 @@ body {
     background: #B8750C;
 }
 
+/* Authentication Styles */
+.btn-login {
+    background: #C8860D;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background: #B8750C;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid #eee;
+    padding: 20px 30px;
+}
+
+.modal-title {
+    font-weight: 600;
+    color: #333;
+}
+
+.modal-title span {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.modal-title span.active {
+    color: #C8860D;
+    background: rgba(200, 134, 13, 0.1);
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    border: 2px solid #eee;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #C8860D;
+    box-shadow: 0 0 0 0.2rem rgba(200, 134, 13, 0.25);
+}
+
+.btn-primary {
+    background: #C8860D;
+    border-color: #C8860D;
+    padding: 12px 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #B8750C;
+    border-color: #B8750C;
+    transform: translateY(-1px);
+}
+
+.alert {
+    border-radius: 8px;
+    border: none;
+    padding: 15px 20px;
+}
+
+.alert-success {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border-left: 4px solid #dc3545;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    border-radius: 10px;
+    padding: 10px 0;
+    margin-top: 10px;
+}
+
+.dropdown-item {
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background: rgba(200, 134, 13, 0.1);
+    color: #C8860D;
+}
+
+.dropdown-item i {
+    width: 20px;
+    margin-right: 10px;
+    color: #C8860D;
+}
+
+.dropdown-divider {
+    margin: 8px 0;
+    border-color: #eee;
+}
+
+/* Navigation User Menu */
+.nav-link.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#usernameDisplay {
+    font-weight: 600;
+}
+
+/* Admin Dropdown Special Styling */
+#adminDropdown .nav-link {
+    color: #C8860D !important;
+    font-weight: 600;
+}
+
+#adminDropdown .nav-link:hover {
+    color: #B8750C !important;
+}
+
+/* Responsive Authentication */
+@media (max-width: 768px) {
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .modal-header {
+        padding: 15px 20px;
+    }
+    
+    .btn-login {
+        padding: 6px 15px;
+        font-size: 13px;
+    }
+}
+
 /* ===== LOGIN STYLES ===== */
 
 /* Login Button in Navigation */

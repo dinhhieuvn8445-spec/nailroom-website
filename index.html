@@ -90,7 +90,33 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="lien-he.html">Liên hệ</a>
                                 </li>
-                                <li class="nav-item">
+                                <!-- Admin Dropdown (only visible for admin users) -->
+                                <li class="nav-item dropdown" id="adminDropdown" style="display: none;">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-cog"></i> Admin
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-users"></i> Quản lý người dùng</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-calendar-alt"></i> Quản lý lịch hẹn</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-chart-bar"></i> Thống kê</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-cogs"></i> Cài đặt hệ thống</a></li>
+                                    </ul>
+                                </li>
+                                <!-- User Menu (visible when logged in) -->
+                                <li class="nav-item dropdown" id="userDropdown" style="display: none;">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-user"></i> <span id="usernameDisplay"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-user-edit"></i> Thông tin cá nhân</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-calendar"></i> Lịch hẹn của tôi</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                                    </ul>
+                                </li>
+                                <!-- Login Button (visible when not logged in) -->
+                                <li class="nav-item" id="loginButton">
                                     <button class="btn btn-login" data-bs-toggle="modal" data-bs-target="#loginModal">
                                         <i class="fas fa-user"></i> Đăng nhập
                                     </button>
@@ -697,6 +723,84 @@
                             </a>
                         </p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">
+                        <span id="loginTabTitle" class="active">Đăng nhập</span>
+                        <span class="mx-2">|</span>
+                        <span id="registerTabTitle">Đăng ký</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Login Form -->
+                    <form id="loginForm" style="display: block;">
+                        <div class="mb-3">
+                            <label for="loginUsername" class="form-label">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="loginUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Mật khẩu</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+                        <div class="text-center mt-3">
+                            <a href="#" id="showRegisterForm">Chưa có tài khoản? Đăng ký ngay</a>
+                        </div>
+                    </form>
+
+                    <!-- Register Form -->
+                    <form id="registerForm" style="display: none;">
+                        <div class="mb-3">
+                            <label for="registerUsername" class="form-label">Tên đăng nhập *</label>
+                            <input type="text" class="form-control" id="registerUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="registerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">Mật khẩu *</label>
+                            <input type="password" class="form-control" id="registerPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerConfirmPassword" class="form-label">Xác nhận mật khẩu *</label>
+                            <input type="password" class="form-control" id="registerConfirmPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerFullName" class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" id="registerFullName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPhone" class="form-label">Số điện thoại</label>
+                            <input type="tel" class="form-control" id="registerPhone">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">
+                                Tôi đồng ý với <a href="#" target="_blank">điều khoản sử dụng</a>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
+                        <div class="text-center mt-3">
+                            <a href="#" id="showLoginForm">Đã có tài khoản? Đăng nhập</a>
+                        </div>
+                    </form>
+
+                    <!-- Alert Messages -->
+                    <div id="authAlert" class="alert" style="display: none; margin-top: 15px;"></div>
                 </div>
             </div>
         </div>

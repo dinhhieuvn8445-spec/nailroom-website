@@ -419,167 +419,265 @@ var additionalCSS = `
 // Inject additional CSS
 $('<style>').text(additionalCSS).appendTo('head');
 
-// ===== LOGIN FUNCTIONALITY =====
+// ===== AUTHENTICATION FUNCTIONALITY =====
 
-// Toggle password visibility
-function togglePassword(inputId) {
-    const passwordInput = document.getElementById(inputId);
-    const toggleBtn = passwordInput.nextElementSibling;
-    const icon = toggleBtn.querySelector('i');
-    
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
-    } else {
-        passwordInput.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
+// Global authentication state
+let currentUser = null;
+
+// Check authentication status on page load
+$(document).ready(function() {
+    checkAuthStatus();
+});
+
+// Check authentication status
+async function checkAuthStatus() {
+    try {
+        const response = await fetch('/api/auth-status', {
+            method: 'GET',
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (data.authenticated) {
+            currentUser = data.user;
+            updateUIForLoggedInUser(data.user);
+        } else {
+            updateUIForLoggedOutUser();
+        }
+    } catch (error) {
+        console.error('Error checking auth status:', error);
+        updateUIForLoggedOutUser();
     }
 }
 
-// Show message
-function showMessage(type, message) {
-    const successDiv = document.getElementById('successMessage');
-    const errorDiv = document.getElementById('errorMessage');
+// Update UI for logged in user
+function updateUIForLoggedInUser(user) {
+    // Hide login button
+    $('#loginButton').hide();
     
-    if (type === 'success') {
-        document.getElementById('successText').textContent = message;
-        successDiv.style.display = 'block';
-        errorDiv.style.display = 'none';
+    // Show user dropdown
+    $('#userDropdown').show();
+    $('#usernameDisplay').text(user.username);
+    
+    // Show admin dropdown if user is admin
+    if (user.role === 'admin') {
+        $('#adminDropdown').show();
     } else {
-        document.getElementById('errorText').textContent = message;
-        errorDiv.style.display = 'block';
-        successDiv.style.display = 'none';
+        $('#adminDropdown').hide();
     }
 }
+
+// Update UI for logged out user
+function updateUIForLoggedOutUser() {
+    // Show login button
+    $('#loginButton').show();
+    
+    // Hide user and admin dropdowns
+    $('#userDropdown').hide();
+    $('#adminDropdown').hide();
+    
+    currentUser = null;
+}
+
+// Show alert message
+function showAlert(type, message) {
+    const alertDiv = $('#authAlert');
+    alertDiv.removeClass('alert-success alert-danger');
+    alertDiv.addClass(`alert-${type}`);
+    alertDiv.text(message);
+    alertDiv.show();
+    
+    // Auto hide after 5 seconds
+    setTimeout(() => {
+        alertDiv.hide();
+    }, 5000);
+}
+
+// Toggle between login and register forms
+$('#showRegisterForm').click(function(e) {
+    e.preventDefault();
+    $('#loginForm').hide();
+    $('#registerForm').show();
+    $('#loginTabTitle').removeClass('active');
+    $('#registerTabTitle').addClass('active');
+    $('#authAlert').hide();
+});
+
+$('#showLoginForm').click(function(e) {
+    e.preventDefault();
+    $('#registerForm').hide();
+    $('#loginForm').show();
+    $('#registerTabTitle').removeClass('active');
+    $('#loginTabTitle').addClass('active');
+    $('#authAlert').hide();
+});
 
 // Handle login form submission
-document.getElementById('loginForm').addEventListener('submit', function(e) {
+$('#loginForm').submit(async function(e) {
     e.preventDefault();
     
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
-    const rememberMe = document.getElementById('rememberMe').checked;
+    const username = $('#loginUsername').val();
+    const password = $('#loginPassword').val();
     
-    // Show loading state
-    const submitBtn = document.querySelector('.btn-login-submit');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang đăng nhập...';
-    submitBtn.disabled = true;
+    if (!username || !password) {
+        showAlert('danger', 'Vui lòng nhập đầy đủ thông tin');
+        return;
+    }
     
-    // Simulate login process
-    setTimeout(() => {
-        // Simple validation (in real app, this would be server-side)
-        if (username && password) {
-            // Simulate successful login
-            showMessage('success', 'Đăng nhập thành công! Chào mừng bạn đến với Nailroom.');
+    const submitBtn = $('#loginForm button[type="submit"]');
+    const originalText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Đang đăng nhập...').prop('disabled', true);
+    
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ username, password })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showAlert('success', data.message);
+            currentUser = data.user;
             
-            // Store login info if remember me is checked
-            if (rememberMe) {
-                localStorage.setItem('nailroom_remember_username', username);
-            }
+            // Update UI
+            updateUIForLoggedInUser(data.user);
             
-            // Hide modal after 2 seconds
+            // Close modal after 1.5 seconds
             setTimeout(() => {
                 $('#loginModal').modal('hide');
-                // Reset form
-                document.getElementById('loginForm').reset();
-            }, 2000);
+                $('#loginForm')[0].reset();
+            }, 1500);
             
         } else {
-            showMessage('error', 'Vui lòng nhập đầy đủ username và mật khẩu.');
+            showAlert('danger', data.message);
         }
         
-        // Reset button
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }, 1500);
-});
-
-// Load remembered username on modal show
-$('#loginModal').on('show.bs.modal', function() {
-    const rememberedUsername = localStorage.getItem('nailroom_remember_username');
-    if (rememberedUsername) {
-        document.getElementById('loginUsername').value = rememberedUsername;
-        document.getElementById('rememberMe').checked = true;
-    }
-});
-
-// Reset modal state when hidden
-$('#loginModal').on('hidden.bs.modal', function() {
-    showLoginForm(); // Always show login form when modal is reopened
-    document.getElementById('loginForm').reset();
-    document.getElementById('forgotPasswordForm').reset();
-    
-    // Reset button states
-    const submitBtn = document.querySelector('.btn-login-submit');
-    submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Đăng nhập';
-    submitBtn.disabled = false;
-    
-    const forgotBtn = document.querySelector('.btn-forgot-submit');
-    if (forgotBtn) {
-        forgotBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Gửi email khôi phục';
-        forgotBtn.disabled = false;
+    } catch (error) {
+        console.error('Login error:', error);
+        showAlert('danger', 'Lỗi kết nối, vui lòng thử lại sau');
     }
     
-    // Hide messages
-    document.getElementById('successMessage').style.display = 'none';
-    document.getElementById('errorMessage').style.display = 'none';
+    submitBtn.html(originalText).prop('disabled', false);
 });
 
-// Show forgot password form
-function showForgotPasswordForm() {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('forgotPasswordForm').style.display = 'block';
-    document.querySelector('.modal-footer').style.display = 'none';
-    
-    // Hide any existing messages
-    document.getElementById('successMessage').style.display = 'none';
-    document.getElementById('errorMessage').style.display = 'none';
-}
-
-// Show login form
-function showLoginForm() {
-    document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('forgotPasswordForm').style.display = 'none';
-    document.querySelector('.modal-footer').style.display = 'block';
-    
-    // Hide any existing messages
-    document.getElementById('successMessage').style.display = 'none';
-    document.getElementById('errorMessage').style.display = 'none';
-}
-
-// Handle forgot password form submission
-document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+// Handle register form submission
+$('#registerForm').submit(async function(e) {
     e.preventDefault();
     
-    const email = document.getElementById('forgotEmail').value;
+    const username = $('#registerUsername').val();
+    const email = $('#registerEmail').val();
+    const password = $('#registerPassword').val();
+    const confirmPassword = $('#registerConfirmPassword').val();
+    const fullName = $('#registerFullName').val();
+    const phone = $('#registerPhone').val();
+    const agreeTerms = $('#agreeTerms').is(':checked');
     
-    // Show loading state
-    const submitBtn = document.querySelector('.btn-forgot-submit');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
-    submitBtn.disabled = true;
+    // Validation
+    if (!username || !email || !password || !confirmPassword) {
+        showAlert('danger', 'Vui lòng điền đầy đủ thông tin bắt buộc');
+        return;
+    }
     
-    // Simulate sending password reset email
-    setTimeout(() => {
-        if (email) {
-            // Simulate successful email sending
-            showMessage('success', `Email khôi phục mật khẩu đã được gửi đến ${email}. Vui lòng kiểm tra hộp thư của bạn.`);
+    if (password !== confirmPassword) {
+        showAlert('danger', 'Mật khẩu xác nhận không khớp');
+        return;
+    }
+    
+    if (password.length < 3) {
+        showAlert('danger', 'Mật khẩu phải có ít nhất 3 ký tự');
+        return;
+    }
+    
+    if (!agreeTerms) {
+        showAlert('danger', 'Vui lòng đồng ý với điều khoản sử dụng');
+        return;
+    }
+    
+    const submitBtn = $('#registerForm button[type="submit"]');
+    const originalText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Đang đăng ký...').prop('disabled', true);
+    
+    try {
+        const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                username,
+                email,
+                password,
+                fullName,
+                phone
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showAlert('success', data.message);
+            currentUser = data.user;
             
-            // Reset form after 3 seconds and show login form
+            // Update UI
+            updateUIForLoggedInUser(data.user);
+            
+            // Close modal after 1.5 seconds
             setTimeout(() => {
-                showLoginForm();
-                document.getElementById('forgotPasswordForm').reset();
-            }, 3000);
+                $('#loginModal').modal('hide');
+                $('#registerForm')[0].reset();
+            }, 1500);
             
         } else {
-            showMessage('error', 'Vui lòng nhập địa chỉ email hợp lệ.');
+            showAlert('danger', data.message);
         }
         
-        // Reset button
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }, 2000);
+    } catch (error) {
+        console.error('Register error:', error);
+        showAlert('danger', 'Lỗi kết nối, vui lòng thử lại sau');
+    }
+    
+    submitBtn.html(originalText).prop('disabled', false);
+});
+
+// Handle logout
+$('#logoutBtn').click(async function(e) {
+    e.preventDefault();
+    
+    try {
+        const response = await fetch('/api/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            updateUIForLoggedOutUser();
+            showAlert('success', data.message);
+        }
+        
+    } catch (error) {
+        console.error('Logout error:', error);
+        updateUIForLoggedOutUser();
+    }
+});
+
+// Reset modal when hidden
+$('#loginModal').on('hidden.bs.modal', function() {
+    $('#loginForm')[0].reset();
+    $('#registerForm')[0].reset();
+    $('#authAlert').hide();
+    
+    // Show login form by default
+    $('#registerForm').hide();
+    $('#loginForm').show();
+    $('#registerTabTitle').removeClass('active');
+    $('#loginTabTitle').addClass('active');
 });
