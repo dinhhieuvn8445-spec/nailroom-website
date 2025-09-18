@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tuyển sinh - Học viện MH The Beauty Lab</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,600i,700,700i|Pacifico|Dancing+Script:400,700&display=swap&subset=vietnamese" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/823a00108b.js" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .admission-hero {
+            background: linear-gradient(135deg, #b7752b 0%, #d4a574 100%);
+            padding: 100px 0 80px;
+            color: white;
+            text-align: center;
+        }
+        
+        .admission-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .admission-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .admission-info {
+            padding: 80px 0;
+        }
+        
+        .admission-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid #b7752b;
+        }
+        
+        .admission-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .admission-card h3 {
+            color: #b7752b;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .admission-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .admission-feature i {
+            color: #b7752b;
+            width: 25px;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .admission-feature span {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-section {
+            background: #f8f9fa;
+            padding: 80px 0;
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #b7752b;
+        }
+        
+        .submit-btn {
+            background: #b7752b;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            background: #a0651f;
+            transform: translateY(-2px);
+        }
+        
+        .courses-section {
+            padding: 80px 0;
+        }
+        
+        .course-item {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .course-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .course-item i {
+            font-size: 3rem;
+            color: #b7752b;
+            margin-bottom: 20px;
+        }
+        
+        .course-item h4 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .course-item .price {
+            color: #b7752b;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .course-item .btn {
+            background: #b7752b;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .course-item .btn:hover {
+            background: #a0651f;
+            color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            color: #b7752b;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: #b7752b;
+            margin: 20px auto;
+        }
+        
+        .benefits-section {
+            background: #f8f9fa;
+            padding: 80px 0;
+        }
+        
+        .benefit-item {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .benefit-item i {
+            font-size: 3rem;
+            color: #b7752b;
+            margin-bottom: 20px;
+        }
+        
+        .benefit-item h4 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .benefit-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <ul class="topbar-left-info">
+                        <li><i class="fab fa-apple"></i> <a href="https://apps.apple.com/vn/app/nailroom/id1234567890" target='_blank'>Apple Store</a></li>
+                        <li><i class="fab fa-google-play"></i> <a href="https://play.google.com/store/apps/details?id=com.nailroom.app" target='_blank'>CH Play</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> <a href="he-thong-cua-hang.html">Nailroom Stores</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <div class="topbar-right-info">
+                        <div class="language-switcher">
+                            <a href="#" class="language-toggle">Tiếng Việt</a>
+                            <ul class="language-menu">
+                                <li><a href="#">English</a></li>
+                            </ul>
+                        </div>
+                        <ul class="topbar-social">
+                            <li><a href="https://www.facebook.com/nailroom.official" target='_blank'><i class="fab fa-facebook-square"></i></a></li>
+                            <li><a href="https://www.instagram.com/nailroom_official" target='_blank'><i class="fab fa-instagram"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <div class="row w-100 align-items-center">
+                <div class="col-lg-3">
+                    <div class="navbar-brand">
+                        <a href="index.html" class="logo">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/11/Mit_s-House-Logo-52.png" alt="Nailroom Logo" height="50">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="gioi-thieu.html">Giới thiệu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="dich-vu.html">Dịch vụ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                        <li class="nav-item"><a class="nav-link" href="hoc-vien.html">Học viện</a></li>
+                        <li class="nav-item"><a class="nav-link" href="lien-he.html">Liên hệ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="admission-hero">
+        <div class="container">
+            <h1 data-aos="fade-up">Tuyển sinh khóa học 2024</h1>
+            <p data-aos="fade-up" data-aos-delay="200">Học viện MH The Beauty Lab - Nơi khởi đầu sự nghiệp làm đẹp của bạn</p>
+        </div>
+    </section>
+
+    <!-- Courses Overview -->
+    <section class="courses-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Các khóa học đang tuyển sinh</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="course-item" data-aos="fade-up">
+                        <i class="fas fa-hand-sparkles"></i>
+                        <h4>Khóa Nail chuyên nghiệp</h4>
+                        <p>Học kỹ thuật Nail Art, sơn gel, nối móng theo tiêu chuẩn Hàn Quốc</p>
+                        <div class="price">8.500.000 VNĐ</div>
+                        <a href="khoa-nail.html" class="btn">Xem chi tiết</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="course-item" data-aos="fade-up" data-aos-delay="100">
+                        <i class="fas fa-eye"></i>
+                        <h4>Khóa Nối Mi chuyên nghiệp</h4>
+                        <p>Học kỹ thuật nối mi 1:1, Volume, tạo hiệu ứng mắt đẹp tự nhiên</p>
+                        <div class="price">6.500.000 VNĐ</div>
+                        <a href="khoa-mi.html" class="btn">Xem chi tiết</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="course-item" data-aos="fade-up" data-aos-delay="200">
+                        <i class="fas fa-paint-brush"></i>
+                        <h4>Khóa Điều khắc Lông mày</h4>
+                        <p>Học kỹ thuật phun thêu, điều khắc lông mày 6D tự nhiên</p>
+                        <div class="price">7.500.000 VNĐ</div>
+                        <a href="khoa-dieu-khac.html" class="btn">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="benefits-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Tại sao chọn MH The Beauty Lab?</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="benefit-item" data-aos="fade-up">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h4>Giảng viên chuyên nghiệp</h4>
+                        <p>Đội ngũ giảng viên giàu kinh nghiệm, được đào tạo tại Hàn Quốc</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="benefit-item" data-aos="fade-up" data-aos-delay="100">
+                        <i class="fas fa-certificate"></i>
+                        <h4>Chứng chỉ uy tín</h4>
+                        <p>Cấp chứng chỉ hoàn thành khóa học được công nhận trong ngành</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="benefit-item" data-aos="fade-up" data-aos-delay="200">
+                        <i class="fas fa-briefcase"></i>
+                        <h4>Hỗ trợ việc làm</h4>
+                        <p>Hỗ trợ tìm việc làm tại hệ thống Nailroom và các đối tác</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="benefit-item" data-aos="fade-up" data-aos-delay="300">
+                        <i class="fas fa-tools"></i>
+                        <h4>Trang thiết bị hiện đại</h4>
+                        <p>Cơ sở vật chất hiện đại, dụng cụ học tập chất lượng cao</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admission Info -->
+    <section class="admission-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="admission-card" data-aos="fade-up">
+                        <h3>Thông tin tuyển sinh</h3>
+                        <div class="admission-feature">
+                            <i class="fas fa-calendar"></i>
+                            <span>Thời gian đăng ký: Quanh năm</span>
+                        </div>
+                        <div class="admission-feature">
+                            <i class="fas fa-users"></i>
+                            <span>Đối tượng: Từ 16 tuổi trở lên, không yêu cầu kinh nghiệm</span>
+                        </div>
+                        <div class="admission-feature">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Hồ sơ: CMND/CCCD, 2 ảnh 3x4</span>
+                        </div>
+                        <div class="admission-feature">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Thanh toán: Trả trước 50%, còn lại trả góp</span>
+                        </div>
+                        <div class="admission-feature">
+                            <i class="fas fa-percentage"></i>
+                            <span>Ưu đãi: Giảm 20% học phí cho 100 học viên đầu tiên</span>
+                        </div>
+                        <div class="admission-feature">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Địa điểm: 15 cơ sở trên toàn quốc</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="admission-card" data-aos="fade-up" data-aos-delay="200">
+                        <h3>Liên hệ tư vấn</h3>
+                        <div class="admission-feature">
+                            <i class="fas fa-phone"></i>
+                            <span>Hotline: 1900 066 811</span>
+                        </div>
+                        <div class="admission-feature">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email: academy@nailroom.vn</span>
+                        </div>
+                        <div class="admission-feature">
+                            <i class="fas fa-clock"></i>
+                            <span>Giờ làm việc: 8:00 - 17:00</span>
+                        </div>
+                        <div class="admission-feature">
+                            <i class="fas fa-facebook"></i>
+                            <span>Facebook: MH The Beauty Lab</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Form -->
+    <section class="form-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Đăng ký tư vấn miễn phí</h2>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="form-card" data-aos="fade-up">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Họ và tên *</label>
+                                        <input type="text" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Số điện thoại *</label>
+                                        <input type="tel" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Khóa học quan tâm *</label>
+                                        <select required>
+                                            <option value="">Chọn khóa học</option>
+                                            <option value="nail">Khóa Nail</option>
+                                            <option value="mi">Khóa Mi</option>
+                                            <option value="dieu-khac">Khóa Điều khắc</option>
+                                            <option value="all">Tất cả khóa học</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Cơ sở gần nhất</label>
+                                <select>
+                                    <option value="">Chọn cơ sở</option>
+                                    <option value="hcm-nguyen-trai">TP.HCM - Nguyễn Trãi</option>
+                                    <option value="hcm-le-van-sy">TP.HCM - Lê Văn Sỹ</option>
+                                    <option value="hcm-thu-duc">TP.HCM - Thủ Đức</option>
+                                    <option value="hn-cau-giay">Hà Nội - Cầu Giấy</option>
+                                    <option value="hn-hoan-kiem">Hà Nội - Hoàn Kiếm</option>
+                                    <option value="dn-tran-phu">Đà Nẵng - Trần Phú</option>
+                                    <option value="ct-nguyen-van-cu">Cần Thơ - Nguyễn Văn Cừ</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ghi chú</label>
+                                <textarea rows="4" placeholder="Thời gian thuận tiện để nhận tư vấn, câu hỏi khác..."></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-paper-plane"></i> Gửi đăng ký
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fixed Booking Button -->
+    <a href="tel:1900066811" class="fixed-booking-btn">
+        <i class="fas fa-phone"></i>
+        <span>GỌI NGAY</span>
+    </a>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-main">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <div class="footer-logo">
+                                <img src="https://nailroom.vn/wp-content/uploads/2023/11/Mit_s-House-Logo-52.png" alt="Nailroom Logo">
+                            </div>
+                            <p class="footer-desc">Nailroom - Thương hiệu làm đẹp hàng đầu với 7 năm kinh nghiệm và 15 cơ sở trên toàn quốc. Chúng tôi cam kết mang đến dịch vụ chất lượng cao với đội ngũ chuyên nghiệp.</p>
+                            <div class="footer-social">
+                                <a href="https://www.facebook.com/nailroom.official" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://www.instagram.com/nailroom_official" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                                <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-widget">
+                            <h4 class="footer-title">Dịch vụ</h4>
+                            <ul class="footer-links">
+                                <li><a href="dich-vu.html">Nail Art</a></li>
+                                <li><a href="dich-vu.html">Sơn Gel</a></li>
+                                <li><a href="dich-vu.html">Nối móng</a></li>
+                                <li><a href="dich-vu.html">Foot Spa</a></li>
+                                <li><a href="dich-vu.html">Hand Spa</a></li>
+                                <li><a href="dich-vu.html">Nối mi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-widget">
+                            <h4 class="footer-title">Công ty</h4>
+                            <ul class="footer-links">
+                                <li><a href="gioi-thieu.html">Giới thiệu</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="hoc-vien.html">Học viện</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <h4 class="footer-title">Liên hệ</h4>
+                            <div class="footer-contact">
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>123 Nguyễn Trãi, Q.1, TP.HCM</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>1900 1234 (miễn phí)</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>info@nailroom.vn</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>9:00 - 21:00 (Hàng ngày)</span>
+                                </div>
+                            </div>
+                            <div class="footer-apps">
+                                <a href="https://apps.apple.com/vn/app/nailroom/id1234567890" target="_blank">
+                                    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store">
+                                </a>
+                                <a href="https://play.google.com/store/apps/details?id=com.nailroom.app" target="_blank">
+                                    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="footer-copyright">&copy; 2024 Nailroom. All rights reserved.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="footer-bottom-links">
+                            <a href="#">Chính sách bảo mật</a>
+                            <a href="#">Điều khoản sử dụng</a>
+                            <a href="lien-he.html">Liên hệ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+</html>

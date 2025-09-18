@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Khóa Điều khắc - Học viện MH The Beauty Lab</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,600i,700,700i|Pacifico|Dancing+Script:400,700&display=swap&subset=vietnamese" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/823a00108b.js" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .course-hero {
+            background: linear-gradient(135deg, #b7752b 0%, #d4a574 100%);
+            padding: 100px 0 80px;
+            color: white;
+            text-align: center;
+        }
+        
+        .course-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .course-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .course-info {
+            padding: 80px 0;
+        }
+        
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid #b7752b;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .course-card h3 {
+            color: #b7752b;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .course-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .course-feature i {
+            color: #b7752b;
+            width: 25px;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .course-feature span {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .price-tag {
+            background: #b7752b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        
+        .curriculum-section {
+            background: #f8f9fa;
+            padding: 80px 0;
+        }
+        
+        .curriculum-item {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #b7752b;
+        }
+        
+        .curriculum-item h5 {
+            color: #b7752b;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .gallery-section {
+            padding: 80px 0;
+        }
+        
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #b7752b 0%, #d4a574 100%);
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section .btn {
+            background: white;
+            color: #b7752b;
+            padding: 15px 40px;
+            font-weight: 600;
+            border-radius: 30px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-section .btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            color: #b7752b;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: #b7752b;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <ul class="topbar-left-info">
+                        <li><i class="fab fa-apple"></i> <a href="https://apps.apple.com/vn/app/nailroom/id1234567890" target='_blank'>Apple Store</a></li>
+                        <li><i class="fab fa-google-play"></i> <a href="https://play.google.com/store/apps/details?id=com.nailroom.app" target='_blank'>CH Play</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> <a href="he-thong-cua-hang.html">Nailroom Stores</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <div class="topbar-right-info">
+                        <div class="language-switcher">
+                            <a href="#" class="language-toggle">Tiếng Việt</a>
+                            <ul class="language-menu">
+                                <li><a href="#">English</a></li>
+                            </ul>
+                        </div>
+                        <ul class="topbar-social">
+                            <li><a href="https://www.facebook.com/nailroom.official" target='_blank'><i class="fab fa-facebook-square"></i></a></li>
+                            <li><a href="https://www.instagram.com/nailroom_official" target='_blank'><i class="fab fa-instagram"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <div class="row w-100 align-items-center">
+                <div class="col-lg-3">
+                    <div class="navbar-brand">
+                        <a href="index.html" class="logo">
+                            <img src="https://nailroom.vn/wp-content/uploads/2023/11/Mit_s-House-Logo-52.png" alt="Nailroom Logo" height="50">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="gioi-thieu.html">Giới thiệu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="dich-vu.html">Dịch vụ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                        <li class="nav-item"><a class="nav-link" href="hoc-vien.html">Học viện</a></li>
+                        <li class="nav-item"><a class="nav-link" href="lien-he.html">Liên hệ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="course-hero">
+        <div class="container">
+            <h1 data-aos="fade-up">Khóa học Điều khắc Lông mày</h1>
+            <p data-aos="fade-up" data-aos-delay="200">Học viện MH The Beauty Lab - Đào tạo kỹ thuật Phun thêu Lông mày Hàn Quốc</p>
+        </div>
+    </section>
+
+    <!-- Course Info -->
+    <section class="course-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="course-card" data-aos="fade-up">
+                        <h3>Khóa Điều khắc Lông mày chuyên nghiệp</h3>
+                        <p>Khóa học Điều khắc Lông mày tại MH The Beauty Lab được thiết kế dành cho những người muốn học nghề phun thêu lông mày chuyên nghiệp. Chương trình đào tạo theo tiêu chuẩn Hàn Quốc với kỹ thuật hiện đại và an toàn.</p>
+                        
+                        <div class="course-feature">
+                            <i class="fas fa-clock"></i>
+                            <span>Thời gian: 2-3 tuần (60 giờ học)</span>
+                        </div>
+                        <div class="course-feature">
+                            <i class="fas fa-users"></i>
+                            <span>Lớp học: Tối đa 5 học viên/lớp</span>
+                        </div>
+                        <div class="course-feature">
+                            <i class="fas fa-certificate"></i>
+                            <span>Cấp chứng chỉ hoàn thành khóa học</span>
+                        </div>
+                        <div class="course-feature">
+                            <i class="fas fa-tools"></i>
+                            <span>Cung cấp đầy đủ dụng cụ và mực phun</span>
+                        </div>
+                        <div class="course-feature">
+                            <i class="fas fa-handshake"></i>
+                            <span>Hỗ trợ tìm việc sau tốt nghiệp</span>
+                        </div>
+                        
+                        <div class="price-tag">
+                            Học phí: 7.500.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="course-card" data-aos="fade-up" data-aos-delay="200">
+                        <h3>Thông tin đăng ký</h3>
+                        <div class="course-feature">
+                            <i class="fas fa-calendar"></i>
+                            <span>Khai giảng: 2 lần/tháng</span>
+                        </div>
+                        <div class="course-feature">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Địa điểm: 15 cơ sở toàn quốc</span>
+                        </div>
+                        <div class="course-feature">
+                            <i class="fas fa-phone"></i>
+                            <span>Hotline: 1900 066 811</span>
+                        </div>
+                        <div class="course-feature">
+                            <i class="fas fa-percentage"></i>
+                            <span>Ưu đãi: Giảm 25% học phí tháng này</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum -->
+    <section class="curriculum-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Chương trình học</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="curriculum-item" data-aos="fade-up">
+                        <h5>Tuần 1: Kiến thức cơ bản</h5>
+                        <ul>
+                            <li>Giải phẫu khuôn mặt và lông mày</li>
+                            <li>Các dạng khuôn mặt và lông mày phù hợp</li>
+                            <li>Vệ sinh và khử trùng dụng cụ</li>
+                            <li>An toàn trong quá trình phun thêu</li>
+                        </ul>
+                    </div>
+                    <div class="curriculum-item" data-aos="fade-up" data-aos-delay="100">
+                        <h5>Tuần 2: Kỹ thuật phun thêu</h5>
+                        <ul>
+                            <li>Kỹ thuật vẽ thiết kế lông mày</li>
+                            <li>Sử dụng máy phun và kim phun</li>
+                            <li>Kỹ thuật phun tán bột và phun chỉ</li>
+                            <li>Pha trộn màu mực phù hợp</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="curriculum-item" data-aos="fade-up" data-aos-delay="200">
+                        <h5>Tuần 3: Kỹ thuật nâng cao</h5>
+                        <ul>
+                            <li>Kỹ thuật điều khắc 6D tự nhiên</li>
+                            <li>Phun thêu theo xu hướng Hàn Quốc</li>
+                            <li>Xử lý các trường hợp đặc biệt</li>
+                            <li>Chăm sóc và bảo dưỡng sau phun</li>
+                        </ul>
+                    </div>
+                    <div class="curriculum-item" data-aos="fade-up" data-aos-delay="300">
+                        <h5>Thực hành & Thi tốt nghiệp</h5>
+                        <ul>
+                            <li>Thực hành trên khách hàng thật</li>
+                            <li>Tư vấn và chăm sóc khách hàng</li>
+                            <li>Thi thực hành tốt nghiệp</li>
+                            <li>Nhận chứng chỉ hoàn thành</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Hình ảnh khóa học</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="gallery-item" data-aos="fade-up">
+                        <img src="https://nailroom.vn/wp-content/uploads/bfi_thumb/M%C3%A0y.3-odp8lqr3htkc4t5syjtz5bbn51ko29wk99kea3504u.png" alt="Lớp học Điều khắc">
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+                        <img src="https://nailroom.vn/wp-content/uploads/2019/09/H%E1%BB%8Dc-vi%E1%BB%87n-NR.png" alt="Thực hành Phun thêu">
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+                        <img src="https://nailroom.vn/wp-content/uploads/2019/09/Untitled-5.jpg" alt="Kết quả Điều khắc">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 data-aos="fade-up">Đăng ký ngay hôm nay</h2>
+            <p data-aos="fade-up" data-aos-delay="100">Nhận ưu đãi giảm 25% học phí cho 20 học viên đầu tiên</p>
+            <div data-aos="fade-up" data-aos-delay="200">
+                <a href="tel:1900066811" class="btn">
+                    <i class="fas fa-phone"></i> Gọi tư vấn: 1900 066 811
+                </a>
+                <a href="lien-he.html" class="btn">
+                    <i class="fas fa-map-marker-alt"></i> Tìm cơ sở gần nhất
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fixed Booking Button -->
+    <a href="tel:1900066811" class="fixed-booking-btn">
+        <i class="fas fa-phone"></i>
+        <span>GỌI NGAY</span>
+    </a>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-main">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <div class="footer-logo">
+                                <img src="https://nailroom.vn/wp-content/uploads/2023/11/Mit_s-House-Logo-52.png" alt="Nailroom Logo">
+                            </div>
+                            <p class="footer-desc">Nailroom - Thương hiệu làm đẹp hàng đầu với 7 năm kinh nghiệm và 15 cơ sở trên toàn quốc. Chúng tôi cam kết mang đến dịch vụ chất lượng cao với đội ngũ chuyên nghiệp.</p>
+                            <div class="footer-social">
+                                <a href="https://www.facebook.com/nailroom.official" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://www.instagram.com/nailroom_official" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                                <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-widget">
+                            <h4 class="footer-title">Dịch vụ</h4>
+                            <ul class="footer-links">
+                                <li><a href="dich-vu.html">Nail Art</a></li>
+                                <li><a href="dich-vu.html">Sơn Gel</a></li>
+                                <li><a href="dich-vu.html">Nối móng</a></li>
+                                <li><a href="dich-vu.html">Foot Spa</a></li>
+                                <li><a href="dich-vu.html">Hand Spa</a></li>
+                                <li><a href="dich-vu.html">Nối mi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-widget">
+                            <h4 class="footer-title">Công ty</h4>
+                            <ul class="footer-links">
+                                <li><a href="gioi-thieu.html">Giới thiệu</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="hoc-vien.html">Học viện</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-widget">
+                            <h4 class="footer-title">Liên hệ</h4>
+                            <div class="footer-contact">
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>123 Nguyễn Trãi, Q.1, TP.HCM</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>1900 1234 (miễn phí)</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>info@nailroom.vn</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>9:00 - 21:00 (Hàng ngày)</span>
+                                </div>
+                            </div>
+                            <div class="footer-apps">
+                                <a href="https://apps.apple.com/vn/app/nailroom/id1234567890" target="_blank">
+                                    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store">
+                                </a>
+                                <a href="https://play.google.com/store/apps/details?id=com.nailroom.app" target="_blank">
+                                    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="footer-copyright">&copy; 2024 Nailroom. All rights reserved.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="footer-bottom-links">
+                            <a href="#">Chính sách bảo mật</a>
+                            <a href="#">Điều khoản sử dụng</a>
+                            <a href="lien-he.html">Liên hệ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+</html>
