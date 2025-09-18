@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt lịch hẹn với Nail Room - Mit's House</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        
+        .booking-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .booking-header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .booking-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .booking-header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .booking-form {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control {
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+            outline: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+        
+        .date-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .date-btn {
+            flex: 1;
+            padding: 15px 10px;
+            border: 2px solid #e1e8ed;
+            background: white;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .date-btn:hover, .date-btn.active {
+            border-color: #ff6b6b;
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .time-slot {
+            padding: 10px;
+            border: 2px solid #e1e8ed;
+            background: white;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .time-slot:hover, .time-slot.active {
+            border-color: #ff6b6b;
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: #27ae60;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-container">
+        <a href="index.html" class="back-btn">← Quay lại</a>
+        
+        <div class="booking-header">
+            <h1>Đặt lịch hẹn</h1>
+            <p>Nail Room - Mit's House</p>
+        </div>
+        
+        <div class="booking-form" id="booking-form">
+            <form id="appointment-form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="customer_name">Họ và tên *</label>
+                            <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="mobile">Số điện thoại *</label>
+                            <input type="tel" class="form-control" id="mobile" name="mobile" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="gender">Giới tính</label>
+                            <select class="form-control" id="gender" name="gender">
+                                <option value="female">Nữ</option>
+                                <option value="male">Nam</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="service">Dịch vụ</label>
+                    <select class="form-control" id="service" name="service">
+                        <option value="">Chọn dịch vụ</option>
+                        <option value="manicure">Manicure cơ bản</option>
+                        <option value="pedicure">Pedicure cơ bản</option>
+                        <option value="gel">Sơn gel</option>
+                        <option value="nail-art">Nail Art</option>
+                        <option value="combo">Combo Mani + Pedi</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Chọn ngày</label>
+                    <div class="date-selector" id="date-selector">
+                        <!-- Dates will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Chọn giờ</label>
+                    <div class="time-slots" id="time-slots">
+                        <!-- Time slots will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="note">Ghi chú</label>
+                    <textarea class="form-control" id="note" name="note" rows="3" placeholder="Ghi chú thêm về yêu cầu của bạn..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Đặt lịch ngay</button>
+            </form>
+        </div>
+        
+        <div class="success-message" id="success-message">
+            <div class="success-icon">✓</div>
+            <h2>Đặt lịch thành công!</h2>
+            <p>Chúng tôi sẽ liên hệ với bạn để xác nhận lịch hẹn trong thời gian sớm nhất.</p>
+            <p><strong>Thông tin lịch hẹn:</strong></p>
+            <div id="booking-details"></div>
+            <br>
+            <a href="index.html" class="btn btn-primary">Quay về trang chủ</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Generate dates for the next 7 days
+            generateDates();
+            
+            // Generate time slots
+            generateTimeSlots();
+            
+            // Handle form submission
+            $('#appointment-form').on('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = {
+                    name: $('#customer_name').val(),
+                    phone: $('#mobile').val(),
+                    email: $('#email').val(),
+                    gender: $('#gender').val(),
+                    service: $('#service option:selected').text(),
+                    date: $('.date-btn.active').data('date'),
+                    time: $('.time-slot.active').text(),
+                    note: $('#note').val()
+                };
+                
+                // Validate required fields
+                if (!formData.name || !formData.phone || !formData.date || !formData.time) {
+                    alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+                    return;
+                }
+                
+                // Show success message
+                showSuccessMessage(formData);
+            });
+            
+            // Handle date selection
+            $(document).on('click', '.date-btn', function() {
+                $('.date-btn').removeClass('active');
+                $(this).addClass('active');
+            });
+            
+            // Handle time selection
+            $(document).on('click', '.time-slot', function() {
+                $('.time-slot').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+        
+        function generateDates() {
+            const dateSelector = $('#date-selector');
+            const today = new Date();
+            
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                
+                const dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+                const dayName = dayNames[date.getDay()];
+                const dateStr = date.getDate() + '/' + (date.getMonth() + 1);
+                
+                const dateBtn = $(`
+                    <div class="date-btn" data-date="${date.toISOString()}">
+                        <div style="font-weight: 600;">${dayName}</div>
+                        <div>${dateStr}</div>
+                    </div>
+                `);
+                
+                if (i === 0) dateBtn.addClass('active');
+                dateSelector.append(dateBtn);
+            }
+        }
+        
+        function generateTimeSlots() {
+            const timeSlots = $('#time-slots');
+            const slots = [
+                '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+                '14:00', '14:30', '15:00', '15:30', '16:00', '16:30',
+                '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
+            ];
+            
+            slots.forEach(slot => {
+                const timeSlot = $(`<div class="time-slot">${slot}</div>`);
+                timeSlots.append(timeSlot);
+            });
+        }
+        
+        function showSuccessMessage(formData) {
+            const selectedDate = new Date($('.date-btn.active').data('date'));
+            const dateStr = selectedDate.getDate() + '/' + (selectedDate.getMonth() + 1) + '/' + selectedDate.getFullYear();
+            
+            const details = `
+                <p><strong>Tên:</strong> ${formData.name}</p>
+                <p><strong>Số điện thoại:</strong> ${formData.phone}</p>
+                <p><strong>Dịch vụ:</strong> ${formData.service || 'Chưa chọn'}</p>
+                <p><strong>Ngày:</strong> ${dateStr}</p>
+                <p><strong>Giờ:</strong> ${formData.time}</p>
+                ${formData.note ? `<p><strong>Ghi chú:</strong> ${formData.note}</p>` : ''}
+            `;
+            
+            $('#booking-details').html(details);
+            $('#booking-form').hide();
+            $('#success-message').show();
+        }
+    </script>
+</body>
+</html>
