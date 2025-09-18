@@ -854,6 +854,7 @@ body {
     .fixed-booking-btn .booking-icon {
         font-size: 20px;
         margin-bottom: 6px;
+        transform: scaleX(-1);
     }
     
     .fixed-booking-btn .booking-text {
@@ -903,6 +904,7 @@ body {
     color: #C8860D;
     margin-bottom: 8px;
     display: block;
+    transform: scaleX(-1);
 }
 
 .fixed-booking-btn .booking-text {
