@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Quản trị - Nailroom</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/823a00108b.js" crossorigin="anonymous"></script>
+    
+    <!-- Custom Admin CSS -->
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+
+<body class="admin-body">
+    <!-- Top Navigation Bar -->
+    <nav class="admin-navbar">
+        <div class="navbar-brand">
+            <i class="fas fa-tachometer-alt"></i>
+            Dashboard Quản trị
+        </div>
+        <div class="navbar-right">
+            <div class="admin-user-info">
+                <span class="admin-username">Admin</span>
+                <div class="admin-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="admin-dropdown">
+                    <button class="btn btn-sm btn-outline-light" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <!-- Left Sidebar -->
+        <div class="admin-sidebar">
+            <div class="sidebar-header">
+                <h5>Quản lý nội dung - Trang chủ</h5>
+                <p>Chỉnh sửa nội dung trang chủ website</p>
+            </div>
+            
+            <!-- Website Structure Management -->
+            <div class="sidebar-section">
+                <h6><i class="fas fa-layer-group"></i> Cấu trúc Website</h6>
+                <p>Quản lý tất cả các thành phần của website</p>
+                
+                <div class="sidebar-item active" data-section="header">
+                    <i class="fas fa-window-maximize"></i>
+                    <span>Header (Đầu trang)</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="navigation">
+                    <i class="fas fa-bars"></i>
+                    <span>Menu điều hướng</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="hero">
+                    <i class="fas fa-image"></i>
+                    <span>Banner/Slider chính</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="content">
+                    <i class="fas fa-align-left"></i>
+                    <span>Nội dung chính</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="sidebar-content">
+                    <i class="fas fa-columns"></i>
+                    <span>Sidebar (Thanh bên)</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="footer">
+                    <i class="fas fa-window-minimize"></i>
+                    <span>Footer (Chân trang)</span>
+                </div>
+            </div>
+
+            <!-- Component Management -->
+            <div class="sidebar-section">
+                <h6><i class="fas fa-puzzle-piece"></i> Thành phần hỗ trợ</h6>
+                
+                <div class="sidebar-item" data-section="logo">
+                    <i class="fas fa-trademark"></i>
+                    <span>Logo thương hiệu</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="cta-buttons">
+                    <i class="fas fa-mouse-pointer"></i>
+                    <span>Nút kêu gọi hành động (CTA)</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="search">
+                    <i class="fas fa-search"></i>
+                    <span>Hộp tìm kiếm</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="forms">
+                    <i class="fas fa-wpforms"></i>
+                    <span>Form (Biểu mẫu)</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="widgets">
+                    <i class="fas fa-th-large"></i>
+                    <span>Widgets</span>
+                </div>
+            </div>
+
+            <!-- Design Elements -->
+            <div class="sidebar-section">
+                <h6><i class="fas fa-palette"></i> Yếu tố thiết kế</h6>
+                
+                <div class="sidebar-item" data-section="images">
+                    <i class="fas fa-images"></i>
+                    <span>Hình ảnh & Đồ họa</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="colors">
+                    <i class="fas fa-fill-drip"></i>
+                    <span>Màu sắc</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="typography">
+                    <i class="fas fa-font"></i>
+                    <span>Font chữ</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="layout">
+                    <i class="fas fa-th"></i>
+                    <span>Bố cục</span>
+                </div>
+                
+                <div class="sidebar-item" data-section="responsive">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Responsive Design</span>
+                </div>
+            </div>
+
+            <!-- Page Editor -->
+            <div class="sidebar-section">
+                <h6><i class="fas fa-code"></i> Editor trang</h6>
+                
+                <div class="sidebar-item" data-section="page-editor">
+                    <i class="fas fa-edit"></i>
+                    <span>Chỉnh sửa trang</span>
+                </div>
+            </div>
+
+            <!-- Page Management -->
+            <div class="sidebar-section">
+                <h6><i class="fas fa-file-alt"></i> Quản lý trang</h6>
+                
+                <div class="page-list">
+                    <div class="page-item" data-page="index">
+                        <i class="fas fa-home"></i>
+                        <span>Trang chủ</span>
+                        <div class="page-controls">
+                            <button class="btn-edit" onclick="editPage('index')"><i class="fas fa-edit"></i></button>
+                            <button class="btn-view" onclick="viewPage('index')"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="page-item" data-page="gioi-thieu">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Giới thiệu</span>
+                        <div class="page-controls">
+                            <button class="btn-edit" onclick="editPage('gioi-thieu')"><i class="fas fa-edit"></i></button>
+                            <button class="btn-view" onclick="viewPage('gioi-thieu')"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="page-item" data-page="dich-vu">
+                        <i class="fas fa-concierge-bell"></i>
+                        <span>Dịch vụ</span>
+                        <div class="page-controls">
+                            <button class="btn-edit" onclick="editPage('dich-vu')"><i class="fas fa-edit"></i></button>
+                            <button class="btn-view" onclick="viewPage('dich-vu')"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="page-item" data-page="gallery">
+                        <i class="fas fa-images"></i>
+                        <span>Gallery</span>
+                        <div class="page-controls">
+                            <button class="btn-edit" onclick="editPage('gallery')"><i class="fas fa-edit"></i></button>
+                            <button class="btn-view" onclick="viewPage('gallery')"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="page-item" data-page="blog">
+                        <i class="fas fa-blog"></i>
+                        <span>Blog</span>
+                        <div class="page-controls">
+                            <button class="btn-edit" onclick="editPage('blog')"><i class="fas fa-edit"></i></button>
+                            <button class="btn-view" onclick="viewPage('blog')"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="page-item" data-page="lien-he">
+                        <i class="fas fa-envelope"></i>
+                        <span>Liên hệ</span>
+                        <div class="page-controls">
+                            <button class="btn-edit" onclick="editPage('lien-he')"><i class="fas fa-edit"></i></button>
+                            <button class="btn-view" onclick="viewPage('lien-he')"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-sm btn-success mt-2" onclick="addNewPage()">
+                    <i class="fas fa-plus"></i> Thêm trang mới
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="admin-content">
+            <!-- Header Section Editor -->
+            <div class="content-section active" id="header-section">
+                <div class="section-header">
+                    <h4>Quản lý Header (Đầu trang)</h4>
+                    <p>Chỉnh sửa phần đầu trang web, logo và thông tin liên hệ</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Logo Website</label>
+                            <div class="file-upload-area">
+                                <i class="fas fa-image"></i>
+                                <p>Tải lên logo mới</p>
+                                <input type="file" accept="image/*" class="file-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Tên Website</label>
+                            <input type="text" class="form-control" value="Nailroom" placeholder="Nhập tên website">
+                        </div>
+                        <div class="form-group">
+                            <label>Slogan</label>
+                            <input type="text" class="form-control" value="You Love It. We Nail It!" placeholder="Nhập slogan">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Thông tin liên hệ Header</label>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control mb-2" placeholder="Số điện thoại" value="1900 1234">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="email" class="form-control mb-2" placeholder="Email" value="info@nailroom.vn">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control mb-2" placeholder="Địa chỉ" value="123 Nguyễn Văn A, Q1, HCM">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-success" onclick="saveHeaderSection()">
+                    <i class="fas fa-save"></i> Lưu thay đổi
+                </button>
+            </div>
+
+            <!-- Navigation Section Editor -->
+            <div class="content-section" id="navigation-section">
+                <div class="section-header">
+                    <h4>Quản lý Menu điều hướng</h4>
+                    <p>Thêm, sửa, xóa các mục menu chính</p>
+                </div>
+
+                <div class="menu-items-list">
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <i class="fas fa-home"></i>
+                            <span>Trang chủ</span>
+                            <small>/</small>
+                        </div>
+                        <div class="menu-item-actions">
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Giới thiệu</span>
+                            <small>/gioi-thieu.html</small>
+                        </div>
+                        <div class="menu-item-actions">
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-content">
+                            <i class="fas fa-concierge-bell"></i>
+                            <span>Dịch vụ</span>
+                            <small>/dich-vu.html</small>
+                        </div>
+                        <div class="menu-item-actions">
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary mt-3" onclick="addMenuItem()">
+                    <i class="fas fa-plus"></i> Thêm mục menu
+                </button>
+
+                <button class="btn btn-success mt-3" onclick="saveNavigation()">
+                    <i class="fas fa-save"></i> Lưu thay đổi
+                </button>
+            </div>
+
+            <!-- Hero Section Editor -->
+            <div class="content-section" id="hero-section">
+                <div class="section-header">
+                    <h4>Quản lý Video</h4>
+                    <p>Tiêu đề video</p>
+                    <p>Video giới thiệu về thương hiệu</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Mô tả video</label>
+                    <input type="text" class="form-control" placeholder="Tên hiệu, cách sử dụng hệ thống quản lý nội dung">
+                </div>
+
+                <div class="form-group">
+                    <label>URL Video (YouTube, Vimeo, hoặc link trực tiếp)</label>
+                    <input type="url" class="form-control" placeholder="https://youtube.com/watch?v=...">
+                </div>
+
+                <div class="form-group">
+                    <label>Hình nền video lên</label>
+                    <div class="file-upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Tải video lên</p>
+                        <input type="file" accept="video/*" class="file-input">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Mô tả phụ</label>
+                    <textarea class="form-control" rows="3" placeholder="Hệ thống quản lý dự án xây dựng toàn diện với các công cụ chuyên nghiệp"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Icon</label>
+                    <select class="form-control">
+                        <option>Tài liệu (File/Excel)</option>
+                        <option>Video</option>
+                        <option>Hình ảnh</option>
+                        <option>Âm thanh</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-success">
+                    <i class="fas fa-save"></i> Lưu thay đổi
+                </button>
+            </div>
+
+            <!-- Content Section Editor -->
+            <div class="content-section" id="content-section">
+                <div class="section-header">
+                    <h4>Nội dung văn bản</h4>
+                    <p>Chỉnh sửa nội dung chính của trang</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Tiêu đề chính</label>
+                    <input type="text" class="form-control" value="Quản lý Dự án Xây dựng Thông minh">
+                </div>
+
+                <div class="form-group">
+                    <label>Mô tả ngắn</label>
+                    <textarea class="form-control" rows="3">Nền tảng toàn diện cho quản lý dự án xây dựng, bao gồm tiến độ và hợp tác nhóm quản lý</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Nội dung chi tiết</label>
+                    <div class="editor-toolbar">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-bold"></i></button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-italic"></i></button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-underline"></i></button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-list-ul"></i></button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-link"></i></button>
+                    </div>
+                    <textarea class="form-control editor-content" rows="8">Hệ thống quản lý dự án xây dựng hiện đại với đầy đủ các công cụ cần thiết để theo dõi tiến độ, quản lý nhân sự và tối ưu hóa quy trình làm việc.</textarea>
+                </div>
+
+                <button class="btn btn-success">
+                    <i class="fas fa-save"></i> Lưu thay đổi
+                </button>
+            </div>
+
+            <!-- Features Section Editor -->
+            <div class="content-section" id="features-section">
+                <div class="section-header">
+                    <h4>Quản lý Tính năng</h4>
+                    <p>Thêm, sửa, xóa các tính năng nổi bật</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h6>Theo dõi tiến độ</h6>
+                        <p>Giám sát tiến độ dự án theo thời gian thực</p>
+                        <div class="feature-actions">
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h6>Quản lý nhóm</h6>
+                        <p>Phân công và theo dõi công việc của từng thành viên</p>
+                        <div class="feature-actions">
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h6>Báo cáo tự động</h6>
+                        <p>Tạo báo cáo chi tiết về tiến độ và hiệu suất</p>
+                        <div class="feature-actions">
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="add-feature-card" onclick="showAddFeatureModal()">
+                        <i class="fas fa-plus"></i>
+                        <p>Thêm tính năng mới</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Section Editor -->
+            <div class="content-section" id="footer-section">
+                <div class="section-header">
+                    <h4>Quản lý Footer (Chân trang)</h4>
+                    <p>Chỉnh sửa thông tin liên hệ, bản quyền và liên kết quan trọng</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Thông tin công ty</label>
+                    <textarea class="form-control" rows="4" placeholder="Nhập thông tin về công ty, địa chỉ, mô tả ngắn...">Nailroom - Salon làm đẹp chuyên nghiệp
+123 Nguyễn Văn A, Quận 1, TP.HCM
+Hotline: 1900 1234 | Email: info@nailroom.vn</textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Liên kết mạng xã hội</label>
+                            <div class="social-links">
+                                <div class="social-item">
+                                    <input type="text" class="form-control mb-2" placeholder="Facebook URL" value="https://facebook.com/nailroom">
+                                </div>
+                                <div class="social-item">
+                                    <input type="text" class="form-control mb-2" placeholder="Instagram URL" value="https://instagram.com/nailroom">
+                                </div>
+                                <div class="social-item">
+                                    <input type="text" class="form-control mb-2" placeholder="YouTube URL">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Thông tin bản quyền</label>
+                            <input type="text" class="form-control" value="© 2024 Nailroom. All rights reserved." placeholder="Nhập thông tin bản quyền">
+                        </div>
+                        <div class="form-group">
+                            <label>Liên kết quan trọng</label>
+                            <textarea class="form-control" rows="3" placeholder="Chính sách bảo mật, Điều khoản sử dụng...">Chính sách bảo mật | Điều khoản sử dụng | Hướng dẫn đặt lịch</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-success" onclick="saveFooterSection()">
+                    <i class="fas fa-save"></i> Lưu thay đổi
+                </button>
+            </div>
+
+            <!-- Colors Section Editor -->
+            <div class="content-section" id="colors-section">
+                <div class="section-header">
+                    <h4>Quản lý Màu sắc</h4>
+                    <p>Tùy chỉnh bảng màu chủ đạo của website</p>
+                </div>
+
+                <div class="color-picker-group">
+                    <div class="color-picker-item">
+                        <label>Màu chính (Primary)</label>
+                        <div class="color-input-group">
+                            <input type="color" class="color-input" value="#007bff">
+                            <input type="text" class="color-value" value="#007bff">
+                        </div>
+                    </div>
+                    
+                    <div class="color-picker-item">
+                        <label>Màu phụ (Secondary)</label>
+                        <div class="color-input-group">
+                            <input type="color" class="color-input" value="#6c757d">
+                            <input type="text" class="color-value" value="#6c757d">
+                        </div>
+                    </div>
+                    
+                    <div class="color-picker-item">
+                        <label>Màu thành công (Success)</label>
+                        <div class="color-input-group">
+                            <input type="color" class="color-input" value="#28a745">
+                            <input type="text" class="color-value" value="#28a745">
+                        </div>
+                    </div>
+                    
+                    <div class="color-picker-item">
+                        <label>Màu cảnh báo (Warning)</label>
+                        <div class="color-input-group">
+                            <input type="color" class="color-input" value="#ffc107">
+                            <input type="text" class="color-value" value="#ffc107">
+                        </div>
+                    </div>
+                    
+                    <div class="color-picker-item">
+                        <label>Màu nguy hiểm (Danger)</label>
+                        <div class="color-input-group">
+                            <input type="color" class="color-input" value="#dc3545">
+                            <input type="text" class="color-value" value="#dc3545">
+                        </div>
+                    </div>
+                    
+                    <div class="color-picker-item">
+                        <label>Màu nền (Background)</label>
+                        <div class="color-input-group">
+                            <input type="color" class="color-input" value="#ffffff">
+                            <input type="text" class="color-value" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-success mt-3" onclick="saveColors()">
+                    <i class="fas fa-save"></i> Áp dụng màu sắc
+                </button>
+            </div>
+
+            <!-- Images Section Editor -->
+            <div class="content-section" id="images-section">
+                <div class="section-header">
+                    <h4>Quản lý Hình ảnh & Đồ họa</h4>
+                    <p>Upload và quản lý tất cả hình ảnh trên website</p>
+                </div>
+
+                <div class="mb-3">
+                    <button class="btn btn-primary" onclick="uploadImage()">
+                        <i class="fas fa-upload"></i> Tải lên hình ảnh mới
+                    </button>
+                </div>
+
+                <div class="image-gallery">
+                    <div class="image-item">
+                        <img src="https://via.placeholder.com/150x150/007bff/ffffff?text=Logo" alt="Logo">
+                        <div class="image-overlay">
+                            <div class="image-actions">
+                                <button onclick="editImage(this)" title="Chỉnh sửa">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteImage(this)" title="Xóa">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="image-item">
+                        <img src="https://via.placeholder.com/150x150/28a745/ffffff?text=Banner" alt="Banner">
+                        <div class="image-overlay">
+                            <div class="image-actions">
+                                <button onclick="editImage(this)" title="Chỉnh sửa">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteImage(this)" title="Xóa">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="image-item">
+                        <img src="https://via.placeholder.com/150x150/ffc107/000000?text=Service" alt="Service">
+                        <div class="image-overlay">
+                            <div class="image-actions">
+                                <button onclick="editImage(this)" title="Chỉnh sửa">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteImage(this)" title="Xóa">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Widgets Section Editor -->
+            <div class="content-section" id="widgets-section">
+                <div class="section-header">
+                    <h4>Quản lý Widgets</h4>
+                    <p>Bật/tắt và cấu hình các widget trên website</p>
+                </div>
+
+                <div class="widget-list">
+                    <div class="widget-item">
+                        <div class="widget-icon">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <div class="widget-name">Mạng xã hội</div>
+                        <div class="widget-description">Hiển thị liên kết đến các trang mạng xã hội</div>
+                        <div class="widget-toggle">
+                            <span>Tắt</span>
+                            <div class="toggle-switch active" onclick="toggleWidget(this)"></div>
+                            <span>Bật</span>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-item">
+                        <div class="widget-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="widget-name">Đặt lịch hẹn</div>
+                        <div class="widget-description">Form đặt lịch hẹn trực tuyến</div>
+                        <div class="widget-toggle">
+                            <span>Tắt</span>
+                            <div class="toggle-switch" onclick="toggleWidget(this)"></div>
+                            <span>Bật</span>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-item">
+                        <div class="widget-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="widget-name">Chat hỗ trợ</div>
+                        <div class="widget-description">Widget chat trực tuyến với khách hàng</div>
+                        <div class="widget-toggle">
+                            <span>Tắt</span>
+                            <div class="toggle-switch active" onclick="toggleWidget(this)"></div>
+                            <span>Bật</span>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-item">
+                        <div class="widget-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="widget-name">Đánh giá khách hàng</div>
+                        <div class="widget-description">Hiển thị đánh giá và nhận xét từ khách hàng</div>
+                        <div class="widget-toggle">
+                            <span>Tắt</span>
+                            <div class="toggle-switch" onclick="toggleWidget(this)"></div>
+                            <span>Bật</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Responsive Design Section -->
+            <div class="content-section" id="responsive-section">
+                <div class="section-header">
+                    <h4>Responsive Design</h4>
+                    <p>Xem trước website trên các thiết bị khác nhau</p>
+                </div>
+
+                <div class="responsive-preview">
+                    <div class="device-preview active" onclick="selectDevice(this)">
+                        <div class="device-icon">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <div class="device-name">Desktop</div>
+                    </div>
+                    
+                    <div class="device-preview" onclick="selectDevice(this)">
+                        <div class="device-icon">
+                            <i class="fas fa-tablet-alt"></i>
+                        </div>
+                        <div class="device-name">Tablet</div>
+                    </div>
+                    
+                    <div class="device-preview" onclick="selectDevice(this)">
+                        <div class="device-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="device-name">Mobile</div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <iframe id="preview-frame" src="/" style="width: 100%; height: 600px; border: 1px solid var(--admin-border); border-radius: 6px;"></iframe>
+                </div>
+            </div>
+
+            <!-- Page Editor Section -->
+            <div class="content-section" id="page-editor-section">
+                <div class="section-header">
+                    <h4>Chỉnh sửa trang: <span id="current-page-name">Chưa chọn trang</span></h4>
+                    <p>Editor WYSIWYG để chỉnh sửa nội dung trang web</p>
+                </div>
+
+                <div class="page-editor-toolbar mb-3">
+                    <div class="btn-group me-3" role="group">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleEditorMode('visual')" id="visual-mode-btn">
+                            <i class="fas fa-eye"></i> Visual
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm active" onclick="toggleEditorMode('code')" id="code-mode-btn">
+                            <i class="fas fa-code"></i> HTML
+                        </button>
+                    </div>
+                    
+                    <div class="btn-group me-3" role="group">
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="previewPage()">
+                            <i class="fas fa-eye"></i> Xem trước
+                        </button>
+                        <button type="button" class="btn btn-success btn-sm" onclick="savePage()">
+                            <i class="fas fa-save"></i> Lưu trang
+                        </button>
+                    </div>
+
+                    <select class="form-select d-inline-block w-auto" id="page-selector" onchange="loadPageForEdit(this.value)">
+                        <option value="">Chọn trang để chỉnh sửa</option>
+                        <option value="index">Trang chủ</option>
+                        <option value="gioi-thieu">Giới thiệu</option>
+                        <option value="dich-vu">Dịch vụ</option>
+                        <option value="gallery">Gallery</option>
+                        <option value="blog">Blog</option>
+                        <option value="lien-he">Liên hệ</option>
+                    </select>
+                </div>
+
+                <!-- Visual Editor -->
+                <div id="visual-editor" class="editor-container" style="display: none;">
+                    <div class="visual-editor-toolbar">
+                        <div class="btn-group me-2" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('bold')">
+                                <i class="fas fa-bold"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('italic')">
+                                <i class="fas fa-italic"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('underline')">
+                                <i class="fas fa-underline"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="btn-group me-2" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('insertUnorderedList')">
+                                <i class="fas fa-list-ul"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('insertOrderedList')">
+                                <i class="fas fa-list-ol"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="btn-group me-2" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertLink()">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertImage()">
+                                <i class="fas fa-image"></i>
+                            </button>
+                        </div>
+
+                        <select class="form-select form-select-sm d-inline-block w-auto me-2" onchange="formatText('formatBlock', this.value)">
+                            <option value="">Định dạng</option>
+                            <option value="h1">Tiêu đề 1</option>
+                            <option value="h2">Tiêu đề 2</option>
+                            <option value="h3">Tiêu đề 3</option>
+                            <option value="p">Đoạn văn</option>
+                        </select>
+                    </div>
+                    
+                    <div id="visual-editor-content" contenteditable="true" class="visual-editor-content">
+                        <p>Chọn một trang để bắt đầu chỉnh sửa...</p>
+                    </div>
+                </div>
+
+                <!-- Code Editor -->
+                <div id="code-editor" class="editor-container">
+                    <textarea id="code-editor-content" class="code-editor-textarea" placeholder="Chọn một trang để bắt đầu chỉnh sửa..."></textarea>
+                </div>
+
+                <div class="editor-status mt-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i> 
+                                Trang được chỉnh sửa: <span id="editing-page-status">Chưa chọn</span>
+                            </small>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <small class="text-muted">
+                                <i class="fas fa-clock"></i> 
+                                Lần lưu cuối: <span id="last-saved">Chưa lưu</span>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Feature Modal -->
+    <div class="modal fade" id="addFeatureModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white">Thêm tính năng mới</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label class="text-white">Tên tính năng</label>
+                        <input type="text" class="form-control" placeholder="Nhập tên tính năng">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="text-white">Mô tả</label>
+                        <textarea class="form-control" rows="3" placeholder="Mô tả chi tiết về tính năng"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="text-white">Icon</label>
+                        <select class="form-control">
+                            <option value="fas fa-chart-line">Biểu đồ</option>
+                            <option value="fas fa-users">Người dùng</option>
+                            <option value="fas fa-cog">Cài đặt</option>
+                            <option value="fas fa-shield-alt">Bảo mật</option>
+                            <option value="fas fa-mobile-alt">Di động</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="addNewFeature()">Thêm tính năng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Admin JS -->
+    <script src="admin-script.js"></script>
+</body>
+</html>

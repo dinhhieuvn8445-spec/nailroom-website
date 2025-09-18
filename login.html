@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập Admin - Nailroom</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/823a00108b.js" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --admin-bg-primary: #1a1d29;
+            --admin-bg-secondary: #252836;
+            --admin-text-primary: #ffffff;
+            --admin-text-secondary: #b8bcc8;
+            --admin-accent: #007bff;
+            --admin-border: #3a3f51;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--admin-bg-primary) 0%, var(--admin-bg-secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            background-color: var(--admin-bg-secondary);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid var(--admin-border);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: var(--admin-text-primary);
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: var(--admin-text-secondary);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: var(--admin-text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-control {
+            background-color: var(--admin-bg-primary);
+            border: 1px solid var(--admin-border);
+            border-radius: 6px;
+            color: var(--admin-text-primary);
+            padding: 12px 15px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            background-color: var(--admin-bg-primary);
+            border-color: var(--admin-accent);
+            color: var(--admin-text-primary);
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .form-control::placeholder {
+            color: var(--admin-text-secondary);
+        }
+
+        .btn-login {
+            width: 100%;
+            background-color: var(--admin-accent);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-login:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            color: #f8d7da;
+        }
+
+        .back-to-site {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-to-site a {
+            color: var(--admin-text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .back-to-site a:hover {
+            color: var(--admin-accent);
+        }
+
+        .loading-spinner {
+            display: none;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h2><i class="fas fa-shield-alt"></i> Đăng nhập Admin</h2>
+            <p>Truy cập trang quản trị Nailroom</p>
+        </div>
+
+        <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Tên đăng nhập</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" required>
+            </div>
+
+            <button type="submit" class="btn btn-login" id="loginBtn">
+                <i class="fas fa-spinner fa-spin loading-spinner"></i>
+                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+            </button>
+        </form>
+
+        <div class="back-to-site">
+            <a href="/"><i class="fas fa-arrow-left"></i> Quay lại trang chủ</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error-message');
+            const loginBtn = document.getElementById('loginBtn');
+            const spinner = document.querySelector('.loading-spinner');
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            spinner.style.display = 'inline-block';
+            errorDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Check if user is admin
+                    if (data.user.role === 'admin') {
+                        window.location.href = '/admin.html';
+                    } else {
+                        errorDiv.textContent = 'Bạn không có quyền truy cập trang quản trị!';
+                        errorDiv.style.display = 'block';
+                    }
+                } else {
+                    errorDiv.textContent = data.message || 'Đăng nhập thất bại!';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorDiv.textContent = 'Có lỗi xảy ra, vui lòng thử lại!';
+                errorDiv.style.display = 'block';
+            } finally {
+                // Hide loading state
+                loginBtn.disabled = false;
+                spinner.style.display = 'none';
+            }
+        });
+
+        // Check if already logged in
+        fetch('/api/auth-status')
+            .then(response => response.json())
+            .then(data => {
+                if (data.authenticated && data.user.role === 'admin') {
+                    window.location.href = '/admin.html';
+                }
+            })
+            .catch(error => {
+                console.error('Auth check error:', error);
+            });
+    </script>
+</body>
+</html>
