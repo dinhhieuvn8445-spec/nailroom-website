@@ -418,3 +418,168 @@ var additionalCSS = `
 
 // Inject additional CSS
 $('<style>').text(additionalCSS).appendTo('head');
+
+// ===== LOGIN FUNCTIONALITY =====
+
+// Toggle password visibility
+function togglePassword(inputId) {
+    const passwordInput = document.getElementById(inputId);
+    const toggleBtn = passwordInput.nextElementSibling;
+    const icon = toggleBtn.querySelector('i');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+// Show message
+function showMessage(type, message) {
+    const successDiv = document.getElementById('successMessage');
+    const errorDiv = document.getElementById('errorMessage');
+    
+    if (type === 'success') {
+        document.getElementById('successText').textContent = message;
+        successDiv.style.display = 'block';
+        errorDiv.style.display = 'none';
+    } else {
+        document.getElementById('errorText').textContent = message;
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+    }
+}
+
+// Handle login form submission
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    const rememberMe = document.getElementById('rememberMe').checked;
+    
+    // Show loading state
+    const submitBtn = document.querySelector('.btn-login-submit');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang đăng nhập...';
+    submitBtn.disabled = true;
+    
+    // Simulate login process
+    setTimeout(() => {
+        // Simple validation (in real app, this would be server-side)
+        if (username && password) {
+            // Simulate successful login
+            showMessage('success', 'Đăng nhập thành công! Chào mừng bạn đến với Nailroom.');
+            
+            // Store login info if remember me is checked
+            if (rememberMe) {
+                localStorage.setItem('nailroom_remember_username', username);
+            }
+            
+            // Hide modal after 2 seconds
+            setTimeout(() => {
+                $('#loginModal').modal('hide');
+                // Reset form
+                document.getElementById('loginForm').reset();
+            }, 2000);
+            
+        } else {
+            showMessage('error', 'Vui lòng nhập đầy đủ username và mật khẩu.');
+        }
+        
+        // Reset button
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }, 1500);
+});
+
+// Load remembered username on modal show
+$('#loginModal').on('show.bs.modal', function() {
+    const rememberedUsername = localStorage.getItem('nailroom_remember_username');
+    if (rememberedUsername) {
+        document.getElementById('loginUsername').value = rememberedUsername;
+        document.getElementById('rememberMe').checked = true;
+    }
+});
+
+// Reset modal state when hidden
+$('#loginModal').on('hidden.bs.modal', function() {
+    showLoginForm(); // Always show login form when modal is reopened
+    document.getElementById('loginForm').reset();
+    document.getElementById('forgotPasswordForm').reset();
+    
+    // Reset button states
+    const submitBtn = document.querySelector('.btn-login-submit');
+    submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Đăng nhập';
+    submitBtn.disabled = false;
+    
+    const forgotBtn = document.querySelector('.btn-forgot-submit');
+    if (forgotBtn) {
+        forgotBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Gửi email khôi phục';
+        forgotBtn.disabled = false;
+    }
+    
+    // Hide messages
+    document.getElementById('successMessage').style.display = 'none';
+    document.getElementById('errorMessage').style.display = 'none';
+});
+
+// Show forgot password form
+function showForgotPasswordForm() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('forgotPasswordForm').style.display = 'block';
+    document.querySelector('.modal-footer').style.display = 'none';
+    
+    // Hide any existing messages
+    document.getElementById('successMessage').style.display = 'none';
+    document.getElementById('errorMessage').style.display = 'none';
+}
+
+// Show login form
+function showLoginForm() {
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('forgotPasswordForm').style.display = 'none';
+    document.querySelector('.modal-footer').style.display = 'block';
+    
+    // Hide any existing messages
+    document.getElementById('successMessage').style.display = 'none';
+    document.getElementById('errorMessage').style.display = 'none';
+}
+
+// Handle forgot password form submission
+document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('forgotEmail').value;
+    
+    // Show loading state
+    const submitBtn = document.querySelector('.btn-forgot-submit');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
+    submitBtn.disabled = true;
+    
+    // Simulate sending password reset email
+    setTimeout(() => {
+        if (email) {
+            // Simulate successful email sending
+            showMessage('success', `Email khôi phục mật khẩu đã được gửi đến ${email}. Vui lòng kiểm tra hộp thư của bạn.`);
+            
+            // Reset form after 3 seconds and show login form
+            setTimeout(() => {
+                showLoginForm();
+                document.getElementById('forgotPasswordForm').reset();
+            }, 3000);
+            
+        } else {
+            showMessage('error', 'Vui lòng nhập địa chỉ email hợp lệ.');
+        }
+        
+        // Reset button
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }, 2000);
+});
