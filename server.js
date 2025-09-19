@@ -142,6 +142,21 @@ async function initDatabase() {
             )
         `);
 
+        // Create registrations table for form submissions
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS registrations (
+                id SERIAL PRIMARY KEY,
+                full_name VARCHAR(100) NOT NULL,
+                phone VARCHAR(20) NOT NULL,
+                email VARCHAR(100),
+                service_interest VARCHAR(100),
+                message TEXT,
+                status VARCHAR(20) DEFAULT 'pending',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
         // Create store_locations table
         await pool.query(`
             CREATE TABLE IF NOT EXISTS store_locations (
@@ -1483,6 +1498,263 @@ app.delete('/api/stores/:id', async (req, res) => {
     } catch (error) {
         console.error('Error deleting store:', error);
         res.status(500).json({ success: false, message: 'Lỗi khi xóa cửa hàng' });
+    }
+});
+
+// CTA Management APIs
+// Get CTA content
+app.get('/api/content/cta', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM website_content WHERE section = $1', ['cta']);
+        
+        const content = {};
+        result.rows.forEach(row => {
+            content[row.content_key] = {
+                value: row.content_value,
+                type: row.content_type
+            };
+        });
+        
+        res.json({ success: true, content });
+    } catch (error) {
+        console.error('Error fetching CTA content:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi lấy nội dung CTA' });
+    }
+});
+
+// Update CTA content
+app.post('/api/content/cta', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { title, subtitle, description, button_text, button_url, phone, bg_color, background_image } = req.body;
+        
+        const contentData = [
+            { key: 'title', value: title, type: 'text' },
+            { key: 'subtitle', value: subtitle, type: 'text' },
+            { key: 'description', value: description, type: 'textarea' },
+            { key: 'button_text', value: button_text, type: 'text' },
+            { key: 'button_url', value: button_url, type: 'text' },
+            { key: 'phone', value: phone, type: 'text' },
+            { key: 'bg_color', value: bg_color, type: 'color' },
+            { key: 'background_image', value: background_image, type: 'image' }
+        ];
+        
+        for (const item of contentData) {
+            await pool.query(
+                `INSERT INTO website_content (section, content_key, content_value, content_type, updated_at) 
+                 VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP) 
+                 ON CONFLICT (section, content_key) 
+                 DO UPDATE SET content_value = $3, content_type = $4, updated_at = CURRENT_TIMESTAMP`,
+                ['cta', item.key, item.value, item.type]
+            );
+        }
+        
+        res.json({ success: true, message: 'Đã cập nhật CTA thành công' });
+    } catch (error) {
+        console.error('Error updating CTA content:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi cập nhật CTA' });
+    }
+});
+
+// Form Settings Management APIs
+// Get form settings
+app.get('/api/content/form-settings', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM website_content WHERE section = $1', ['form-settings']);
+        
+        const content = {};
+        result.rows.forEach(row => {
+            content[row.content_key] = {
+                value: row.content_value,
+                type: row.content_type
+            };
+        });
+        
+        res.json({ success: true, content });
+    } catch (error) {
+        console.error('Error fetching form settings:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi lấy cài đặt form' });
+    }
+});
+
+// Update form settings
+app.post('/api/content/form-settings', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { title, description, submit_text, email_to, success_message } = req.body;
+        
+        const contentData = [
+            { key: 'title', value: title, type: 'text' },
+            { key: 'description', value: description, type: 'textarea' },
+            { key: 'submit_text', value: submit_text, type: 'text' },
+            { key: 'email_to', value: email_to, type: 'email' },
+            { key: 'success_message', value: success_message, type: 'textarea' }
+        ];
+        
+        for (const item of contentData) {
+            await pool.query(
+                `INSERT INTO website_content (section, content_key, content_value, content_type, updated_at) 
+                 VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP) 
+                 ON CONFLICT (section, content_key) 
+                 DO UPDATE SET content_value = $3, content_type = $4, updated_at = CURRENT_TIMESTAMP`,
+                ['form-settings', item.key, item.value, item.type]
+            );
+        }
+        
+        res.json({ success: true, message: 'Đã cập nhật cài đặt form thành công' });
+    } catch (error) {
+        console.error('Error updating form settings:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi cập nhật cài đặt form' });
+    }
+});
+
+// Registration Management APIs
+// Get all registrations
+app.get('/api/registrations', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        let query = 'SELECT * FROM registrations';
+        let params = [];
+        let whereConditions = [];
+        
+        // Filter by date
+        if (req.query.date) {
+            whereConditions.push('DATE(created_at) = $' + (params.length + 1));
+            params.push(req.query.date);
+        }
+        
+        // Filter by service
+        if (req.query.service) {
+            whereConditions.push('service_interest = $' + (params.length + 1));
+            params.push(req.query.service);
+        }
+        
+        if (whereConditions.length > 0) {
+            query += ' WHERE ' + whereConditions.join(' AND ');
+        }
+        
+        query += ' ORDER BY created_at DESC';
+        
+        const result = await pool.query(query, params);
+        res.json({ success: true, registrations: result.rows });
+    } catch (error) {
+        console.error('Error fetching registrations:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi lấy danh sách đăng ký' });
+    }
+});
+
+// Add new registration (public endpoint for form submission)
+app.post('/api/registrations', async (req, res) => {
+    try {
+        const { full_name, phone, email, service_interest, message } = req.body;
+        
+        if (!full_name || !phone) {
+            return res.status(400).json({ success: false, message: 'Vui lòng điền họ tên và số điện thoại' });
+        }
+        
+        const result = await pool.query(
+            'INSERT INTO registrations (full_name, phone, email, service_interest, message) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [full_name, phone, email, service_interest, message]
+        );
+        
+        res.json({ success: true, registration: result.rows[0], message: 'Đã gửi thông tin đăng ký thành công' });
+    } catch (error) {
+        console.error('Error adding registration:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi gửi thông tin đăng ký' });
+    }
+});
+
+// Update registration status
+app.put('/api/registrations/:id', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { id } = req.params;
+        const { status } = req.body;
+        
+        const result = await pool.query(
+            'UPDATE registrations SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *',
+            [status, id]
+        );
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy đăng ký' });
+        }
+        
+        res.json({ success: true, registration: result.rows[0], message: 'Đã cập nhật trạng thái thành công' });
+    } catch (error) {
+        console.error('Error updating registration:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi cập nhật trạng thái' });
+    }
+});
+
+// Delete registration
+app.delete('/api/registrations/:id', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { id } = req.params;
+        
+        const result = await pool.query('DELETE FROM registrations WHERE id = $1 RETURNING *', [id]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy đăng ký' });
+        }
+        
+        res.json({ success: true, message: 'Đã xóa đăng ký thành công' });
+    } catch (error) {
+        console.error('Error deleting registration:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi xóa đăng ký' });
+    }
+});
+
+// Export registrations
+app.get('/api/registrations/export', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const format = req.query.format || 'csv';
+        const result = await pool.query('SELECT * FROM registrations ORDER BY created_at DESC');
+        
+        if (format === 'csv') {
+            const csv = [
+                'ID,Họ tên,Số điện thoại,Email,Dịch vụ quan tâm,Tin nhắn,Trạng thái,Ngày đăng ký',
+                ...result.rows.map(row => 
+                    `${row.id},"${row.full_name}","${row.phone}","${row.email || ''}","${row.service_interest || ''}","${row.message || ''}","${row.status}","${new Date(row.created_at).toLocaleDateString('vi-VN')}"`
+                )
+            ].join('\n');
+            
+            res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+            res.setHeader('Content-Disposition', 'attachment; filename="registrations.csv"');
+            res.send('\uFEFF' + csv); // Add BOM for UTF-8
+        } else {
+            // For now, return JSON for other formats
+            res.json({ success: true, data: result.rows });
+        }
+    } catch (error) {
+        console.error('Error exporting registrations:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi xuất dữ liệu' });
     }
 });
 
