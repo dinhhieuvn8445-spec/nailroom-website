@@ -681,3 +681,440 @@ $('#loginModal').on('hidden.bs.modal', function() {
     $('#registerTabTitle').removeClass('active');
     $('#loginTabTitle').addClass('active');
 });
+
+// ===== DYNAMIC CONTENT LOADING FROM DATABASE =====
+
+// Load all dynamic content from database
+async function loadDynamicContent() {
+    try {
+        console.log('Loading dynamic content from database...');
+        
+        // Load all sections
+        await Promise.all([
+            loadHeaderContent(),
+            loadHeroContent(), 
+            loadAboutContent(),
+            loadServicesContent(),
+            loadGalleryContent(),
+            loadCelebritiesContent(),
+            loadTestimonialsContent(),
+            loadStoresContent(),
+            loadCTAContent(),
+            loadFooterContent()
+        ]);
+        
+        console.log('All dynamic content loaded successfully');
+    } catch (error) {
+        console.error('Error loading dynamic content:', error);
+    }
+}
+
+// Load header content from database
+async function loadHeaderContent() {
+    try {
+        const response = await fetch('/api/content/header');
+        const result = await response.json();
+        
+        if (result.success && result.content) {
+            const content = result.content;
+            
+            // Update logo text
+            if (content.logo_text && content.logo_text.value) {
+                $('.navbar-brand').text(content.logo_text.value);
+            }
+            
+            // Update phone number
+            if (content.phone && content.phone.value) {
+                $('.topbar-left-info li:first-child a').text(content.phone.value);
+                $('.topbar-left-info li:first-child a').attr('href', `tel:${content.phone.value}`);
+            }
+            
+            // Update email
+            if (content.email && content.email.value) {
+                $('.topbar-left-info li:nth-child(2) a').text(content.email.value);
+                $('.topbar-left-info li:nth-child(2) a').attr('href', `mailto:${content.email.value}`);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading header content:', error);
+    }
+}
+
+// Load hero content from database
+async function loadHeroContent() {
+    try {
+        const response = await fetch('/api/content/hero');
+        const result = await response.json();
+        
+        if (result.success && result.content) {
+            const content = result.content;
+            
+            // Update hero title
+            if (content.title && content.title.value) {
+                $('.hero-content h1').text(content.title.value);
+            }
+            
+            // Update hero slogan
+            if (content.slogan && content.slogan.value) {
+                $('.hero-content p').text(content.slogan.value);
+            }
+            
+            // Update Korean text
+            if (content.korean_text && content.korean_text.value) {
+                $('.hero-content .korean-text').text(content.korean_text.value);
+            }
+            
+            // Update background image
+            if (content.background_image && content.background_image.value) {
+                $('.hero-slide').css('background-image', `url('${content.background_image.value}')`);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading hero content:', error);
+    }
+}
+
+// Load about content from database
+async function loadAboutContent() {
+    try {
+        const response = await fetch('/api/content/about');
+        const result = await response.json();
+        
+        if (result.success && result.content) {
+            const content = result.content;
+            
+            // Update about title
+            if (content.title && content.title.value) {
+                $('#about .section-title').text(content.title.value);
+            }
+            
+            // Update quote
+            if (content.quote && content.quote.value) {
+                $('#about .quote').text(content.quote.value);
+            }
+            
+            // Update descriptions
+            for (let i = 1; i <= 3; i++) {
+                const desc = content[`description_${i}`];
+                if (desc && desc.value) {
+                    $(`#about .description-${i}`).text(desc.value);
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error loading about content:', error);
+    }
+}
+
+// Load services from database
+async function loadServicesContent() {
+    try {
+        const response = await fetch('/api/services');
+        const result = await response.json();
+        
+        if (result.success && result.services && result.services.length > 0) {
+            const servicesContainer = $('.home-services-slick');
+            servicesContainer.empty();
+            
+            result.services.forEach(service => {
+                const serviceHtml = `
+                    <div class="service-item">
+                        <div class="service-image">
+                            <img src="${service.image || 'https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'}" alt="${service.name}">
+                        </div>
+                        <div class="service-content">
+                            <h3>${service.name}</h3>
+                            <p>${service.description || ''}</p>
+                            <div class="service-price">${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(service.price)}</div>
+                        </div>
+                    </div>
+                `;
+                servicesContainer.append(serviceHtml);
+            });
+            
+            // Reinitialize slick slider
+            if (servicesContainer.hasClass('slick-initialized')) {
+                servicesContainer.slick('unslick');
+            }
+            servicesContainer.slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 4000,
+                responsive: [
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+        }
+    } catch (error) {
+        console.error('Error loading services:', error);
+    }
+}
+
+// Load gallery from database
+async function loadGalleryContent() {
+    try {
+        const response = await fetch('/api/gallery');
+        const result = await response.json();
+        
+        if (result.success && result.gallery && result.gallery.length > 0) {
+            const galleryContainer = $('.gallery-grid');
+            galleryContainer.empty();
+            
+            result.gallery.forEach(item => {
+                const galleryHtml = `
+                    <div class="gallery-item">
+                        <img src="${item.image_url}" alt="${item.title || 'Gallery image'}">
+                        <div class="gallery-overlay">
+                            <h4>${item.title || ''}</h4>
+                            <p>${item.description || ''}</p>
+                        </div>
+                    </div>
+                `;
+                galleryContainer.append(galleryHtml);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading gallery:', error);
+    }
+}
+
+// Load celebrities from database
+async function loadCelebritiesContent() {
+    try {
+        const response = await fetch('/api/celebrities');
+        const result = await response.json();
+        
+        if (result.success && result.celebrities && result.celebrities.length > 0) {
+            const celebritiesContainer = $('.celebrities-grid');
+            celebritiesContainer.empty();
+            
+            result.celebrities.forEach(celebrity => {
+                const celebrityHtml = `
+                    <div class="celebrity-item">
+                        <img src="${celebrity.image_url}" alt="${celebrity.name}">
+                        <div class="celebrity-info">
+                            <h4>${celebrity.name}</h4>
+                            <p>${celebrity.profession || ''}</p>
+                        </div>
+                    </div>
+                `;
+                celebritiesContainer.append(celebrityHtml);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading celebrities:', error);
+    }
+}
+
+// Load testimonials from database
+async function loadTestimonialsContent() {
+    try {
+        const response = await fetch('/api/testimonials');
+        const result = await response.json();
+        
+        if (result.success && result.testimonials && result.testimonials.length > 0) {
+            const testimonialsContainer = $('.home-test-slick');
+            testimonialsContainer.empty();
+            
+            result.testimonials.forEach(testimonial => {
+                const testimonialHtml = `
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <p>"${testimonial.content}"</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="${testimonial.customer_image || 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'}" alt="${testimonial.customer_name}">
+                            <div class="author-info">
+                                <h4>${testimonial.customer_name}</h4>
+                                <p>${testimonial.customer_location || ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                testimonialsContainer.append(testimonialHtml);
+            });
+            
+            // Reinitialize slick slider
+            if (testimonialsContainer.hasClass('slick-initialized')) {
+                testimonialsContainer.slick('unslick');
+            }
+            testimonialsContainer.slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                responsive: [
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+        }
+    } catch (error) {
+        console.error('Error loading testimonials:', error);
+    }
+}
+
+// Load stores from database
+async function loadStoresContent() {
+    try {
+        const response = await fetch('/api/stores');
+        const result = await response.json();
+        
+        if (result.success && result.stores && result.stores.length > 0) {
+            const storesContainer = $('.stores-grid');
+            storesContainer.empty();
+            
+            result.stores.forEach(store => {
+                const storeHtml = `
+                    <div class="store-item">
+                        <div class="store-info">
+                            <h4>${store.name}</h4>
+                            <p><i class="fas fa-map-marker-alt"></i> ${store.address}</p>
+                            ${store.phone ? `<p><i class="fas fa-phone"></i> ${store.phone}</p>` : ''}
+                            ${store.working_hours ? `<p><i class="fas fa-clock"></i> ${store.working_hours}</p>` : ''}
+                        </div>
+                    </div>
+                `;
+                storesContainer.append(storeHtml);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading stores:', error);
+    }
+}
+
+// Load CTA content from database
+async function loadCTAContent() {
+    try {
+        const response = await fetch('/api/content/cta');
+        const result = await response.json();
+        
+        if (result.success && result.content) {
+            const content = result.content;
+            
+            // Update CTA title
+            if (content.title && content.title.value) {
+                $('.cta-section h2').text(content.title.value);
+            }
+            
+            // Update CTA subtitle
+            if (content.subtitle && content.subtitle.value) {
+                $('.cta-section .cta-subtitle').text(content.subtitle.value);
+            }
+            
+            // Update CTA description
+            if (content.description && content.description.value) {
+                $('.cta-section p').text(content.description.value);
+            }
+            
+            // Update CTA button
+            if (content.button_text && content.button_text.value) {
+                $('.cta-section .cta-button').text(content.button_text.value);
+            }
+            
+            if (content.button_url && content.button_url.value) {
+                $('.cta-section .cta-button').attr('href', content.button_url.value);
+            }
+            
+            // Update phone display
+            if (content.phone && content.phone.value) {
+                $('.cta-section .cta-phone').text(content.phone.value);
+            }
+            
+            // Update background and colors
+            if (content.background_image && content.background_image.value) {
+                $('.cta-section').css('background-image', `url('${content.background_image.value}')`);
+            }
+            
+            if (content.bg_color && content.bg_color.value) {
+                $('.cta-section').css('background-color', content.bg_color.value);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading CTA content:', error);
+    }
+}
+
+// Load footer content from database
+async function loadFooterContent() {
+    try {
+        const response = await fetch('/api/content/footer');
+        const result = await response.json();
+        
+        if (result.success && result.content) {
+            const content = result.content;
+            
+            // Update footer logo
+            if (content.logo && content.logo.value) {
+                $('.footer .footer-logo').text(content.logo.value);
+            }
+            
+            // Update footer description
+            if (content.description && content.description.value) {
+                $('.footer .footer-description').text(content.description.value);
+            }
+            
+            // Update contact info
+            if (content.phone && content.phone.value) {
+                $('.footer .footer-phone').html(`<i class="fas fa-phone"></i> ${content.phone.value}`);
+            }
+            
+            if (content.email && content.email.value) {
+                $('.footer .footer-email').html(`<i class="fas fa-envelope"></i> ${content.email.value}`);
+            }
+            
+            if (content.address && content.address.value) {
+                $('.footer .footer-address').html(`<i class="fas fa-map-marker-alt"></i> ${content.address.value}`);
+            }
+            
+            if (content.working_hours && content.working_hours.value) {
+                $('.footer .footer-hours').text(content.working_hours.value);
+            }
+            
+            // Update copyright
+            if (content.copyright && content.copyright.value) {
+                $('.footer .footer-copyright').text(content.copyright.value);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading footer content:', error);
+    }
+}
+
+// Initialize dynamic content loading
+$(document).ready(function() {
+    // Load dynamic content after page is ready
+    setTimeout(loadDynamicContent, 1000);
+});
