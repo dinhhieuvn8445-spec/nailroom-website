@@ -108,8 +108,8 @@ app.post('/api/register', async (req, res) => {
 
         // Insert new user
         const result = await pool.query(
-            'INSERT INTO users (username, email, password_hash, full_name, phone, role) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, username, email, role, full_name, phone, created_at',
-            [username, email, passwordHash, fullName || null, phone || null, 'user']
+            'INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, username, email, role, created_at',
+            [username, email, passwordHash, 'user']
         );
 
         const newUser = result.rows[0];
@@ -126,9 +126,7 @@ app.post('/api/register', async (req, res) => {
                 id: newUser.id,
                 username: newUser.username,
                 email: newUser.email,
-                role: newUser.role,
-                fullName: newUser.full_name,
-                phone: newUser.phone
+                role: newUser.role
             }
         });
 
@@ -169,7 +167,7 @@ app.post('/api/login', async (req, res) => {
         const user = result.rows[0];
 
         // Check password
-        const isValidPassword = await bcrypt.compare(password, user.password_hash);
+        const isValidPassword = await bcrypt.compare(password, user.password);
         
         if (!isValidPassword) {
             return res.status(401).json({ 
@@ -190,9 +188,7 @@ app.post('/api/login', async (req, res) => {
                 id: user.id,
                 username: user.username,
                 email: user.email,
-                role: user.role,
-                fullName: user.full_name,
-                phone: user.phone
+                role: user.role
             }
         });
 
