@@ -48,6 +48,18 @@ async function initDatabase() {
             )
         `);
         
+        // Create services table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS services (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                description TEXT,
+                price DECIMAL(10,2) NOT NULL,
+                image VARCHAR(255),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        
         console.log('✅ Database tables initialized');
     } catch (error) {
         console.error('❌ Error initializing database:', error);
@@ -495,6 +507,259 @@ app.post('/admin/save-page', requireAdmin, async (req, res) => {
         });
     }
 });
+
+// Admin API Routes
+// Admin statistics
+app.get('/api/admin/stats/customers', requireAdminAPI, async (req, res) => {
+    try {
+        const result = await pool.query('SELECT COUNT(*) as total FROM users WHERE role = $1', ['user']);
+        res.json({ total: parseInt(result.rows[0].total) });
+    } catch (error) {
+        console.error('Error getting customer stats:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.get('/api/admin/stats/revenue', requireAdminAPI, async (req, res) => {
+    try {
+        // Mock revenue data - replace with actual revenue calculation
+        res.json({
+            today: 2500000,
+            weekly: 15000000,
+            monthly: 45000000,
+            yearly: 540000000
+        });
+    } catch (error) {
+        console.error('Error getting revenue stats:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.get('/api/admin/stats/appointments', requireAdminAPI, async (req, res) => {
+    try {
+        const today = new Date().toISOString().split('T')[0];
+        const result = await pool.query(
+            'SELECT COUNT(*) as today FROM appointments WHERE appointment_date = $1',
+            [today]
+        );
+        res.json({ today: parseInt(result.rows[0].today) });
+    } catch (error) {
+        console.error('Error getting appointment stats:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.get('/api/admin/stats/services', requireAdminAPI, async (req, res) => {
+    try {
+        const result = await pool.query('SELECT COUNT(*) as total FROM services');
+        res.json({ total: parseInt(result.rows[0].total) });
+    } catch (error) {
+        console.error('Error getting service stats:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Customer management
+app.get('/api/admin/customers', requireAdminAPI, async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT id, username, email, role, created_at FROM users ORDER BY created_at DESC'
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error getting customers:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.get('/api/admin/customers/:id', requireAdminAPI, async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT id, username, email, role, created_at FROM users WHERE id = $1',
+            [req.params.id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Customer not found' });
+        }
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error getting customer:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.post('/api/admin/customers', requireAdminAPI, async (req, res) => {
+    try {
+        const { username, email, password, role } = req.body;
+        const passwordHash = await bcrypt.hash(password, 10);
+        
+        const result = await pool.query(
+            'INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, username, email, role, created_at',
+            [username, email, passwordHash, role || 'user']
+        );
+        
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error creating customer:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.put('/api/admin/customers/:id', requireAdminAPI, async (req, res) => {
+    try {
+        const { username, email, password, role } = req.body;
+        let query, params;
+        
+        if (password) {
+            const passwordHash = await bcrypt.hash(password, 10);
+            query = 'UPDATE users SET username = $1, email = $2, password = $3, role = $4 WHERE id = $5 RETURNING id, username, email, role, created_at';
+            params = [username, email, passwordHash, role, req.params.id];
+        } else {
+            query = 'UPDATE users SET username = $1, email = $2, role = $3 WHERE id = $4 RETURNING id, username, email, role, created_at';
+            params = [username, email, role, req.params.id];
+        }
+        
+        const result = await pool.query(query, params);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Customer not found' });
+        }
+        
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error updating customer:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.delete('/api/admin/customers/:id', requireAdminAPI, async (req, res) => {
+    try {
+        const result = await pool.query('DELETE FROM users WHERE id = $1', [req.params.id]);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Customer not found' });
+        }
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting customer:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Service management
+app.get('/api/admin/services', requireAdminAPI, async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM services ORDER BY id DESC');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error getting services:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.get('/api/admin/services/:id', requireAdminAPI, async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM services WHERE id = $1', [req.params.id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Service not found' });
+        }
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error getting service:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.post('/api/admin/services', requireAdminAPI, async (req, res) => {
+    try {
+        const { name, description, price, image } = req.body;
+        const result = await pool.query(
+            'INSERT INTO services (name, description, price, image) VALUES ($1, $2, $3, $4) RETURNING *',
+            [name, description, price, image]
+        );
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error creating service:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.put('/api/admin/services/:id', requireAdminAPI, async (req, res) => {
+    try {
+        const { name, description, price, image } = req.body;
+        const result = await pool.query(
+            'UPDATE services SET name = $1, description = $2, price = $3, image = $4 WHERE id = $5 RETURNING *',
+            [name, description, price, image, req.params.id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Service not found' });
+        }
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error updating service:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.delete('/api/admin/services/:id', requireAdminAPI, async (req, res) => {
+    try {
+        const result = await pool.query('DELETE FROM services WHERE id = $1', [req.params.id]);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Service not found' });
+        }
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting service:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Appointment management
+app.get('/api/admin/appointments', requireAdminAPI, async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT a.*, u.username as customer_name, s.name as service_name 
+            FROM appointments a 
+            LEFT JOIN users u ON a.customer_id = u.id 
+            LEFT JOIN services s ON a.service_id = s.id 
+            ORDER BY a.appointment_date DESC, a.appointment_time DESC
+        `);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error getting appointments:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.delete('/api/admin/appointments/:id', requireAdminAPI, async (req, res) => {
+    try {
+        const result = await pool.query('DELETE FROM appointments WHERE id = $1', [req.params.id]);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Appointment not found' });
+        }
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting appointment:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Admin middleware for API routes
+function requireAdminAPI(req, res, next) {
+    if (!req.session.userId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+    }
+    
+    pool.query('SELECT role FROM users WHERE id = $1', [req.session.userId])
+        .then(result => {
+            if (result.rows.length === 0 || result.rows[0].role !== 'admin') {
+                return res.status(403).json({ error: 'Access denied' });
+            }
+            next();
+        })
+        .catch(error => {
+            console.error('Admin check error:', error);
+            res.status(500).json({ error: 'Server error' });
+        });
+}
 
 // Login page
 app.get('/login.html', (req, res) => {
