@@ -343,6 +343,9 @@ app.use(session({
 // Serve static files
 app.use(express.static('.'));
 
+// Include additional API routes
+require('./api-routes')(app, pool);
+
 // API Routes
 
 // Register endpoint

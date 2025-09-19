@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS Quản trị - Nailroom</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/823a00108b.js" crossorigin="anonymous"></script>
+    
+    <!-- Quill Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .admin-container {
+            height: calc(100vh - 80px);
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            background: white;
+            border-right: 1px solid #e9ecef;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+            background: #f8f9fa;
+        }
+        
+        .sidebar-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f3f4;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item:hover {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+        }
+        
+        .sidebar-item.active {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            color: #1976d2;
+        }
+        
+        .sidebar-item i {
+            width: 20px;
+            margin-right: 10px;
+        }
+        
+        .content-area {
+            background: white;
+            height: 100%;
+            overflow-y: auto;
+            padding: 0;
+        }
+        
+        .content-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .content-body {
+            padding: 1.5rem;
+        }
+        
+        .component-panel {
+            background: white;
+            border-left: 1px solid #e9ecef;
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .component-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+            background: #f8f9fa;
+        }
+        
+        .component-item {
+            padding: 1rem;
+            border-bottom: 1px solid #f1f3f4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .component-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .component-item.active {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .form-section {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            border: none;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            border: none;
+        }
+        
+        .preview-image {
+            max-width: 200px;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .alert {
+            border-radius: 8px;
+            border: none;
+        }
+        
+        .table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .ql-editor {
+            min-height: 200px;
+        }
+        
+        .image-upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .image-upload-area:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .image-upload-area.dragover {
+            border-color: #667eea;
+            background: #f0f8ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="admin-header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h4 class="mb-0">
+                        <i class="fas fa-cogs"></i> CMS Quản trị Nailroom
+                    </h4>
+                </div>
+                <div class="col-md-6 text-end">
+                    <span class="me-3">Xin chào, <strong id="adminName">admin</strong></span>
+                    <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container-fluid admin-container">
+        <div class="row h-100">
+            <!-- Left Sidebar - Pages -->
+            <div class="col-md-3 sidebar">
+                <div class="sidebar-header">
+                    <h6 class="mb-0"><i class="fas fa-file-alt"></i> Trang Website</h6>
+                </div>
+                <div id="pagesList">
+                    <!-- Pages will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Center Content Area -->
+            <div class="col-md-6 content-area">
+                <div class="content-header">
+                    <h5 class="mb-0" id="contentTitle">Chọn trang để chỉnh sửa</h5>
+                    <small class="text-muted" id="contentDescription">Chọn một trang từ danh sách bên trái</small>
+                </div>
+                <div class="content-body" id="contentBody">
+                    <div class="text-center text-muted py-5">
+                        <i class="fas fa-mouse-pointer fa-3x mb-3"></i>
+                        <p>Chọn một trang từ danh sách bên trái để bắt đầu chỉnh sửa</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar - Components -->
+            <div class="col-md-3 component-panel">
+                <div class="component-header">
+                    <h6 class="mb-0"><i class="fas fa-puzzle-piece"></i> Thành phần</h6>
+                </div>
+                <div id="componentsList">
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-info-circle"></i>
+                        <p class="small">Chọn trang để xem thành phần</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading" id="loadingOverlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Đang tải...</p>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+        <div id="alertContainer"></div>
+    </div>
+
+    <!-- Modal for editing content -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalTitle">Chỉnh sửa nội dung</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="editModalBody">
+                    <!-- Content will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="saveContent()">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- General Modal -->
+    <div class="modal fade" id="modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Modal</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Content will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Quill Editor -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        let currentPage = null;
+        let currentComponent = null;
+        let quillEditor = null;
+        let editModal = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            loadPages();
+            checkAuth();
+        });
+        
+        // Modal functions
+        function showModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = content;
+            const modal = new bootstrap.Modal(document.getElementById('modal'));
+            modal.show();
+        }
+        
+        function closeModal() {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modal'));
+            if (modal) {
+                modal.hide();
+            }
+        }
+
+        // Check authentication
+        function checkAuth() {
+            fetch('/api/auth/check')
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.authenticated) {
+                        window.location.href = 'admin-login.html';
+                    } else {
+                        document.getElementById('adminName').textContent = data.user.username;
+                    }
+                })
+                .catch(error => {
+                    console.error('Auth check failed:', error);
+                    window.location.href = 'admin-login.html';
+                });
+        }
+
+        // Load pages list
+        function loadPages() {
+            showLoading(true);
+            fetch('/api/pages')
+                .then(response => response.json())
+                .then(data => {
+                    const pagesList = document.getElementById('pagesList');
+                    pagesList.innerHTML = '';
+                    
+                    data.pages.forEach(page => {
+                        const pageItem = document.createElement('div');
+                        pageItem.className = 'sidebar-item';
+                        pageItem.innerHTML = `
+                            <i class="fas fa-file-alt"></i>
+                            <span>${page.title}</span>
+                            <small class="d-block text-muted">${page.slug}</small>
+                        `;
+                        pageItem.onclick = () => selectPage(page);
+                        pagesList.appendChild(pageItem);
+                    });
+                    
+                    showLoading(false);
+                })
+                .catch(error => {
+                    console.error('Error loading pages:', error);
+                    showAlert('Lỗi khi tải danh sách trang', 'danger');
+                    showLoading(false);
+                });
+        }
+
+        // Select page
+        function selectPage(page) {
+            // Update active state
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            currentPage = page;
+            
+            // Update content header
+            document.getElementById('contentTitle').textContent = page.title;
+            document.getElementById('contentDescription').textContent = page.meta_description || 'Không có mô tả';
+            
+            // Load page sections
+            loadPageSections(page.id);
+            
+            // Load components for this page
+            loadPageComponents(page.id);
+        }
+
+        // Load page sections
+        function loadPageSections(pageId) {
+            showLoading(true);
+            fetch(`/api/pages/${pageId}/sections`)
+                .then(response => response.json())
+                .then(data => {
+                    const contentBody = document.getElementById('contentBody');
+                    contentBody.innerHTML = '';
+                    
+                    if (data.sections.length === 0) {
+                        contentBody.innerHTML = `
+                            <div class="text-center py-5">
+                                <i class="fas fa-plus-circle fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">Chưa có section nào. Hãy thêm section đầu tiên!</p>
+                                <button class="btn btn-primary" onclick="addSection()">
+                                    <i class="fas fa-plus"></i> Thêm Section
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        data.sections.forEach(section => {
+                            const sectionDiv = document.createElement('div');
+                            sectionDiv.className = 'form-section';
+                            sectionDiv.innerHTML = `
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-layer-group"></i> ${section.title || section.name}
+                                    </h6>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="editSection(${section.id})">
+                                            <i class="fas fa-edit"></i> Sửa
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteSection(${section.id})">
+                                            <i class="fas fa-trash"></i> Xóa
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="text-muted small">Loại: ${section.type} | Vị trí: ${section.position}</p>
+                                <div id="section-content-${section.id}">
+                                    <div class="text-center py-3">
+                                        <div class="spinner-border spinner-border-sm" role="status"></div>
+                                        <span class="ms-2">Đang tải nội dung...</span>
+                                    </div>
+                                </div>
+                            `;
+                            contentBody.appendChild(sectionDiv);
+                            
+                            // Load section content
+                            loadSectionContent(section.id);
+                        });
+                        
+                        // Add button to add new section
+                        const addSectionBtn = document.createElement('div');
+                        addSectionBtn.className = 'text-center py-3';
+                        addSectionBtn.innerHTML = `
+                            <button class="btn btn-outline-primary" onclick="addSection()">
+                                <i class="fas fa-plus"></i> Thêm Section Mới
+                            </button>
+                        `;
+                        contentBody.appendChild(addSectionBtn);
+                    }
+                    
+                    showLoading(false);
+                })
+                .catch(error => {
+                    console.error('Error loading sections:', error);
+                    showAlert('Lỗi khi tải sections', 'danger');
+                    showLoading(false);
+                });
+        }
+
+        // Load section content
+        function loadSectionContent(sectionId) {
+            fetch(`/api/sections/${sectionId}/content`)
+                .then(response => response.json())
+                .then(data => {
+                    const contentDiv = document.getElementById(`section-content-${sectionId}`);
+                    contentDiv.innerHTML = '';
+                    
+                    if (data.content.length === 0) {
+                        contentDiv.innerHTML = `
+                            <div class="text-center py-3 text-muted">
+                                <i class="fas fa-file-alt"></i>
+                                <p class="small mb-2">Chưa có nội dung</p>
+                                <button class="btn btn-sm btn-outline-primary" onclick="addContent(${sectionId})">
+                                    <i class="fas fa-plus"></i> Thêm nội dung
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        data.content.forEach(content => {
+                            const contentItem = document.createElement('div');
+                            contentItem.className = 'border rounded p-2 mb-2';
+                            contentItem.innerHTML = `
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <strong>${content.title || 'Không có tiêu đề'}</strong>
+                                        <span class="badge bg-secondary ms-2">${content.type}</span>
+                                        <div class="text-muted small mt-1">
+                                            ${content.content ? content.content.substring(0, 100) + '...' : 'Không có nội dung'}
+                                        </div>
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary" onclick="editContent(${content.id})">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger" onclick="deleteContent(${content.id})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                            contentDiv.appendChild(contentItem);
+                        });
+                        
+                        // Add button to add more content
+                        const addContentBtn = document.createElement('div');
+                        addContentBtn.className = 'text-center mt-2';
+                        addContentBtn.innerHTML = `
+                            <button class="btn btn-sm btn-outline-primary" onclick="addContent(${sectionId})">
+                                <i class="fas fa-plus"></i> Thêm nội dung
+                            </button>
+                        `;
+                        contentDiv.appendChild(addContentBtn);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading section content:', error);
+                    const contentDiv = document.getElementById(`section-content-${sectionId}`);
+                    contentDiv.innerHTML = '<div class="text-danger small">Lỗi khi tải nội dung</div>';
+                });
+        }
+
+        // Load page components
+        function loadPageComponents(pageId) {
+            const componentsList = document.getElementById('componentsList');
+            componentsList.innerHTML = `
+                <div class="component-item" onclick="showPageSettings()">
+                    <i class="fas fa-cog"></i>
+                    <strong>Cài đặt trang</strong>
+                    <div class="small text-muted">Tiêu đề, mô tả, SEO</div>
+                </div>
+                <div class="component-item" onclick="showSiteSettings()">
+                    <i class="fas fa-globe"></i>
+                    <strong>Cài đặt website</strong>
+                    <div class="small text-muted">Logo, liên hệ, mạng xã hội</div>
+                </div>
+                <div class="component-item" onclick="showServices()">
+                    <i class="fas fa-concierge-bell"></i>
+                    <strong>Dịch vụ</strong>
+                    <div class="small text-muted">Quản lý dịch vụ</div>
+                </div>
+                <div class="component-item" onclick="showGallery()">
+                    <i class="fas fa-images"></i>
+                    <strong>Thư viện ảnh</strong>
+                    <div class="small text-muted">Quản lý hình ảnh</div>
+                </div>
+                <div class="component-item" onclick="showTestimonials()">
+                    <i class="fas fa-quote-left"></i>
+                    <strong>Đánh giá khách hàng</strong>
+                    <div class="small text-muted">Quản lý testimonials</div>
+                </div>
+                <div class="component-item" onclick="showCelebrities()">
+                    <i class="fas fa-star"></i>
+                    <strong>Khách hàng nổi tiếng</strong>
+                    <div class="small text-muted">Quản lý celebrities</div>
+                </div>
+                <div class="component-item" onclick="showStores()">
+                    <i class="fas fa-store"></i>
+                    <strong>Hệ thống cửa hàng</strong>
+                    <div class="small text-muted">Quản lý địa điểm</div>
+                </div>
+                <div class="component-item" onclick="showNavigation()">
+                    <i class="fas fa-bars"></i>
+                    <strong>Menu điều hướng</strong>
+                    <div class="small text-muted">Quản lý menu</div>
+                </div>
+                <div class="component-item" onclick="showBlogPosts()">
+                    <i class="fas fa-blog"></i>
+                    <strong>Bài viết Blog</strong>
+                    <div class="small text-muted">Quản lý blog</div>
+                </div>
+            `;
+        }
+
+        // Component functions
+        function showPageSettings() {
+            if (!currentPage) {
+                showAlert('Vui lòng chọn trang trước', 'warning');
+                return;
+            }
+            
+            document.querySelectorAll('.component-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            const modalBody = document.getElementById('editModalBody');
+            modalBody.innerHTML = `
+                <form id="pageSettingsForm">
+                    <div class="mb-3">
+                        <label class="form-label">Tiêu đề trang</label>
+                        <input type="text" class="form-control" id="pageTitle" value="${currentPage.title}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Slug (URL)</label>
+                        <input type="text" class="form-control" id="pageSlug" value="${currentPage.slug}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mô tả Meta</label>
+                        <textarea class="form-control" id="pageMetaDescription" rows="3">${currentPage.meta_description || ''}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select" id="pageStatus">
+                            <option value="active" ${currentPage.status === 'active' ? 'selected' : ''}>Hoạt động</option>
+                            <option value="inactive" ${currentPage.status === 'inactive' ? 'selected' : ''}>Không hoạt động</option>
+                        </select>
+                    </div>
+                </form>
+            `;
+            
+            document.getElementById('editModalTitle').textContent = 'Cài đặt trang: ' + currentPage.title;
+            editModal.show();
+        }
+
+        // Utility functions
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').style.display = show ? 'block' : 'none';
+        }
+
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertId = 'alert-' + Date.now();
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.id = alertId;
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            alertContainer.appendChild(alertDiv);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                const alert = document.getElementById(alertId);
+                if (alert) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+
+        function saveContent() {
+            // This will be implemented based on the current editing context
+            if (currentPage && document.getElementById('pageSettingsForm')) {
+                savePageSettings();
+            }
+        }
+
+        function savePageSettings() {
+            const formData = {
+                title: document.getElementById('pageTitle').value,
+                slug: document.getElementById('pageSlug').value,
+                meta_description: document.getElementById('pageMetaDescription').value,
+                status: document.getElementById('pageStatus').value
+            };
+            
+            fetch(`/api/pages/${currentPage.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('Cập nhật trang thành công!', 'success');
+                    editModal.hide();
+                    loadPages(); // Reload pages list
+                } else {
+                    showAlert('Lỗi: ' + data.message, 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error saving page:', error);
+                showAlert('Lỗi khi lưu trang', 'danger');
+            });
+        }
+
+        function logout() {
+            fetch('/api/auth/logout', { method: 'POST' })
+                .then(() => {
+                    window.location.href = 'admin-login.html';
+                })
+                .catch(error => {
+                    console.error('Logout error:', error);
+                    window.location.href = 'admin-login.html';
+                });
+        }
+
+        // Placeholder functions for other components
+
+        function addSection() { showAlert('Chức năng đang phát triển', 'info'); }
+        function editSection(id) { showAlert('Chức năng đang phát triển', 'info'); }
+        function deleteSection(id) { showAlert('Chức năng đang phát triển', 'info'); }
+        function addContent(sectionId) { showAlert('Chức năng đang phát triển', 'info'); }
+        function editContent(id) { showAlert('Chức năng đang phát triển', 'info'); }
+        function deleteContent(id) { showAlert('Chức năng đang phát triển', 'info'); }
+        
+        // Component management functions
+        function showSiteSettings() {
+            document.querySelectorAll('.component-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            showModal('Cài đặt website', 'Đang tải cài đặt website...');
+            loadSiteSettings();
+        }
+        
+        async function loadSiteSettings() {
+            try {
+                const response = await fetch('/api/settings');
+                const data = await response.json();
+                
+                if (data.success) {
+                    let html = '<form id="siteSettingsForm">';
+                    
+                    // Group settings by group_name
+                    const groups = {};
+                    data.settings.forEach(setting => {
+                        if (!groups[setting.group_name]) {
+                            groups[setting.group_name] = [];
+                        }
+                        groups[setting.group_name].push(setting);
+                    });
+                    
+                    Object.keys(groups).forEach(groupName => {
+                        html += `<h5 class="mt-4">${groupName.charAt(0).toUpperCase() + groupName.slice(1)}</h5>`;
+                        
+                        groups[groupName].forEach(setting => {
+                            const inputType = setting.type === 'image' ? 'url' : 'text';
+                            html += `
+                                <div class="mb-3">
+                                    <label class="form-label">${setting.key}</label>
+                                    <input type="${inputType}" class="form-control" 
+                                           name="${setting.key}" value="${setting.value || ''}"
+                                           data-key="${setting.key}">
+                                </div>
+                            `;
+                        });
+                    });
+                    
+                    html += `
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">Lưu cài đặt</button>
+                        </div>
+                    </form>`;
+                    
+                    document.getElementById('modalBody').innerHTML = html;
+                    
+                    // Add form submit handler
+                    document.getElementById('siteSettingsForm').addEventListener('submit', saveSiteSettings);
+                } else {
+                    document.getElementById('modalBody').innerHTML = '<p class="text-danger">Lỗi khi tải cài đặt website</p>';
+                }
+            } catch (error) {
+                console.error('Error loading site settings:', error);
+                document.getElementById('modalBody').innerHTML = '<p class="text-danger">Lỗi kết nối server</p>';
+            }
+        }
+        
+        async function saveSiteSettings(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const formData = new FormData(form);
+            const updates = [];
+            
+            for (let [key, value] of formData.entries()) {
+                updates.push(
+                    fetch(`/api/settings/${key}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ value })
+                    })
+                );
+            }
+            
+            try {
+                await Promise.all(updates);
+                showAlert('Cập nhật cài đặt thành công!', 'success');
+                closeModal();
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                showAlert('Lỗi khi lưu cài đặt!', 'danger');
+            }
+        }
+        
+        function showServices() {
+            document.querySelectorAll('.component-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            showModal('Quản lý dịch vụ', 'Đang tải danh sách dịch vụ...');
+            loadServices();
+        }
+        
+        async function loadServices() {
+            try {
+                const response = await fetch('/api/services');
+                const data = await response.json();
+                
+                if (data.success) {
+                    let html = `
+                        <div class="mb-3">
+                            <button class="btn btn-primary" onclick="showAddServiceForm()">
+                                <i class="fas fa-plus"></i> Thêm dịch vụ mới
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tên dịch vụ</th>
+                                        <th>Giá</th>
+                                        <th>Danh mục</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    
+                    data.services.forEach(service => {
+                        const price = service.price_from && service.price_to ? 
+                            `${service.price_from.toLocaleString()} - ${service.price_to.toLocaleString()} ${service.currency}` :
+                            'Liên hệ';
+                        
+                        html += `
+                            <tr>
+                                <td>${service.name}</td>
+                                <td>${price}</td>
+                                <td>${service.category || 'Chưa phân loại'}</td>
+                                <td>
+                                    <span class="badge ${service.status === 'active' ? 'bg-success' : 'bg-secondary'}">
+                                        ${service.status === 'active' ? 'Hoạt động' : 'Tạm dừng'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="editService(${service.id})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteService(${service.id})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    
+                    html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                    
+                    document.getElementById('modalBody').innerHTML = html;
+                } else {
+                    document.getElementById('modalBody').innerHTML = '<p class="text-danger">Lỗi khi tải dữ liệu dịch vụ</p>';
+                }
+            } catch (error) {
+                console.error('Error loading services:', error);
+                document.getElementById('modalBody').innerHTML = '<p class="text-danger">Lỗi kết nối server</p>';
+            }
+        }
+        
+        function showAddServiceForm() {
+            const formHtml = `
+                <form id="serviceForm" onsubmit="saveService(event)">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="serviceName" class="form-label">Tên dịch vụ *</label>
+                                <input type="text" class="form-control" id="serviceName" name="name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="serviceCategory" class="form-label">Danh mục</label>
+                                <select class="form-control" id="serviceCategory" name="category">
+                                    <option value="">Chọn danh mục</option>
+                                    <option value="nail">Nail</option>
+                                    <option value="mi">Mi</option>
+                                    <option value="long-may">Lông mày</option>
+                                    <option value="spa">Spa</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="serviceDescription" class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="serviceDescription" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="servicePriceFrom" class="form-label">Giá từ (VND)</label>
+                                <input type="number" class="form-control" id="servicePriceFrom" name="price_from" min="0">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="servicePriceTo" class="form-label">Giá đến (VND)</label>
+                                <input type="number" class="form-control" id="servicePriceTo" name="price_to" min="0">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="serviceDuration" class="form-label">Thời gian (phút)</label>
+                                <input type="number" class="form-control" id="serviceDuration" name="duration" min="0">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="serviceImageUrl" class="form-label">URL hình ảnh</label>
+                                <input type="url" class="form-control" id="serviceImageUrl" name="image_url">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="serviceStatus" class="form-label">Trạng thái</label>
+                                <select class="form-control" id="serviceStatus" name="status">
+                                    <option value="active">Hoạt động</option>
+                                    <option value="inactive">Tạm dừng</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="serviceFeatures" class="form-label">Tính năng (mỗi dòng một tính năng)</label>
+                        <textarea class="form-control" id="serviceFeatures" name="features" rows="3" placeholder="Ví dụ:&#10;Sơn gel cao cấp&#10;Thiết kế nail art&#10;Bảo hành 2 tuần"></textarea>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-secondary" onclick="loadServices()">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Lưu dịch vụ</button>
+                    </div>
+                </form>
+            `;
+            
+            document.getElementById('modalBody').innerHTML = formHtml;
+        }
+        
+        async function saveService(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const serviceData = {};
+            
+            // Convert form data to object
+            for (let [key, value] of formData.entries()) {
+                if (key === 'features' && value.trim()) {
+                    // Convert features text to JSON array
+                    serviceData[key] = value.split('\n').filter(f => f.trim()).map(f => f.trim());
+                } else if (key === 'price_from' || key === 'price_to' || key === 'duration') {
+                    serviceData[key] = value ? parseInt(value) : null;
+                } else {
+                    serviceData[key] = value || null;
+                }
+            }
+            
+            try {
+                const response = await fetch('/api/services', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(serviceData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('Thêm dịch vụ thành công!', 'success');
+                    loadServices(); // Reload the services list
+                } else {
+                    showAlert('Lỗi khi thêm dịch vụ: ' + (result.error || 'Unknown error'), 'danger');
+                }
+            } catch (error) {
+                console.error('Error saving service:', error);
+                showAlert('Lỗi kết nối server!', 'danger');
+            }
+        }
+        
+        async function editService(serviceId) {
+            try {
+                const response = await fetch(`/api/services/${serviceId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const service = data.service;
+                    showAddServiceForm(); // Show the form first
+                    
+                    // Wait a bit for the form to render
+                    setTimeout(() => {
+                        // Fill the form with existing data
+                        document.getElementById('serviceName').value = service.name || '';
+                        document.getElementById('serviceCategory').value = service.category || '';
+                        document.getElementById('serviceDescription').value = service.description || '';
+                        document.getElementById('servicePriceFrom').value = service.price_from || '';
+                        document.getElementById('servicePriceTo').value = service.price_to || '';
+                        document.getElementById('serviceDuration').value = service.duration || '';
+                        document.getElementById('serviceImageUrl').value = service.image_url || '';
+                        document.getElementById('serviceStatus').value = service.status || 'active';
+                        
+                        if (service.features && Array.isArray(service.features)) {
+                            document.getElementById('serviceFeatures').value = service.features.join('\n');
+                        }
+                        
+                        // Change form submission to update instead of create
+                        const form = document.getElementById('serviceForm');
+                        form.onsubmit = (e) => updateService(e, serviceId);
+                        
+                        // Change button text
+                        const submitBtn = form.querySelector('button[type="submit"]');
+                        submitBtn.textContent = 'Cập nhật dịch vụ';
+                    }, 100);
+                } else {
+                    showAlert('Lỗi khi tải thông tin dịch vụ!', 'danger');
+                }
+            } catch (error) {
+                console.error('Error loading service:', error);
+                showAlert('Lỗi kết nối server!', 'danger');
+            }
+        }
+        
+        async function updateService(event, serviceId) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const serviceData = {};
+            
+            // Convert form data to object
+            for (let [key, value] of formData.entries()) {
+                if (key === 'features' && value.trim()) {
+                    serviceData[key] = value.split('\n').filter(f => f.trim()).map(f => f.trim());
+                } else if (key === 'price_from' || key === 'price_to' || key === 'duration') {
+                    serviceData[key] = value ? parseInt(value) : null;
+                } else {
+                    serviceData[key] = value || null;
+                }
+            }
+            
+            try {
+                const response = await fetch(`/api/services/${serviceId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(serviceData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('Cập nhật dịch vụ thành công!', 'success');
+                    loadServices(); // Reload the services list
+                } else {
+                    showAlert('Lỗi khi cập nhật dịch vụ: ' + (result.error || 'Unknown error'), 'danger');
+                }
+            } catch (error) {
+                console.error('Error updating service:', error);
+                showAlert('Lỗi kết nối server!', 'danger');
+            }
+        }
+        
+        async function deleteService(serviceId) {
+            if (!confirm('Bạn có chắc chắn muốn xóa dịch vụ này?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/services/${serviceId}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('Xóa dịch vụ thành công!', 'success');
+                    loadServices(); // Reload the services list
+                } else {
+                    showAlert('Lỗi khi xóa dịch vụ: ' + (result.error || 'Unknown error'), 'danger');
+                }
+            } catch (error) {
+                console.error('Error deleting service:', error);
+                showAlert('Lỗi kết nối server!', 'danger');
+            }
+        }
+        
+        function showGallery() {
+            document.querySelectorAll('.component-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            showModal('Quản lý thư viện ảnh', 'Chức năng đang phát triển');
+        }
+        
+        function showTestimonials() {
+            document.querySelectorAll('.component-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            showModal('Quản lý đánh giá khách hàng', 'Chức năng đang phát triển');
+        }
+        
+        function showCelebrities() {
+            document.querySelectorAll('.component-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            showModal('Quản lý khách hàng nổi tiếng', 'Chức năng đang phát triển');
+        }
+        
+        function showStores() {
+            document.querySelectorAll('.component-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            showModal('Quản lý hệ thống cửa hàng', 'Chức năng đang phát triển');
+        }
+        
+        function showNavigation() {
+            document.querySelectorAll('.component-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            showModal('Quản lý menu điều hướng', 'Chức năng đang phát triển');
+        }
+        
+        function showBlogPosts() {
+            document.querySelectorAll('.component-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            showModal('Quản lý bài viết Blog', 'Chức năng đang phát triển');
+        }
+    </script>
+</body>
+</html>
