@@ -1,0 +1,2270 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Quản trị Hoàn chỉnh - Nailroom</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1d29;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: #2c3e50;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-left i {
+            color: #3498db;
+            font-size: 24px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            margin-top: 60px;
+            height: calc(100vh - 60px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: #2c3e50;
+            border-right: 1px solid #34495e;
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            border-bottom: 1px solid #34495e;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .sidebar-menu a:hover {
+            background: #34495e;
+            color: #ffffff;
+        }
+
+        .sidebar-menu a.active {
+            background: #3498db;
+            color: #ffffff;
+        }
+
+        .sidebar-menu i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            background: #1a1d29;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #34495e;
+        }
+
+        .section-header i {
+            color: #3498db;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #bdc3c7;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: #2c3e50;
+            border: 2px solid #34495e;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #7f8c8d;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        /* Cards */
+        .content-card {
+            background: #2c3e50;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #34495e;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title i {
+            color: #3498db;
+            margin-right: 10px;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            background: #2c3e50;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .data-table th {
+            background: #34495e;
+            color: #ffffff;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #34495e;
+            color: #bdc3c7;
+        }
+
+        .data-table tr:hover {
+            background: #34495e;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #27ae60;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background: #e74c3c;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-grid-full {
+            grid-column: 1 / -1;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Celebrity Grid */
+        .celebrity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .celebrity-item {
+            background: #34495e;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .celebrity-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .celebrity-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .celebrity-profession {
+            color: #bdc3c7;
+            font-size: 12px;
+        }
+
+        /* Loading indicator */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #bdc3c7;
+        }
+
+        /* Stats cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stats-card {
+            background: #34495e;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stats-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .stats-label {
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <i class="fas fa-tachometer-alt"></i>
+            <span class="header-title">Dashboard Quản trị Hoàn chỉnh - Nailroom</span>
+        </div>
+        <div class="header-right">
+            <span class="user-info">Xin chào, <strong>admin</strong></span>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#" class="menu-item active" data-section="overview">
+                        <i class="fas fa-chart-line"></i>
+                        Tổng quan
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="header">
+                        <i class="fas fa-header"></i>
+                        Header & Navigation
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="hero">
+                        <i class="fas fa-star"></i>
+                        Hero Section
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="about">
+                        <i class="fas fa-info-circle"></i>
+                        Giới thiệu
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="services">
+                        <i class="fas fa-cut"></i>
+                        Dịch vụ
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="gallery">
+                        <i class="fas fa-images"></i>
+                        Gallery
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="academy">
+                        <i class="fas fa-graduation-cap"></i>
+                        Học viện
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="celebrities">
+                        <i class="fas fa-users"></i>
+                        Khách hàng nổi tiếng
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="testimonials">
+                        <i class="fas fa-comments"></i>
+                        Cảm nhận khách hàng
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="stores">
+                        <i class="fas fa-store"></i>
+                        Hệ thống cửa hàng
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="contact">
+                        <i class="fas fa-phone"></i>
+                        Liên hệ
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="footer">
+                        <i class="fas fa-copyright"></i>
+                        Footer
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="seo">
+                        <i class="fas fa-search"></i>
+                        Cài đặt SEO
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Success/Error Messages -->
+            <div class="success-message" id="success-message">
+                <i class="fas fa-check-circle"></i> <span id="success-text">Đã lưu thành công!</span>
+            </div>
+            <div class="error-message" id="error-message">
+                <i class="fas fa-exclamation-circle"></i> <span id="error-text">Có lỗi xảy ra!</span>
+            </div>
+
+            <!-- Overview Section -->
+            <div class="content-section active" id="overview-section">
+                <div class="section-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h2 class="section-title">Tổng quan Website</h2>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stats-card">
+                        <div class="stats-number" id="celebrity-count">0</div>
+                        <div class="stats-label">Celebrities</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="testimonial-count">0</div>
+                        <div class="stats-label">Testimonials</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="service-count">0</div>
+                        <div class="stats-label">Dịch vụ</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="store-count">0</div>
+                        <div class="stats-label">Cửa hàng</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-link"></i>
+                        Links hữu ích
+                    </h3>
+                    
+                    <div class="action-buttons">
+                        <a href="/" target="_blank" class="btn-primary">
+                            <i class="fas fa-external-link-alt"></i> Xem trang web
+                        </a>
+                        <a href="/admin-login.html" class="btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> Trang đăng nhập
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Celebrities Section -->
+            <div class="content-section" id="celebrities-section">
+                <div class="section-header">
+                    <i class="fas fa-users"></i>
+                    <h2 class="section-title">Khách hàng nổi tiếng</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-plus"></i>
+                        Thêm Celebrity mới
+                    </h3>
+                    
+                    <form id="celebrity-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Tên:</label>
+                                <input type="text" class="form-control" id="celebrity-name" placeholder="Tóc Tiên" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Nghề nghiệp:</label>
+                                <input type="text" class="form-control" id="celebrity-profession" placeholder="Ca sĩ" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Thứ tự:</label>
+                                <input type="number" class="form-control" id="celebrity-position" placeholder="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">URL hình ảnh:</label>
+                            <input type="url" class="form-control" id="celebrity-image" placeholder="https://..." required>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-plus"></i> Thêm Celebrity
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-list"></i>
+                        Danh sách Celebrities hiện có
+                    </h3>
+                    
+                    <div class="celebrity-grid" id="celebrity-list">
+                        <div class="loading">Đang tải danh sách celebrities...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials Section -->
+            <div class="content-section" id="testimonials-section">
+                <div class="section-header">
+                    <i class="fas fa-comments"></i>
+                    <h2 class="section-title">Cảm nhận khách hàng</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-plus"></i>
+                        Thêm Testimonial mới
+                    </h3>
+                    
+                    <form id="testimonial-form">
+                        <div class="form-group">
+                            <label class="form-label">Nội dung cảm nhận:</label>
+                            <textarea class="form-control" id="testimonial-content" placeholder="Nội dung cảm nhận của khách hàng..." required></textarea>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Tên khách hàng:</label>
+                                <input type="text" class="form-control" id="testimonial-name" placeholder="Hương Nhi" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Địa điểm:</label>
+                                <input type="text" class="form-control" id="testimonial-location" placeholder="Hà Nội">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Thứ tự:</label>
+                                <input type="number" class="form-control" id="testimonial-position" placeholder="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">URL hình ảnh khách hàng:</label>
+                            <input type="url" class="form-control" id="testimonial-image" placeholder="https://...">
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-plus"></i> Thêm Testimonial
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-list"></i>
+                        Danh sách Testimonials hiện có
+                    </h3>
+                    
+                    <table class="data-table" id="testimonials-table">
+                        <thead>
+                            <tr>
+                                <th>Khách hàng</th>
+                                <th>Địa điểm</th>
+                                <th>Nội dung</th>
+                                <th>Thứ tự</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="testimonials-list">
+                            <tr>
+                                <td colspan="5" class="loading">Đang tải danh sách testimonials...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Services Section -->
+            <div class="content-section" id="services-section">
+                <div class="section-header">
+                    <i class="fas fa-cut"></i>
+                    <h2 class="section-title">Dịch vụ</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-plus"></i>
+                        Thêm Dịch vụ mới
+                    </h3>
+                    
+                    <form id="service-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Tên dịch vụ:</label>
+                                <input type="text" class="form-control" id="service-name" placeholder="Mi" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Giá dịch vụ:</label>
+                                <input type="text" class="form-control" id="service-price" placeholder="từ 60000 VNĐ" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mô tả dịch vụ:</label>
+                            <textarea class="form-control" id="service-description" placeholder="Ở NAIL ROOM hiện có 2 dịch vụ chính về mi đó là nối..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">URL hình ảnh:</label>
+                            <input type="url" class="form-control" id="service-image" placeholder="https://...">
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-save"></i> Lưu Dịch vụ
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-list"></i>
+                        Danh sách Dịch vụ hiện có
+                    </h3>
+                    
+                    <table class="data-table" id="services-table">
+                        <thead>
+                            <tr>
+                                <th>Tên dịch vụ</th>
+                                <th>Giá</th>
+                                <th>Mô tả</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="services-list">
+                            <tr>
+                                <td colspan="4" class="loading">Đang tải danh sách dịch vụ...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Store Locations Section -->
+            <div class="content-section" id="stores-section">
+                <div class="section-header">
+                    <i class="fas fa-store"></i>
+                    <h2 class="section-title">Hệ thống cửa hàng</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-plus"></i>
+                        Thêm Cửa hàng mới
+                    </h3>
+                    
+                    <form id="store-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Tên cửa hàng:</label>
+                                <input type="text" class="form-control" id="store-name" placeholder="Nailroom Nguyễn Trãi" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Số điện thoại:</label>
+                                <input type="text" class="form-control" id="store-phone" placeholder="028 3123 4567">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Địa chỉ:</label>
+                            <textarea class="form-control" id="store-address" placeholder="123 Nguyễn Trãi, Q.1, TP.HCM" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Giờ làm việc:</label>
+                            <input type="text" class="form-control" id="store-hours" placeholder="9:00 - 21:00 (Hàng ngày)">
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-plus"></i> Thêm Cửa hàng
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-list"></i>
+                        Danh sách Cửa hàng hiện có
+                    </h3>
+                    
+                    <table class="data-table" id="stores-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cửa hàng</th>
+                                <th>Địa chỉ</th>
+                                <th>Điện thoại</th>
+                                <th>Giờ làm việc</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stores-list">
+                            <tr>
+                                <td colspan="5" class="loading">Đang tải danh sách cửa hàng...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Header Section -->
+            <div class="content-section" id="header-section">
+                <div class="section-header">
+                    <i class="fas fa-header"></i>
+                    <h2 class="section-title">Header & Logo</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit"></i>
+                        Cài đặt Header
+                    </h3>
+                    
+                    <form id="header-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Tên công ty/Logo text:</label>
+                                <input type="text" class="form-control" id="header-logo-text" placeholder="NAIL ROOM">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Số điện thoại:</label>
+                                <input type="text" class="form-control" id="header-phone" placeholder="1900 1234">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="header-email" placeholder="info@nailroom.vn">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Facebook URL:</label>
+                                <input type="url" class="form-control" id="header-facebook" placeholder="https://facebook.com/nailroom">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Instagram URL:</label>
+                                <input type="url" class="form-control" id="header-instagram" placeholder="https://instagram.com/nailroom">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">App Store URL:</label>
+                                <input type="url" class="form-control" id="header-appstore" placeholder="https://apps.apple.com/...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Google Play URL:</label>
+                                <input type="url" class="form-control" id="header-googleplay" placeholder="https://play.google.com/...">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Logo (hình ảnh):</label>
+                            <input type="url" class="form-control" id="header-logo-image" placeholder="URL hình ảnh logo">
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-save"></i> Lưu Header
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Hero Section -->
+            <div class="content-section" id="hero-section">
+                <div class="section-header">
+                    <i class="fas fa-star"></i>
+                    <h2 class="section-title">Hero Section</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit"></i>
+                        Chỉnh sửa Hero Section
+                    </h3>
+                    
+                    <form id="hero-form">
+                        <div class="form-group">
+                            <label class="form-label">Tiêu đề chính:</label>
+                            <input type="text" class="form-control" id="hero-title" placeholder="NAIL ROOM">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Slogan:</label>
+                            <input type="text" class="form-control" id="hero-slogan" placeholder="You Love It, We Nail It!">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Text tiếng Hàn:</label>
+                            <input type="text" class="form-control" id="hero-korean" placeholder="네일룸">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Hình nền Hero:</label>
+                            <input type="url" class="form-control" id="hero-background" placeholder="URL hình nền">
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-save"></i> Lưu Hero Section
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- About Section -->
+            <div class="content-section" id="about-section">
+                <div class="section-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h2 class="section-title">Giới thiệu</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit"></i>
+                        Chỉnh sửa About Section
+                    </h3>
+                    
+                    <form id="about-form">
+                        <div class="form-group">
+                            <label class="form-label">Quote:</label>
+                            <input type="text" class="form-control" id="about-quote" placeholder="You Love It. We Nail It!">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Tiêu đề chính:</label>
+                            <input type="text" class="form-control" id="about-title" placeholder="VỚI NAIL ROOM 'AI CŨNG CÓ THỂ TRỞ NÊN ĐẸP HƠN'">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mô tả 1:</label>
+                            <textarea class="form-control" id="about-desc1" placeholder="Xuất phát là một hệ thống Nail Hàn Quốc..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mô tả 2:</label>
+                            <textarea class="form-control" id="about-desc2" placeholder="Bởi thế, slogan của Naill Room là..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mô tả 3:</label>
+                            <textarea class="form-control" id="about-desc3" placeholder="Hãy ghé chơi với chúng mình..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Hình ảnh:</label>
+                            <input type="url" class="form-control" id="about-image" placeholder="URL hình ảnh">
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Text nút 1:</label>
+                                <input type="text" class="form-control" id="about-btn1-text" placeholder="GIỚI THIỆU">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">URL nút 1:</label>
+                                <input type="text" class="form-control" id="about-btn1-url" placeholder="/gioi-thieu.html">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Text nút 2:</label>
+                                <input type="text" class="form-control" id="about-btn2-text" placeholder="HỆ THỐNG NAILROOM">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">URL nút 2:</label>
+                                <input type="text" class="form-control" id="about-btn2-url" placeholder="/he-thong-cua-hang.html">
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-save"></i> Lưu About Section
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Gallery Section -->
+            <div class="content-section" id="gallery-section">
+                <div class="section-header">
+                    <i class="fas fa-images"></i>
+                    <h2 class="section-title">Gallery</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-plus"></i>
+                        Thêm hình ảnh mới
+                    </h3>
+                    
+                    <form id="gallery-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Tiêu đề ảnh:</label>
+                                <input type="text" class="form-control" id="gallery-title" placeholder="Mẫu nail đẹp" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Danh mục:</label>
+                                <input type="text" class="form-control" id="gallery-category" placeholder="Nail Art">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">URL hình ảnh:</label>
+                            <input type="url" class="form-control" id="gallery-image" placeholder="https://..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mô tả:</label>
+                            <textarea class="form-control" id="gallery-description" placeholder="Mô tả về hình ảnh..."></textarea>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-plus"></i> Thêm vào Gallery
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-list"></i>
+                        Danh sách hình ảnh
+                    </h3>
+                    
+                    <table class="data-table" id="gallery-table">
+                        <thead>
+                            <tr>
+                                <th>Hình ảnh</th>
+                                <th>Tiêu đề</th>
+                                <th>Danh mục</th>
+                                <th>Mô tả</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gallery-list">
+                            <tr>
+                                <td colspan="5" class="loading">Đang tải danh sách hình ảnh...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Academy Section -->
+            <div class="content-section" id="academy-section">
+                <div class="section-header">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h2 class="section-title">Học viện</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit"></i>
+                        Chỉnh sửa Academy Section
+                    </h3>
+                    
+                    <form id="academy-form">
+                        <div class="form-group">
+                            <label class="form-label">Tiêu đề:</label>
+                            <input type="text" class="form-control" id="academy-title" placeholder="HỌC VIỆN MH THE BEAUTY LAB">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mô tả:</label>
+                            <textarea class="form-control" id="academy-description" placeholder="Học viện đào tạo MH THE BEAUTY LAB là học viện..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Hình ảnh:</label>
+                            <input type="url" class="form-control" id="academy-image" placeholder="URL hình ảnh">
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-save"></i> Lưu Academy Section
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="content-section" id="contact-section">
+                <div class="section-header">
+                    <i class="fas fa-phone"></i>
+                    <h2 class="section-title">Liên hệ</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit"></i>
+                        Thông tin liên hệ
+                    </h3>
+                    
+                    <form id="contact-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Tiêu đề section:</label>
+                                <input type="text" class="form-control" id="contact-title" placeholder="Liên hệ với chúng tôi">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Số điện thoại chính:</label>
+                                <input type="text" class="form-control" id="contact-phone" placeholder="1900 1234">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="contact-email" placeholder="info@nailroom.vn">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Giờ làm việc:</label>
+                                <input type="text" class="form-control" id="contact-hours" placeholder="9:00 - 21:00 (Hàng ngày)">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Địa chỉ:</label>
+                            <textarea class="form-control" id="contact-address" placeholder="123 Nguyễn Trãi, Q.1, TP.HCM"></textarea>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-save"></i> Lưu thông tin liên hệ
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Footer Section -->
+            <div class="content-section" id="footer-section">
+                <div class="section-header">
+                    <i class="fas fa-copyright"></i>
+                    <h2 class="section-title">Footer</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit"></i>
+                        Chỉnh sửa Footer
+                    </h3>
+                    
+                    <form id="footer-form">
+                        <div class="form-group">
+                            <label class="form-label">Logo hình ảnh:</label>
+                            <input type="url" class="form-control" id="footer-logo" placeholder="URL logo">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mô tả công ty:</label>
+                            <textarea class="form-control" id="footer-description" placeholder="Nailroom - Thương hiệu làm đẹp hàng đầu..."></textarea>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Facebook URL:</label>
+                                <input type="url" class="form-control" id="footer-facebook" placeholder="https://facebook.com/nailroom">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Instagram URL:</label>
+                                <input type="url" class="form-control" id="footer-instagram" placeholder="https://instagram.com/nailroom">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Địa chỉ:</label>
+                                <input type="text" class="form-control" id="footer-address" placeholder="123 Nguyễn Trãi, Q.1, TP.HCM">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Điện thoại:</label>
+                                <input type="text" class="form-control" id="footer-phone" placeholder="1900 1234 (miễn phí)">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="footer-email" placeholder="info@nailroom.vn">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Giờ làm việc:</label>
+                                <input type="text" class="form-control" id="footer-hours" placeholder="9:00 - 21:00 (Hàng ngày)">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">App Store URL:</label>
+                                <input type="url" class="form-control" id="footer-appstore" placeholder="https://apps.apple.com/...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Google Play URL:</label>
+                                <input type="url" class="form-control" id="footer-googleplay" placeholder="https://play.google.com/...">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Copyright:</label>
+                            <input type="text" class="form-control" id="footer-copyright" placeholder="© 2024 Nailroom. All rights reserved.">
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-save"></i> Lưu Footer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- SEO Section -->
+            <div class="content-section" id="seo-section">
+                <div class="section-header">
+                    <i class="fas fa-search"></i>
+                    <h2 class="section-title">Cài đặt SEO</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit"></i>
+                        Tối ưu hóa SEO
+                    </h3>
+                    
+                    <form id="seo-form">
+                        <div class="form-group">
+                            <label class="form-label">Meta Title:</label>
+                            <input type="text" class="form-control" id="seo-title" placeholder="NAILROOM - Hệ thống làm đẹp chuyên nghiệp">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Meta Description:</label>
+                            <textarea class="form-control" id="seo-description" placeholder="Dịch vụ làm nail, nối mi, điêu khắc chân mày chuyên nghiệp tại NAILROOM. Đặt lịch ngay!"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Meta Keywords:</label>
+                            <input type="text" class="form-control" id="seo-keywords" placeholder="nail, nối mi, làm đẹp, spa, salon">
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-save"></i> Lưu cài đặt SEO
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentEditingId = null;
+
+        // Menu navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all menu items
+                document.querySelectorAll('.menu-item').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // Hide all content sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show selected section
+                const sectionId = this.getAttribute('data-section') + '-section';
+                document.getElementById(sectionId).classList.add('active');
+
+                // Load data for the selected section
+                loadSectionData(this.getAttribute('data-section'));
+            });
+        });
+
+        // Utility functions
+        function showMessage(type, text) {
+            const successMsg = document.getElementById('success-message');
+            const errorMsg = document.getElementById('error-message');
+            
+            if (type === 'success') {
+                document.getElementById('success-text').textContent = text;
+                successMsg.style.display = 'block';
+                errorMsg.style.display = 'none';
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            } else {
+                document.getElementById('error-text').textContent = text;
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Load section data
+        async function loadSectionData(section) {
+            try {
+                switch(section) {
+                    case 'overview':
+                        await loadOverviewData();
+                        break;
+                    case 'header':
+                        await loadHeaderData();
+                        break;
+                    case 'hero':
+                        await loadHeroData();
+                        break;
+                    case 'about':
+                        await loadAboutData();
+                        break;
+                    case 'gallery':
+                        await loadGalleryData();
+                        break;
+                    case 'academy':
+                        await loadAcademyData();
+                        break;
+                    case 'celebrities':
+                        await loadCelebritiesData();
+                        break;
+                    case 'testimonials':
+                        await loadTestimonialsData();
+                        break;
+                    case 'services':
+                        await loadServicesData();
+                        break;
+                    case 'stores':
+                        await loadStoresData();
+                        break;
+                    case 'contact':
+                        await loadContactData();
+                        break;
+                    case 'footer':
+                        await loadFooterData();
+                        break;
+                    case 'seo':
+                        await loadSEOData();
+                        break;
+                }
+            } catch (error) {
+                console.error('Error loading section data:', error);
+            }
+        }
+
+        // Overview data
+        async function loadOverviewData() {
+            try {
+                // Load counts
+                const [celebritiesRes, testimonialsRes, servicesRes, storesRes] = await Promise.all([
+                    fetch('/api/celebrities'),
+                    fetch('/api/testimonials'),
+                    fetch('/api/services'),
+                    fetch('/api/stores')
+                ]);
+
+                const celebrities = await celebritiesRes.json();
+                const testimonials = await testimonialsRes.json();
+                const services = await servicesRes.json();
+                const stores = await storesRes.json();
+
+                document.getElementById('celebrity-count').textContent = celebrities.success ? celebrities.celebrities.length : '0';
+                document.getElementById('testimonial-count').textContent = testimonials.success ? testimonials.testimonials.length : '0';
+                document.getElementById('service-count').textContent = services.success ? services.services.length : '0';
+                document.getElementById('store-count').textContent = stores.success ? stores.stores.length : '0';
+            } catch (error) {
+                console.error('Error loading overview:', error);
+            }
+        }
+
+        // Celebrities management
+        async function loadCelebritiesData() {
+            try {
+                const response = await fetch('/api/celebrities');
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayCelebrities(result.celebrities);
+                }
+            } catch (error) {
+                console.error('Error loading celebrities:', error);
+            }
+        }
+
+        function displayCelebrities(celebrities) {
+            const container = document.getElementById('celebrity-list');
+            container.innerHTML = '';
+            
+            if (celebrities.length === 0) {
+                container.innerHTML = '<div class="loading">Chưa có celebrities nào</div>';
+                return;
+            }
+            
+            celebrities.forEach(celebrity => {
+                const item = document.createElement('div');
+                item.className = 'celebrity-item';
+                item.innerHTML = `
+                    <img src="${celebrity.image_url}" alt="${celebrity.name}" onerror="this.src='https://via.placeholder.com/80x80'">
+                    <div class="celebrity-name">${celebrity.name}</div>
+                    <div class="celebrity-profession">${celebrity.profession}</div>
+                    <div style="margin-top: 10px; color: #bdc3c7; font-size: 12px;">Thứ tự: ${celebrity.position}</div>
+                    <button class="btn-danger" onclick="deleteCelebrity(${celebrity.id})" style="margin-top: 10px;">
+                        <i class="fas fa-trash"></i> Xóa
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        document.getElementById('celebrity-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('celebrity-name').value,
+                profession: document.getElementById('celebrity-profession').value,
+                image_url: document.getElementById('celebrity-image').value,
+                position: parseInt(document.getElementById('celebrity-position').value) || 0
+            };
+            
+            try {
+                const response = await fetch('/api/celebrities', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã thêm celebrity thành công!');
+                    document.getElementById('celebrity-form').reset();
+                    loadCelebritiesData(); // Reload celebrities list
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        async function deleteCelebrity(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa celebrity này?')) {
+                try {
+                    const response = await fetch(`/api/celebrities/${id}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showMessage('success', 'Đã xóa celebrity thành công!');
+                        loadCelebritiesData(); // Reload celebrities list
+                        loadOverviewData(); // Update counts
+                    } else {
+                        showMessage('error', result.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('error', 'Có lỗi xảy ra khi xóa celebrity');
+                }
+            }
+        }
+
+        // Testimonials management
+        async function loadTestimonialsData() {
+            try {
+                const response = await fetch('/api/testimonials');
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayTestimonials(result.testimonials);
+                }
+            } catch (error) {
+                console.error('Error loading testimonials:', error);
+            }
+        }
+
+        function displayTestimonials(testimonials) {
+            const tbody = document.getElementById('testimonials-list');
+            tbody.innerHTML = '';
+            
+            if (testimonials.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="loading">Chưa có testimonials nào</td></tr>';
+                return;
+            }
+            
+            testimonials.forEach(testimonial => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${testimonial.customer_name}</td>
+                    <td>${testimonial.customer_location || 'N/A'}</td>
+                    <td>${testimonial.content.substring(0, 100)}${testimonial.content.length > 100 ? '...' : ''}</td>
+                    <td>${testimonial.position}</td>
+                    <td>
+                        <button class="btn-danger" onclick="deleteTestimonial(${testimonial.id})">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        document.getElementById('testimonial-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                content: document.getElementById('testimonial-content').value,
+                customer_name: document.getElementById('testimonial-name').value,
+                customer_location: document.getElementById('testimonial-location').value,
+                customer_image: document.getElementById('testimonial-image').value,
+                position: parseInt(document.getElementById('testimonial-position').value) || 0
+            };
+            
+            try {
+                const response = await fetch('/api/testimonials', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã thêm testimonial thành công!');
+                    document.getElementById('testimonial-form').reset();
+                    loadTestimonialsData(); // Reload testimonials list
+                    loadOverviewData(); // Update counts
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        async function deleteTestimonial(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa testimonial này?')) {
+                try {
+                    const response = await fetch(`/api/testimonials/${id}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showMessage('success', 'Đã xóa testimonial thành công!');
+                        loadTestimonialsData(); // Reload testimonials list
+                        loadOverviewData(); // Update counts
+                    } else {
+                        showMessage('error', result.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('error', 'Có lỗi xảy ra khi xóa testimonial');
+                }
+            }
+        }
+
+        // Services management
+        async function loadServicesData() {
+            try {
+                const response = await fetch('/api/services');
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayServices(result.services);
+                }
+            } catch (error) {
+                console.error('Error loading services:', error);
+            }
+        }
+
+        function displayServices(services) {
+            const tbody = document.getElementById('services-list');
+            tbody.innerHTML = '';
+            
+            if (services.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="loading">Chưa có dịch vụ nào</td></tr>';
+                return;
+            }
+            
+            services.forEach(service => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${service.name}</td>
+                    <td>${service.price}</td>
+                    <td>${service.description || 'Không có mô tả'}</td>
+                    <td>
+                        <button class="btn-danger" onclick="deleteService(${service.id})">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        document.getElementById('service-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('service-name').value,
+                description: document.getElementById('service-description').value,
+                price: document.getElementById('service-price').value,
+                image: document.getElementById('service-image').value
+            };
+            
+            try {
+                const response = await fetch('/api/services', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã thêm dịch vụ thành công!');
+                    document.getElementById('service-form').reset();
+                    loadServicesData(); // Reload services list
+                    loadOverviewData(); // Update counts
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        async function deleteService(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa dịch vụ này?')) {
+                try {
+                    const response = await fetch(`/api/services/${id}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showMessage('success', 'Đã xóa dịch vụ thành công!');
+                        loadServicesData(); // Reload services list
+                        loadOverviewData(); // Update counts
+                    } else {
+                        showMessage('error', result.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('error', 'Có lỗi xảy ra khi xóa dịch vụ');
+                }
+            }
+        }
+
+        // Store locations management
+        async function loadStoresData() {
+            try {
+                const response = await fetch('/api/stores');
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayStores(result.stores);
+                }
+            } catch (error) {
+                console.error('Error loading stores:', error);
+            }
+        }
+
+        function displayStores(stores) {
+            const tbody = document.getElementById('stores-list');
+            tbody.innerHTML = '';
+            
+            if (stores.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="loading">Chưa có cửa hàng nào</td></tr>';
+                return;
+            }
+            
+            stores.forEach(store => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${store.name}</td>
+                    <td>${store.address}</td>
+                    <td>${store.phone || 'N/A'}</td>
+                    <td>${store.working_hours || 'N/A'}</td>
+                    <td>
+                        <button class="btn-danger" onclick="deleteStore(${store.id})">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        document.getElementById('store-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('store-name').value,
+                address: document.getElementById('store-address').value,
+                phone: document.getElementById('store-phone').value,
+                working_hours: document.getElementById('store-hours').value
+            };
+            
+            try {
+                const response = await fetch('/api/stores', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã thêm cửa hàng thành công!');
+                    document.getElementById('store-form').reset();
+                    loadStoresData(); // Reload stores list
+                    loadOverviewData(); // Update counts
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        async function deleteStore(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa cửa hàng này?')) {
+                try {
+                    const response = await fetch(`/api/stores/${id}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showMessage('success', 'Đã xóa cửa hàng thành công!');
+                        loadStoresData(); // Reload stores list
+                        loadOverviewData(); // Update counts
+                    } else {
+                        showMessage('error', result.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('error', 'Có lỗi xảy ra khi xóa cửa hàng');
+                }
+            }
+        }
+
+        // Header management
+        async function loadHeaderData() {
+            try {
+                const response = await fetch('/api/content/header');
+                const result = await response.json();
+                
+                if (result.success && result.content) {
+                    const content = result.content;
+                    if (content.logo_text) document.getElementById('header-logo-text').value = content.logo_text.value || '';
+                    if (content.phone) document.getElementById('header-phone').value = content.phone.value || '';
+                    if (content.email) document.getElementById('header-email').value = content.email.value || '';
+                    if (content.facebook_url) document.getElementById('header-facebook').value = content.facebook_url.value || '';
+                    if (content.instagram_url) document.getElementById('header-instagram').value = content.instagram_url.value || '';
+                    if (content.app_store_url) document.getElementById('header-appstore').value = content.app_store_url.value || '';
+                    if (content.google_play_url) document.getElementById('header-googleplay').value = content.google_play_url.value || '';
+                    if (content.logo_image) document.getElementById('header-logo-image').value = content.logo_image.value || '';
+                }
+            } catch (error) {
+                console.error('Error loading header data:', error);
+            }
+        }
+
+        document.getElementById('header-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                logo_text: document.getElementById('header-logo-text').value,
+                phone: document.getElementById('header-phone').value,
+                email: document.getElementById('header-email').value,
+                facebook_url: document.getElementById('header-facebook').value,
+                instagram_url: document.getElementById('header-instagram').value,
+                app_store_url: document.getElementById('header-appstore').value,
+                google_play_url: document.getElementById('header-googleplay').value,
+                logo_image: document.getElementById('header-logo-image').value
+            };
+            
+            try {
+                const response = await fetch('/api/content/header', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã cập nhật Header thành công!');
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        // Hero section management
+        async function loadHeroData() {
+            try {
+                const response = await fetch('/api/content/hero');
+                const result = await response.json();
+                
+                if (result.success && result.content) {
+                    const content = result.content;
+                    if (content.title) document.getElementById('hero-title').value = content.title.value || '';
+                    if (content.slogan) document.getElementById('hero-slogan').value = content.slogan.value || '';
+                    if (content.korean_text) document.getElementById('hero-korean').value = content.korean_text.value || '';
+                    if (content.background_image) document.getElementById('hero-background').value = content.background_image.value || '';
+                }
+            } catch (error) {
+                console.error('Error loading hero data:', error);
+            }
+        }
+
+        // About section management
+        async function loadAboutData() {
+            try {
+                const response = await fetch('/api/content/about');
+                const result = await response.json();
+                
+                if (result.success && result.content) {
+                    const content = result.content;
+                    if (content.quote) document.getElementById('about-quote').value = content.quote.value || '';
+                    if (content.title) document.getElementById('about-title').value = content.title.value || '';
+                    if (content.description1) document.getElementById('about-desc1').value = content.description1.value || '';
+                    if (content.description2) document.getElementById('about-desc2').value = content.description2.value || '';
+                    if (content.description3) document.getElementById('about-desc3').value = content.description3.value || '';
+                    if (content.image) document.getElementById('about-image').value = content.image.value || '';
+                    if (content.button1_text) document.getElementById('about-btn1-text').value = content.button1_text.value || '';
+                    if (content.button1_url) document.getElementById('about-btn1-url').value = content.button1_url.value || '';
+                    if (content.button2_text) document.getElementById('about-btn2-text').value = content.button2_text.value || '';
+                    if (content.button2_url) document.getElementById('about-btn2-url').value = content.button2_url.value || '';
+                }
+            } catch (error) {
+                console.error('Error loading about data:', error);
+            }
+        }
+
+        // Gallery management
+        async function loadGalleryData() {
+            try {
+                const response = await fetch('/api/gallery');
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayGallery(result.gallery || []);
+                }
+            } catch (error) {
+                console.error('Error loading gallery:', error);
+            }
+        }
+
+        function displayGallery(gallery) {
+            const tbody = document.getElementById('gallery-list');
+            tbody.innerHTML = '';
+            
+            if (gallery.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="loading">Chưa có hình ảnh nào</td></tr>';
+                return;
+            }
+            
+            gallery.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${item.image_url}" alt="${item.title}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://via.placeholder.com/50x50'"></td>
+                    <td>${item.title}</td>
+                    <td>${item.category || 'N/A'}</td>
+                    <td>${item.description ? item.description.substring(0, 50) + '...' : 'N/A'}</td>
+                    <td>
+                        <button class="btn-danger" onclick="deleteGalleryItem(${item.id})">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        document.getElementById('gallery-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('gallery-title').value,
+                category: document.getElementById('gallery-category').value,
+                image_url: document.getElementById('gallery-image').value,
+                description: document.getElementById('gallery-description').value
+            };
+            
+            try {
+                const response = await fetch('/api/gallery', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã thêm hình ảnh thành công!');
+                    document.getElementById('gallery-form').reset();
+                    loadGalleryData();
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        async function deleteGalleryItem(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa hình ảnh này?')) {
+                try {
+                    const response = await fetch(`/api/gallery/${id}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showMessage('success', 'Đã xóa hình ảnh thành công!');
+                        loadGalleryData();
+                    } else {
+                        showMessage('error', result.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('error', 'Có lỗi xảy ra khi xóa hình ảnh');
+                }
+            }
+        }
+
+        // Academy management
+        async function loadAcademyData() {
+            try {
+                const response = await fetch('/api/content/academy');
+                const result = await response.json();
+                
+                if (result.success && result.content) {
+                    const content = result.content;
+                    if (content.title) document.getElementById('academy-title').value = content.title.value || '';
+                    if (content.description) document.getElementById('academy-description').value = content.description.value || '';
+                    if (content.image) document.getElementById('academy-image').value = content.image.value || '';
+                }
+            } catch (error) {
+                console.error('Error loading academy data:', error);
+            }
+        }
+
+        document.getElementById('academy-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('academy-title').value,
+                description: document.getElementById('academy-description').value,
+                image: document.getElementById('academy-image').value
+            };
+            
+            try {
+                const response = await fetch('/api/content/academy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã cập nhật Academy Section thành công!');
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        // Contact management
+        async function loadContactData() {
+            try {
+                const response = await fetch('/api/content/contact');
+                const result = await response.json();
+                
+                if (result.success && result.content) {
+                    const content = result.content;
+                    if (content.title) document.getElementById('contact-title').value = content.title.value || '';
+                    if (content.phone) document.getElementById('contact-phone').value = content.phone.value || '';
+                    if (content.email) document.getElementById('contact-email').value = content.email.value || '';
+                    if (content.working_hours) document.getElementById('contact-hours').value = content.working_hours.value || '';
+                    if (content.address) document.getElementById('contact-address').value = content.address.value || '';
+                }
+            } catch (error) {
+                console.error('Error loading contact data:', error);
+            }
+        }
+
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('contact-title').value,
+                phone: document.getElementById('contact-phone').value,
+                email: document.getElementById('contact-email').value,
+                working_hours: document.getElementById('contact-hours').value,
+                address: document.getElementById('contact-address').value
+            };
+            
+            try {
+                const response = await fetch('/api/content/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã cập nhật thông tin liên hệ thành công!');
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        // Footer section management
+        async function loadFooterData() {
+            try {
+                const response = await fetch('/api/content/footer');
+                const result = await response.json();
+                
+                if (result.success && result.content) {
+                    const content = result.content;
+                    if (content.logo_image) document.getElementById('footer-logo').value = content.logo_image.value || '';
+                    if (content.description) document.getElementById('footer-description').value = content.description.value || '';
+                    if (content.facebook_url) document.getElementById('footer-facebook').value = content.facebook_url.value || '';
+                    if (content.instagram_url) document.getElementById('footer-instagram').value = content.instagram_url.value || '';
+                    if (content.address) document.getElementById('footer-address').value = content.address.value || '';
+                    if (content.phone) document.getElementById('footer-phone').value = content.phone.value || '';
+                    if (content.email) document.getElementById('footer-email').value = content.email.value || '';
+                    if (content.working_hours) document.getElementById('footer-hours').value = content.working_hours.value || '';
+                    if (content.app_store_url) document.getElementById('footer-appstore').value = content.app_store_url.value || '';
+                    if (content.google_play_url) document.getElementById('footer-googleplay').value = content.google_play_url.value || '';
+                    if (content.copyright) document.getElementById('footer-copyright').value = content.copyright.value || '';
+                }
+            } catch (error) {
+                console.error('Error loading footer data:', error);
+            }
+        }
+
+        document.getElementById('footer-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                logo_image: document.getElementById('footer-logo').value,
+                description: document.getElementById('footer-description').value,
+                facebook_url: document.getElementById('footer-facebook').value,
+                instagram_url: document.getElementById('footer-instagram').value,
+                address: document.getElementById('footer-address').value,
+                phone: document.getElementById('footer-phone').value,
+                email: document.getElementById('footer-email').value,
+                working_hours: document.getElementById('footer-hours').value,
+                app_store_url: document.getElementById('footer-appstore').value,
+                google_play_url: document.getElementById('footer-googleplay').value,
+                copyright: document.getElementById('footer-copyright').value
+            };
+            
+            try {
+                const response = await fetch('/api/content/footer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã cập nhật Footer thành công!');
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        // SEO section management
+        async function loadSEOData() {
+            try {
+                const response = await fetch('/api/content/seo');
+                const result = await response.json();
+                
+                if (result.success && result.content) {
+                    const content = result.content;
+                    if (content.meta_title) document.getElementById('seo-title').value = content.meta_title.value || '';
+                    if (content.meta_description) document.getElementById('seo-description').value = content.meta_description.value || '';
+                    if (content.meta_keywords) document.getElementById('seo-keywords').value = content.meta_keywords.value || '';
+                }
+            } catch (error) {
+                console.error('Error loading SEO data:', error);
+            }
+        }
+
+        document.getElementById('seo-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                meta_title: document.getElementById('seo-title').value,
+                meta_description: document.getElementById('seo-description').value,
+                meta_keywords: document.getElementById('seo-keywords').value
+            };
+            
+            try {
+                const response = await fetch('/api/content/seo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã cập nhật cài đặt SEO thành công!');
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        document.getElementById('hero-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('hero-title').value,
+                slogan: document.getElementById('hero-slogan').value,
+                korean_text: document.getElementById('hero-korean').value
+            };
+            
+            try {
+                const response = await fetch('/api/content/hero', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã cập nhật Hero Section thành công!');
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        document.getElementById('about-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                quote: document.getElementById('about-quote').value,
+                title: document.getElementById('about-title').value,
+                description1: document.getElementById('about-desc1').value,
+                description2: document.getElementById('about-desc2').value,
+                description3: document.getElementById('about-desc3').value
+            };
+            
+            try {
+                const response = await fetch('/api/content/about', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã cập nhật About Section thành công!');
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        // Logout function
+        function logout() {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                window.location.href = '/admin-login.html';
+            }
+        }
+
+        // Initialize page
+        window.addEventListener('load', function() {
+            loadSectionData('overview'); // Load overview data by default
+        });
+    </script>
+</body>
+</html>

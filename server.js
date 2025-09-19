@@ -60,6 +60,248 @@ async function initDatabase() {
             )
         `);
         
+        // Create website_content table for managing website content
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS website_content (
+                id SERIAL PRIMARY KEY,
+                section VARCHAR(50) NOT NULL,
+                content_key VARCHAR(100) NOT NULL,
+                content_value TEXT,
+                content_type VARCHAR(20) DEFAULT 'text',
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(section, content_key)
+            )
+        `);
+        
+        // Create menu_items table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS menu_items (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                url VARCHAR(255) NOT NULL,
+                position INTEGER DEFAULT 0,
+                is_active BOOLEAN DEFAULT true,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Create sliders table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS sliders (
+                id SERIAL PRIMARY KEY,
+                title VARCHAR(255),
+                subtitle TEXT,
+                description TEXT,
+                image_url VARCHAR(255),
+                button_text VARCHAR(100),
+                button_url VARCHAR(255),
+                position INTEGER DEFAULT 0,
+                is_active BOOLEAN DEFAULT true,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Create gallery_items table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS gallery_items (
+                id SERIAL PRIMARY KEY,
+                title VARCHAR(255),
+                description TEXT,
+                image_url VARCHAR(255) NOT NULL,
+                category VARCHAR(100),
+                position INTEGER DEFAULT 0,
+                is_active BOOLEAN DEFAULT true,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Create celebrities table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS celebrities (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                profession VARCHAR(255),
+                image_url VARCHAR(255),
+                position INTEGER DEFAULT 0,
+                is_active BOOLEAN DEFAULT true,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Create testimonials table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS testimonials (
+                id SERIAL PRIMARY KEY,
+                content TEXT NOT NULL,
+                customer_name VARCHAR(255) NOT NULL,
+                customer_location VARCHAR(255),
+                customer_image VARCHAR(255),
+                position INTEGER DEFAULT 0,
+                is_active BOOLEAN DEFAULT true,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Create store_locations table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS store_locations (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                address TEXT NOT NULL,
+                phone VARCHAR(50),
+                working_hours VARCHAR(255),
+                is_active BOOLEAN DEFAULT true,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Insert default website content if not exists
+        await pool.query(`
+            INSERT INTO website_content (section, content_key, content_value, content_type) 
+            VALUES 
+                -- Header Section
+                ('header', 'logo_text', 'NAIL ROOM', 'text'),
+                ('header', 'logo_image', 'https://nailroom.vn/wp-content/uploads/2023/11/Mit_s-House-Logo-52.png', 'image'),
+                ('header', 'phone', '1900 1234', 'text'),
+                ('header', 'email', 'info@nailroom.vn', 'text'),
+                ('header', 'facebook_url', 'https://www.facebook.com/nailroom.official', 'text'),
+                ('header', 'instagram_url', 'https://www.instagram.com/nailroom_official', 'text'),
+                ('header', 'app_store_url', 'https://apps.apple.com/vn/app/nailroom/id1234567890', 'text'),
+                ('header', 'google_play_url', 'https://play.google.com/store/apps/details?id=com.nailroom.app', 'text'),
+                
+                -- Hero Section
+                ('hero', 'title', 'NAIL ROOM', 'text'),
+                ('hero', 'slogan', 'You Love It, We Nail It!', 'text'),
+                ('hero', 'korean_text', '네일룸', 'text'),
+                ('hero', 'background_image', 'https://nailroom.vn/wp-content/uploads/bfi_thumb/Cover-odou4k6zt1b7c8hi14o5t9gbrcgbb5tymcd3a41lii.png', 'image'),
+                
+                -- Instagram Section
+                ('instagram', 'title', 'NAILROOM INSTAGRAM', 'text'),
+                
+                -- Celebrities Section
+                ('celebrities', 'title', 'KHÁCH HÀNG CỦA NAILROOM', 'text'),
+                
+                -- Testimonials Section
+                ('testimonials', 'title', 'CẢM NHẬN VỀ NAILROOM', 'text'),
+                
+                -- About Section
+                ('about', 'quote', 'You Love It. We Nail It!', 'text'),
+                ('about', 'title', 'VỚI NAIL ROOM "AI CŨNG CÓ THỂ TRỞ NÊN ĐẸP HƠN"', 'text'),
+                ('about', 'description1', 'Xuất phát là một hệ thống Nail Hàn Quốc, Nail Room luôn đặt trọn vẹn trái tim & tâm huyết vào việc làm đẹp cho các nàng.', 'text'),
+                ('about', 'description2', 'Bởi thế, slogan của Naill Room là "Ai cũng có thể trở nên đẹp hơn". Đến với Nail Room và ra về như những phụ nữ xinh đẹp hơn, hạnh phúc hơn là điều chúng mình hướng tới.', 'text'),
+                ('about', 'description3', 'Hãy ghé chơi với chúng mình để cảm nhận niềm vui từ việc yêu chiều bản thân nhé!', 'text'),
+                ('about', 'image', 'https://nailroom.vn/wp-content/uploads/2019/09/Untitled-5.jpg', 'image'),
+                ('about', 'button1_text', 'GIỚI THIỆU', 'text'),
+                ('about', 'button1_url', '/gioi-thieu.html', 'text'),
+                ('about', 'button2_text', 'HỆ THỐNG NAILROOM', 'text'),
+                ('about', 'button2_url', '/he-thong-cua-hang.html', 'text'),
+                
+                -- Services Section
+                ('services', 'title', 'DỊCH VỤ NAILROOM', 'text'),
+                
+                -- Academy Section
+                ('academy', 'title', 'HỌC VIỆN MH THE BEAUTY LAB', 'text'),
+                ('academy', 'description', 'Học viện đào tạo MH THE BEAUTY LAB là học viện Nail, Mi, Spa, Phun thêu chính thức của NAIL ROOM – Hệ thống nail Hàn Quốc hàng đầu tại Việt Nam hiện nay.', 'text'),
+                ('academy', 'image', 'https://nailroom.vn/wp-content/uploads/2019/09/H%E1%BB%8Dc-vi%E1%BB%87n-NR.png', 'image'),
+                
+                -- Store Locations Section
+                ('stores', 'title', 'Hệ thống Nailroom Stores', 'text'),
+                ('stores', 'subtitle', '15 cơ sở trên toàn quốc', 'text'),
+                
+                -- CTA Section
+                ('cta', 'title', 'Đặt lịch liền tay', 'text'),
+                ('cta', 'subtitle', 'HƯỞNG NGAY ƯU ĐÃI', 'text'),
+                ('cta', 'button_text', 'Đặt lịch ngay', 'text'),
+                ('cta', 'phone_number', '1900066811', 'text'),
+                
+                -- Footer Section
+                ('footer', 'logo_image', 'https://nailroom.vn/wp-content/uploads/2023/11/Mit_s-House-Logo-52.png', 'image'),
+                ('footer', 'description', 'Nailroom - Thương hiệu làm đẹp hàng đầu với 7 năm kinh nghiệm và 15 cơ sở trên toàn quốc. Chúng tôi cam kết mang đến dịch vụ chất lượng cao với đội ngũ chuyên nghiệp.', 'text'),
+                ('footer', 'facebook_url', 'https://www.facebook.com/nailroom.official', 'text'),
+                ('footer', 'instagram_url', 'https://www.instagram.com/nailroom_official', 'text'),
+                ('footer', 'address', '123 Nguyễn Trãi, Q.1, TP.HCM', 'text'),
+                ('footer', 'phone', '1900 1234 (miễn phí)', 'text'),
+                ('footer', 'email', 'info@nailroom.vn', 'text'),
+                ('footer', 'working_hours', '9:00 - 21:00 (Hàng ngày)', 'text'),
+                ('footer', 'copyright', '© 2024 Nailroom. All rights reserved.', 'text'),
+                ('footer', 'app_store_url', 'https://apps.apple.com/vn/app/nailroom/id1234567890', 'text'),
+                ('footer', 'google_play_url', 'https://play.google.com/store/apps/details?id=com.nailroom.app', 'text'),
+                
+                -- SEO Settings
+                ('seo', 'meta_title', 'NAILROOM - Hệ thống làm đẹp chuyên nghiệp', 'text'),
+                ('seo', 'meta_description', 'Dịch vụ làm nail, nối mi, điêu khắc chân mày chuyên nghiệp tại NAILROOM. Đặt lịch ngay!', 'text'),
+                ('seo', 'meta_keywords', 'nail, nối mi, làm đẹp, spa, salon', 'text')
+            ON CONFLICT (section, content_key) DO NOTHING
+        `);
+
+        // Insert default celebrities
+        const celebrityCheck = await pool.query('SELECT COUNT(*) FROM celebrities');
+        if (parseInt(celebrityCheck.rows[0].count) === 0) {
+            await pool.query(`
+                INSERT INTO celebrities (name, profession, image_url, position) 
+                VALUES 
+                    ('Tóc Tiên', 'Ca sĩ', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_1.png', 1),
+                    ('Angela Phương Trinh', 'Diễn viên', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_2.png', 2),
+                    ('Nga Wendy', 'Hot girl', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_3.png', 3),
+                    ('MLee', 'Ca sĩ', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_4.png', 4),
+                    ('Liz', 'Ca sĩ', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_5.png', 5),
+                    ('Khả Ngân', 'Hot girl', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_6.png', 6),
+                    ('Huyền My', 'Á hậu', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_7.png', 7),
+                    ('Huyền Lizzie', 'Diễn viên', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_8.png', 8),
+                    ('Hoàng Ku', 'Stylist', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_9.png', 9),
+                    ('Hiền Hồ', 'Ca sĩ', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_10.png', 10),
+                    ('Đan Lê', 'Diễn viên', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_11.png', 11),
+                    ('Bích Phương', 'Ca sĩ', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_12.png', 12),
+                    ('An Japan', 'Hot girl', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_13.png', 13),
+                    ('Ngọc Thảo', 'Diễn viên', 'https://nailroom.vn/wp-content/uploads/2019/09/KOLs_14.png', 14)
+            `);
+        }
+
+        // Insert default testimonials
+        const testimonialCheck = await pool.query('SELECT COUNT(*) FROM testimonials');
+        if (parseInt(testimonialCheck.rows[0].count) === 0) {
+            await pool.query(`
+                INSERT INTO testimonials (content, customer_name, customer_location, customer_image, position) 
+                VALUES 
+                    ('Làm nail tại Nail Room max xinh mà còn bền kinh khủng. Mình làm một bộ móng mà chơi dài mấy tháng liền, nhân viên lại dễ thương, cute nữa, mãi yêu Nail Room.', 'Hương Nhi', 'Hà Nội', 'https://nailroom.vn/wp-content/uploads/bfi_thumb/Feedback1-odlxxa2a5gqsejbilvtqr9ym41jzdcxzaayl03v6co.png', 1),
+                    ('パステル紫ネイル?△ 予想外に三角の飾りが大きいけど、色味は可愛いしなんと言ってもネイル代が安いからまあいっか！って感じ?♥️', 'Kana Umemura', 'Nhật Bản', 'https://nailroom.vn/wp-content/uploads/bfi_thumb/Feedback4-odlxxcvspyundd7f5f1mgr8zw7630g96aox1fxqzu0.png', 2),
+                    ('Trung thành với duy nhất 1 brand làm nail thui nhé 😍. Chưa thấy ở đâu ổn hơn Nail Room luôn đó. Chính xác là giá cả và chất lượng đi đôi với nhau 😍. Nhân viên còn đáng iu hết sức. Định là sơn trơn thôi mà lần nào cũng phải đính tí lấp lánh ánh bình minh mới chịu được 😂 À mi ở đây cũng rất hợp style siêu tự nhiên, siêu đáng yêu của mình. Hỉ ❤️', 'Diệp Anh', 'Đà Nẵng', 'https://nailroom.vn/wp-content/uploads/bfi_thumb/Feedback3-odlxxbxyj4td1r8sawmzw9hjatapsr5fyk9jynse08.png', 3),
+                    ('The best nail salon I had in Danang City. Full service include nail service, eyelash extension, facial, and hair wash.', 'Kim Jeong', 'Hàn Quốc', 'https://nailroom.vn/wp-content/uploads/bfi_thumb/Feedback5-odlxx94fympi2xcvrdf46s75inom5nu8y6b3itwkiw.png', 4),
+                    ('Mình làm móng 3 lần ở NAIL ROOM đều làm với chị Trúc và đều làm đúng một bộ ombre + marble. Tiệm đẹp, nhân viên nhẹ nhàng, dễ thương, đi đúng giờ hay gặp người nổi tiếng =)))))', 'Vũ Thảo', 'Hà Nội', 'https://nailroom.vn/wp-content/uploads/bfi_thumb/Feedback2-odlxxb04cas2q5a5ge8dbrq2pffcl21pmfm2hdts6g.png', 5)
+            `);
+        }
+
+        // Insert default store locations
+        const storeCheck = await pool.query('SELECT COUNT(*) FROM store_locations');
+        if (parseInt(storeCheck.rows[0].count) === 0) {
+            await pool.query(`
+                INSERT INTO store_locations (name, address, phone, working_hours) 
+                VALUES 
+                    ('Nailroom Nguyễn Trãi', '123 Nguyễn Trãi, Q.1, TP.HCM', '028 3123 4567', '9:00 - 21:00 (Hàng ngày)'),
+                    ('Nailroom Lê Văn Sỹ', '456 Lê Văn Sỹ, Q.3, TP.HCM', '028 3234 5678', '9:00 - 21:00 (Hàng ngày)'),
+                    ('Nailroom Cầu Giấy', '789 Cầu Giấy, Hà Nội', '024 3345 6789', '9:00 - 21:00 (Hàng ngày)'),
+                    ('Nailroom Đà Nẵng', '321 Trần Phú, Đà Nẵng', '0236 3456 789', '9:00 - 21:00 (Hàng ngày)'),
+                    ('Nailroom Cần Thơ', '654 Nguyễn Văn Cừ, Cần Thơ', '0292 3567 890', '9:00 - 21:00 (Hàng ngày)'),
+                    ('Nailroom Biên Hòa', '987 Võ Thị Sáu, Biên Hòa', '0251 3678 901', '9:00 - 21:00 (Hàng ngày)')
+            `);
+        }
+
+        // Insert default menu items
+        const menuCheck = await pool.query('SELECT COUNT(*) FROM menu_items');
+        if (parseInt(menuCheck.rows[0].count) === 0) {
+            await pool.query(`
+                INSERT INTO menu_items (name, url, position) 
+                VALUES 
+                    ('Trang chủ', '/', 1),
+                    ('Giới thiệu', '/gioi-thieu.html', 2),
+                    ('Dịch vụ', '/dich-vu.html', 3),
+                    ('Thư viện', '/gallery.html', 4),
+                    ('Blog', '/blog.html', 5),
+                    ('Liên hệ', '/lien-he.html', 6),
+                    ('Đặt lịch', '/dat-lich.html', 7)
+            `);
+        }
+        
         console.log('✅ Database tables initialized');
     } catch (error) {
         console.error('❌ Error initializing database:', error);
@@ -768,6 +1010,480 @@ app.get('/login.html', (req, res) => {
 
 app.get(/.*\.html$/, (req, res) => {
     res.sendFile(path.join(__dirname, req.path));
+});
+
+// Website Content Management API Endpoints
+
+// Get website content by section
+app.get('/api/content/:section', async (req, res) => {
+    try {
+        const { section } = req.params;
+        
+        const result = await pool.query(
+            'SELECT content_key, content_value, content_type FROM website_content WHERE section = $1',
+            [section]
+        );
+        
+        const content = {};
+        result.rows.forEach(row => {
+            content[row.content_key] = {
+                value: row.content_value,
+                type: row.content_type
+            };
+        });
+        
+        res.json({ success: true, content });
+    } catch (error) {
+        console.error('Error fetching content:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi lấy nội dung' });
+    }
+});
+
+// Update website content
+app.post('/api/content/:section', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { section } = req.params;
+        const contentData = req.body;
+        
+        // Update each content item
+        for (const [key, value] of Object.entries(contentData)) {
+            await pool.query(`
+                INSERT INTO website_content (section, content_key, content_value, updated_at) 
+                VALUES ($1, $2, $3, CURRENT_TIMESTAMP)
+                ON CONFLICT (section, content_key) 
+                DO UPDATE SET content_value = $3, updated_at = CURRENT_TIMESTAMP
+            `, [section, key, value]);
+        }
+        
+        res.json({ success: true, message: 'Đã cập nhật nội dung thành công' });
+    } catch (error) {
+        console.error('Error updating content:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi cập nhật nội dung' });
+    }
+});
+
+// Get all services
+app.get('/api/services', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM services ORDER BY created_at DESC');
+        res.json({ success: true, services: result.rows });
+    } catch (error) {
+        console.error('Error fetching services:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi lấy danh sách dịch vụ' });
+    }
+});
+
+// Add new service
+app.post('/api/services', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { name, description, price, image } = req.body;
+        
+        if (!name || !price) {
+            return res.status(400).json({ success: false, message: 'Vui lòng điền tên và giá dịch vụ' });
+        }
+        
+        const result = await pool.query(
+            'INSERT INTO services (name, description, price, image) VALUES ($1, $2, $3, $4) RETURNING *',
+            [name, description, parseFloat(price), image || null]
+        );
+        
+        res.json({ success: true, service: result.rows[0], message: 'Đã thêm dịch vụ thành công' });
+    } catch (error) {
+        console.error('Error adding service:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi thêm dịch vụ' });
+    }
+});
+
+// Update service
+app.put('/api/services/:id', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { id } = req.params;
+        const { name, description, price, image } = req.body;
+        
+        const result = await pool.query(
+            'UPDATE services SET name = $1, description = $2, price = $3, image = $4 WHERE id = $5 RETURNING *',
+            [name, description, parseFloat(price), image, id]
+        );
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy dịch vụ' });
+        }
+        
+        res.json({ success: true, service: result.rows[0], message: 'Đã cập nhật dịch vụ thành công' });
+    } catch (error) {
+        console.error('Error updating service:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi cập nhật dịch vụ' });
+    }
+});
+
+// Delete service
+app.delete('/api/services/:id', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { id } = req.params;
+        
+        const result = await pool.query('DELETE FROM services WHERE id = $1 RETURNING *', [id]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy dịch vụ' });
+        }
+        
+        res.json({ success: true, message: 'Đã xóa dịch vụ thành công' });
+    } catch (error) {
+        console.error('Error deleting service:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi xóa dịch vụ' });
+    }
+});
+
+// Menu Management APIs
+// Get all menu items
+app.get('/api/menu', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM menu_items ORDER BY position ASC');
+        res.json({ success: true, menu: result.rows });
+    } catch (error) {
+        console.error('Error fetching menu:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi lấy danh sách menu' });
+    }
+});
+
+// Add new menu item
+app.post('/api/menu', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { name, url, position } = req.body;
+        
+        if (!name || !url) {
+            return res.status(400).json({ success: false, message: 'Vui lòng điền tên và đường dẫn menu' });
+        }
+        
+        const result = await pool.query(
+            'INSERT INTO menu_items (name, url, position) VALUES ($1, $2, $3) RETURNING *',
+            [name, url, position || 0]
+        );
+        
+        res.json({ success: true, menu: result.rows[0], message: 'Đã thêm menu thành công' });
+    } catch (error) {
+        console.error('Error adding menu:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi thêm menu' });
+    }
+});
+
+// Update menu item
+app.put('/api/menu/:id', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { id } = req.params;
+        const { name, url, position, is_active } = req.body;
+        
+        const result = await pool.query(
+            'UPDATE menu_items SET name = $1, url = $2, position = $3, is_active = $4 WHERE id = $5 RETURNING *',
+            [name, url, position, is_active, id]
+        );
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy menu' });
+        }
+        
+        res.json({ success: true, menu: result.rows[0], message: 'Đã cập nhật menu thành công' });
+    } catch (error) {
+        console.error('Error updating menu:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi cập nhật menu' });
+    }
+});
+
+// Delete menu item
+app.delete('/api/menu/:id', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { id } = req.params;
+        
+        const result = await pool.query('DELETE FROM menu_items WHERE id = $1 RETURNING *', [id]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy menu' });
+        }
+        
+        res.json({ success: true, message: 'Đã xóa menu thành công' });
+    } catch (error) {
+        console.error('Error deleting menu:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi xóa menu' });
+    }
+});
+
+// Gallery Management APIs
+// Get all gallery items
+app.get('/api/gallery', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM gallery_items WHERE is_active = true ORDER BY position ASC');
+        res.json({ success: true, gallery: result.rows });
+    } catch (error) {
+        console.error('Error fetching gallery:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi lấy thư viện ảnh' });
+    }
+});
+
+// Add new gallery item
+app.post('/api/gallery', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { title, description, image_url, category, position } = req.body;
+        
+        if (!image_url) {
+            return res.status(400).json({ success: false, message: 'Vui lòng tải lên hình ảnh' });
+        }
+        
+        const result = await pool.query(
+            'INSERT INTO gallery_items (title, description, image_url, category, position) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [title, description, image_url, category, position || 0]
+        );
+        
+        res.json({ success: true, gallery: result.rows[0], message: 'Đã thêm ảnh thành công' });
+    } catch (error) {
+        console.error('Error adding gallery item:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi thêm ảnh' });
+    }
+});
+
+// Delete gallery item
+app.delete('/api/gallery/:id', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { id } = req.params;
+        
+        const result = await pool.query('DELETE FROM gallery_items WHERE id = $1 RETURNING *', [id]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy ảnh' });
+        }
+        
+        res.json({ success: true, message: 'Đã xóa ảnh thành công' });
+    } catch (error) {
+        console.error('Error deleting gallery item:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi xóa ảnh' });
+    }
+});
+
+// Celebrities Management APIs
+// Get all celebrities
+app.get('/api/celebrities', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM celebrities WHERE is_active = true ORDER BY position ASC');
+        res.json({ success: true, celebrities: result.rows });
+    } catch (error) {
+        console.error('Error fetching celebrities:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi lấy danh sách celebrities' });
+    }
+});
+
+// Add new celebrity
+app.post('/api/celebrities', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { name, profession, image_url, position } = req.body;
+        
+        if (!name) {
+            return res.status(400).json({ success: false, message: 'Vui lòng điền tên celebrity' });
+        }
+        
+        const result = await pool.query(
+            'INSERT INTO celebrities (name, profession, image_url, position) VALUES ($1, $2, $3, $4) RETURNING *',
+            [name, profession, image_url, position || 0]
+        );
+        
+        res.json({ success: true, celebrity: result.rows[0], message: 'Đã thêm celebrity thành công' });
+    } catch (error) {
+        console.error('Error adding celebrity:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi thêm celebrity' });
+    }
+});
+
+// Delete celebrity
+app.delete('/api/celebrities/:id', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { id } = req.params;
+        
+        const result = await pool.query('DELETE FROM celebrities WHERE id = $1 RETURNING *', [id]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy celebrity' });
+        }
+        
+        res.json({ success: true, message: 'Đã xóa celebrity thành công' });
+    } catch (error) {
+        console.error('Error deleting celebrity:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi xóa celebrity' });
+    }
+});
+
+// Testimonials Management APIs
+// Get all testimonials
+app.get('/api/testimonials', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM testimonials WHERE is_active = true ORDER BY position ASC');
+        res.json({ success: true, testimonials: result.rows });
+    } catch (error) {
+        console.error('Error fetching testimonials:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi lấy danh sách testimonials' });
+    }
+});
+
+// Add new testimonial
+app.post('/api/testimonials', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { content, customer_name, customer_location, customer_image, position } = req.body;
+        
+        if (!content || !customer_name) {
+            return res.status(400).json({ success: false, message: 'Vui lòng điền nội dung và tên khách hàng' });
+        }
+        
+        const result = await pool.query(
+            'INSERT INTO testimonials (content, customer_name, customer_location, customer_image, position) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [content, customer_name, customer_location, customer_image, position || 0]
+        );
+        
+        res.json({ success: true, testimonial: result.rows[0], message: 'Đã thêm testimonial thành công' });
+    } catch (error) {
+        console.error('Error adding testimonial:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi thêm testimonial' });
+    }
+});
+
+// Delete testimonial
+app.delete('/api/testimonials/:id', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { id } = req.params;
+        
+        const result = await pool.query('DELETE FROM testimonials WHERE id = $1 RETURNING *', [id]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy testimonial' });
+        }
+        
+        res.json({ success: true, message: 'Đã xóa testimonial thành công' });
+    } catch (error) {
+        console.error('Error deleting testimonial:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi xóa testimonial' });
+    }
+});
+
+// Store Locations Management APIs
+// Get all store locations
+app.get('/api/stores', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM store_locations WHERE is_active = true ORDER BY id ASC');
+        res.json({ success: true, stores: result.rows });
+    } catch (error) {
+        console.error('Error fetching stores:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi lấy danh sách cửa hàng' });
+    }
+});
+
+// Add new store location
+app.post('/api/stores', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { name, address, phone, working_hours } = req.body;
+        
+        if (!name || !address) {
+            return res.status(400).json({ success: false, message: 'Vui lòng điền tên và địa chỉ cửa hàng' });
+        }
+        
+        const result = await pool.query(
+            'INSERT INTO store_locations (name, address, phone, working_hours) VALUES ($1, $2, $3, $4) RETURNING *',
+            [name, address, phone, working_hours]
+        );
+        
+        res.json({ success: true, store: result.rows[0], message: 'Đã thêm cửa hàng thành công' });
+    } catch (error) {
+        console.error('Error adding store:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi thêm cửa hàng' });
+    }
+});
+
+// Delete store location
+app.delete('/api/stores/:id', async (req, res) => {
+    try {
+        // Check if user is admin
+        if (!req.session.user || req.session.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Không có quyền truy cập' });
+        }
+        
+        const { id } = req.params;
+        
+        const result = await pool.query('DELETE FROM store_locations WHERE id = $1 RETURNING *', [id]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy cửa hàng' });
+        }
+        
+        res.json({ success: true, message: 'Đã xóa cửa hàng thành công' });
+    } catch (error) {
+        console.error('Error deleting store:', error);
+        res.status(500).json({ success: false, message: 'Lỗi khi xóa cửa hàng' });
+    }
 });
 
 // Start server
