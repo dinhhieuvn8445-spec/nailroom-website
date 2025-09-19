@@ -454,6 +454,29 @@
             transition: width 0.3s ease;
         }
 
+        /* Badge styles */
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
         /* Stats cards */
         .stats-grid {
             display: grid;
@@ -587,6 +610,18 @@
                     <a href="#" class="menu-item" data-section="contact">
                         <i class="fas fa-phone"></i>
                         Liên hệ
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="cta">
+                        <i class="fas fa-bullhorn"></i>
+                        Call-to-Action
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="menu-item" data-section="forms">
+                        <i class="fas fa-wpforms"></i>
+                        Form đăng ký
                     </a>
                 </li>
                 <li>
@@ -1293,6 +1328,190 @@
                 </div>
             </div>
 
+            <!-- Call-to-Action Section -->
+            <div class="content-section" id="cta-section">
+                <div class="section-header">
+                    <i class="fas fa-bullhorn"></i>
+                    <h2 class="section-title">Call-to-Action</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit"></i>
+                        Cài đặt Call-to-Action
+                    </h3>
+                    
+                    <form id="cta-form">
+                        <div class="form-group">
+                            <label class="form-label">Tiêu đề chính:</label>
+                            <input type="text" class="form-control" id="cta-title" placeholder="Đặt lịch liền tay">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Phụ đề:</label>
+                            <input type="text" class="form-control" id="cta-subtitle" placeholder="HƯỞNG NGAY ƯU ĐÃI">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mô tả:</label>
+                            <textarea class="form-control" id="cta-description" placeholder="Đặt lịch ngay hôm nay để nhận ưu đãi đặc biệt..."></textarea>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Text nút chính:</label>
+                                <input type="text" class="form-control" id="cta-button-text" placeholder="Đặt lịch ngay">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">URL/Link nút:</label>
+                                <input type="text" class="form-control" id="cta-button-url" placeholder="tel:1900066811">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Số điện thoại hiển thị:</label>
+                                <input type="text" class="form-control" id="cta-phone" placeholder="1900066811">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Màu nền:</label>
+                                <input type="color" class="form-control" id="cta-bg-color" value="#e74c3c">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Hình nền CTA:</label>
+                            <div class="drag-drop-area" id="cta-bg-drag-area">
+                                <div class="drag-drop-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="drag-drop-text">Kéo thả hình nền CTA vào đây</div>
+                                <div class="drag-drop-subtext">hoặc click để chọn file (JPG, PNG, GIF)</div>
+                                <input type="file" class="file-input-hidden" id="cta-bg-file" accept="image/*">
+                                <div class="upload-progress" id="cta-bg-progress">
+                                    <div class="upload-progress-bar" id="cta-bg-progress-bar"></div>
+                                </div>
+                            </div>
+                            <input type="url" class="form-control" id="cta-background" placeholder="hoặc nhập URL hình nền">
+                            <div id="cta-bg-preview"></div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-save"></i> Lưu Call-to-Action
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Forms Section -->
+            <div class="content-section" id="forms-section">
+                <div class="section-header">
+                    <i class="fas fa-wpforms"></i>
+                    <h2 class="section-title">Form đăng ký</h2>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit"></i>
+                        Cài đặt Form đăng ký
+                    </h3>
+                    
+                    <form id="registration-form-settings">
+                        <div class="form-group">
+                            <label class="form-label">Tiêu đề form:</label>
+                            <input type="text" class="form-control" id="form-title" placeholder="Đăng ký nhận tư vấn">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mô tả form:</label>
+                            <textarea class="form-control" id="form-description" placeholder="Để lại thông tin để nhận tư vấn miễn phí từ chuyên gia..."></textarea>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Text nút submit:</label>
+                                <input type="text" class="form-control" id="form-submit-text" placeholder="Gửi thông tin">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email nhận thông tin:</label>
+                                <input type="email" class="form-control" id="form-email-to" placeholder="info@nailroom.vn">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Thông báo thành công:</label>
+                            <textarea class="form-control" id="form-success-message" placeholder="Cảm ơn bạn đã đăng ký! Chúng tôi sẽ liên hệ trong thời gian sớm nhất."></textarea>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-success">
+                                <i class="fas fa-save"></i> Lưu cài đặt Form
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-list"></i>
+                        Danh sách đăng ký
+                    </h3>
+                    
+                    <div class="form-grid" style="margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Lọc theo ngày:</label>
+                            <input type="date" class="form-control" id="filter-date">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Lọc theo dịch vụ:</label>
+                            <select class="form-control" id="filter-service">
+                                <option value="">Tất cả dịch vụ</option>
+                                <option value="nail">Nail</option>
+                                <option value="mi">Mi</option>
+                                <option value="long-may">Lông mày</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <table class="data-table" id="registrations-table">
+                        <thead>
+                            <tr>
+                                <th>Họ tên</th>
+                                <th>Số điện thoại</th>
+                                <th>Email</th>
+                                <th>Dịch vụ quan tâm</th>
+                                <th>Ngày đăng ký</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registrations-list">
+                            <tr>
+                                <td colspan="7" class="loading">Đang tải danh sách đăng ký...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-download"></i>
+                        Xuất dữ liệu
+                    </h3>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-primary" onclick="exportRegistrations('excel')">
+                            <i class="fas fa-file-excel"></i> Xuất Excel
+                        </button>
+                        <button class="btn-primary" onclick="exportRegistrations('csv')">
+                            <i class="fas fa-file-csv"></i> Xuất CSV
+                        </button>
+                        <button class="btn-primary" onclick="exportRegistrations('pdf')">
+                            <i class="fas fa-file-pdf"></i> Xuất PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Footer Section -->
             <div class="content-section" id="footer-section">
                 <div class="section-header">
@@ -1495,6 +1714,12 @@
                         break;
                     case 'contact':
                         await loadContactData();
+                        break;
+                    case 'cta':
+                        await loadCTAData();
+                        break;
+                    case 'forms':
+                        await loadFormsData();
                         break;
                     case 'footer':
                         await loadFooterData();
@@ -2311,6 +2536,257 @@
             }
         });
 
+        // CTA management
+        async function loadCTAData() {
+            try {
+                const response = await fetch('/api/content/cta');
+                const result = await response.json();
+                
+                if (result.success && result.content) {
+                    const content = result.content;
+                    if (content.title) document.getElementById('cta-title').value = content.title.value || '';
+                    if (content.subtitle) document.getElementById('cta-subtitle').value = content.subtitle.value || '';
+                    if (content.description) document.getElementById('cta-description').value = content.description.value || '';
+                    if (content.button_text) document.getElementById('cta-button-text').value = content.button_text.value || '';
+                    if (content.button_url) document.getElementById('cta-button-url').value = content.button_url.value || '';
+                    if (content.phone) document.getElementById('cta-phone').value = content.phone.value || '';
+                    if (content.bg_color) document.getElementById('cta-bg-color').value = content.bg_color.value || '#e74c3c';
+                    if (content.background_image) document.getElementById('cta-background').value = content.background_image.value || '';
+                }
+            } catch (error) {
+                console.error('Error loading CTA data:', error);
+            }
+        }
+
+        document.getElementById('cta-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('cta-title').value,
+                subtitle: document.getElementById('cta-subtitle').value,
+                description: document.getElementById('cta-description').value,
+                button_text: document.getElementById('cta-button-text').value,
+                button_url: document.getElementById('cta-button-url').value,
+                phone: document.getElementById('cta-phone').value,
+                bg_color: document.getElementById('cta-bg-color').value,
+                background_image: document.getElementById('cta-background').value
+            };
+            
+            try {
+                const response = await fetch('/api/content/cta', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã cập nhật Call-to-Action thành công!');
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        // Forms management
+        async function loadFormsData() {
+            try {
+                // Load form settings
+                const settingsResponse = await fetch('/api/content/form-settings');
+                const settingsResult = await settingsResponse.json();
+                
+                if (settingsResult.success && settingsResult.content) {
+                    const content = settingsResult.content;
+                    if (content.title) document.getElementById('form-title').value = content.title.value || '';
+                    if (content.description) document.getElementById('form-description').value = content.description.value || '';
+                    if (content.submit_text) document.getElementById('form-submit-text').value = content.submit_text.value || '';
+                    if (content.email_to) document.getElementById('form-email-to').value = content.email_to.value || '';
+                    if (content.success_message) document.getElementById('form-success-message').value = content.success_message.value || '';
+                }
+
+                // Load registrations
+                await loadRegistrations();
+            } catch (error) {
+                console.error('Error loading forms data:', error);
+            }
+        }
+
+        async function loadRegistrations() {
+            try {
+                const response = await fetch('/api/registrations');
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayRegistrations(result.registrations || []);
+                }
+            } catch (error) {
+                console.error('Error loading registrations:', error);
+            }
+        }
+
+        function displayRegistrations(registrations) {
+            const tbody = document.getElementById('registrations-list');
+            tbody.innerHTML = '';
+            
+            if (registrations.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="loading">Chưa có đăng ký nào</td></tr>';
+                return;
+            }
+            
+            registrations.forEach(registration => {
+                const row = document.createElement('tr');
+                const statusClass = registration.status === 'processed' ? 'success' : 'warning';
+                const statusText = registration.status === 'processed' ? 'Đã xử lý' : 'Chưa xử lý';
+                
+                row.innerHTML = `
+                    <td>${registration.full_name}</td>
+                    <td>${registration.phone}</td>
+                    <td>${registration.email || 'N/A'}</td>
+                    <td>${registration.service_interest || 'N/A'}</td>
+                    <td>${new Date(registration.created_at).toLocaleDateString('vi-VN')}</td>
+                    <td><span class="badge badge-${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="btn-primary" onclick="updateRegistrationStatus(${registration.id}, 'processed')" style="margin-right: 5px;">
+                            <i class="fas fa-check"></i> Xử lý
+                        </button>
+                        <button class="btn-danger" onclick="deleteRegistration(${registration.id})">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        document.getElementById('registration-form-settings').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('form-title').value,
+                description: document.getElementById('form-description').value,
+                submit_text: document.getElementById('form-submit-text').value,
+                email_to: document.getElementById('form-email-to').value,
+                success_message: document.getElementById('form-success-message').value
+            };
+            
+            try {
+                const response = await fetch('/api/content/form-settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã cập nhật cài đặt form thành công!');
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi lưu dữ liệu');
+            }
+        });
+
+        async function updateRegistrationStatus(id, status) {
+            try {
+                const response = await fetch(`/api/registrations/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: status })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', 'Đã cập nhật trạng thái thành công!');
+                    loadRegistrations(); // Reload registrations list
+                } else {
+                    showMessage('error', result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi cập nhật trạng thái');
+            }
+        }
+
+        async function deleteRegistration(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa đăng ký này?')) {
+                try {
+                    const response = await fetch(`/api/registrations/${id}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showMessage('success', 'Đã xóa đăng ký thành công!');
+                        loadRegistrations(); // Reload registrations list
+                    } else {
+                        showMessage('error', result.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('error', 'Có lỗi xảy ra khi xóa đăng ký');
+                }
+            }
+        }
+
+        // Export functions
+        async function exportRegistrations(format) {
+            try {
+                const response = await fetch(`/api/registrations/export?format=${format}`);
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `registrations.${format}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    showMessage('success', `Đã xuất file ${format.toUpperCase()} thành công!`);
+                } else {
+                    showMessage('error', 'Có lỗi xảy ra khi xuất file');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', 'Có lỗi xảy ra khi xuất file');
+            }
+        }
+
+        // Filter registrations
+        document.getElementById('filter-date').addEventListener('change', filterRegistrations);
+        document.getElementById('filter-service').addEventListener('change', filterRegistrations);
+
+        async function filterRegistrations() {
+            const date = document.getElementById('filter-date').value;
+            const service = document.getElementById('filter-service').value;
+            
+            try {
+                let url = '/api/registrations?';
+                if (date) url += `date=${date}&`;
+                if (service) url += `service=${service}&`;
+                
+                const response = await fetch(url);
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayRegistrations(result.registrations || []);
+                }
+            } catch (error) {
+                console.error('Error filtering registrations:', error);
+            }
+        }
+
         document.getElementById('hero-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -2385,6 +2861,9 @@
             
             // Hero background drag & drop
             setupDragDrop('hero-bg-drag-area', 'hero-bg-file', 'hero-background', 'hero-bg-preview', 'hero-bg-progress', 'hero-bg-progress-bar');
+            
+            // CTA background drag & drop
+            setupDragDrop('cta-bg-drag-area', 'cta-bg-file', 'cta-background', 'cta-bg-preview', 'cta-bg-progress', 'cta-bg-progress-bar');
             
             // Celebrity drag & drop
             setupDragDrop('celebrity-drag-area', 'celebrity-file', 'celebrity-image', 'celebrity-preview', 'celebrity-progress', 'celebrity-progress-bar');
